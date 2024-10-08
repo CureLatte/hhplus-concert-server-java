@@ -1,4 +1,8 @@
 
+## 시나리오 선정
+### Concert Scenario
+* 대기열 구현이 매력적이라 선택했습니다.
+
 ## configuration
 
 * JAVA 17
@@ -13,16 +17,10 @@
 
 
 
-## API 명세서
+## API 명세서 
 
-### 유저 토큰 발급 API
-### 예약 가능 날짜 API 
-### 좌석 API 
-### 좌석 예약 요청 API 
-### 결제 API
-### 포인트 충전 API
-### 포인트 조회 API
 
 
 ## ERD Diagram 
+
 
