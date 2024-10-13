@@ -11,14 +11,12 @@
 
 
 
-## 좌석 예약 시스템 
+## 유저 토큰 발급 API
 ```mermaid
 sequenceDiagram
     actor User 
-    participant Controller
-    participant Service
-    participant DataBase
-
+    participant Controller as Facade 
+        
     loop
         User ->>+ Controller : 유저 토큰 발급 API
         
@@ -51,7 +49,7 @@ sequenceDiagram
            
         end
 
-        Service ->> Controller:return Token
+        Service ->> - Controller:return Token
         
         Controller ->> - User: return Token 
 
@@ -61,11 +59,6 @@ sequenceDiagram
 
 
 
-    
-    
-    
-    
-    
     User ->> Controller : 유저 토큰 발급 API
     User ->> Controller : 유저 토큰 발급 API
     
@@ -73,46 +66,6 @@ sequenceDiagram
     
 ```
 
-## 유저 토큰 발급 API 
-
-```mermaid
-sequenceDiagram
-
-
-    title 유저 토큰 API
-
-    User->Server:API 요청(userId)
-    activate Server
-
-
-    Server-->WaitQueueTable: 유저 토큰 조회 요청
-    activate WaitQueueTable
-
-    WaitQueueTable -> Server: 유저 토큰 요청
-    deactivate WaitQueueTable
-    Server -> Server: 토큰 확인
-
-
-    alt 토큰이 있을 경우
-        Server -> Server: 대기 시간, 대기 인원 수 계산
-
-
-    else 토큰 조회 실패할 경우
-        Server -> WaitQueueTable: token 생성 요청
-        activate WaitQueueTable
-        WaitQueueTable -> Server: new Token Return
-        deactivate WaitQueueTable
-
-    end
-    
-
-    Server -> User: Token return
-    deactivate Server
-
-
-
-
-```
 
 <br>
 <br>
@@ -126,6 +79,7 @@ sequenceDiagram
     title 예약 가능 날짜 조회 API
     
     actor User
+    participant Controller as Facade
 
     User ->> +  Controller: 예약 날짜 조회 API
     Note right of User: concert_id
