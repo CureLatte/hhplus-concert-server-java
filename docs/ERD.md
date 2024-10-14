@@ -73,7 +73,11 @@ erDiagram
         user_id int
         concert_seat_id int pk
         point_history_id int pk
-        status int 
+        status int
+        expiredAt datetime
+        createdAt datetime 
+        updatedAt datetime 
+        
     }
     Reservation ||--|| PointHistory: has
     Reservation ||--|| User: has
