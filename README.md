@@ -9,9 +9,6 @@
 * JPA
 * MYSQL
 
-## Milestone 
-
-
 ## Documents
 
 * ### [MILESTONE](https://github.com/users/CureLatte/projects/4/views/1?sortedBy%5Bdirection%5D=asc&sortedBy%5BcolumnId%5D=Milestone)
