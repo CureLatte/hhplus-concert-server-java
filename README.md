@@ -13,19 +13,16 @@
 
 ### JIRA - [Jira 홈페이지 이동](https://zhqmfkv.atlassian.net/jira/software/projects/HHPLUS/boards/2/timeline?shared=&atlOrigin=eyJpIjoiZGIwZmEyM2RjZGI0NDYxNGJiZDg3YmUxYTk3Mjk4OTUiLCJwIjoiaiJ9)
 
-![hhplus_2024-10-09_12.23am.png](src/main/resources/static/hhplus_2024-10-09_12.23am.png)
+![hhplus_2024-10-09_12.23am.png](docs/mileStone.png)
 
 
 
 ## Documents
 * ### [시퀀스 다이어 그램](docs/sequence.md)
-* ### [ERD 다이어 그램](docs/image)
+* ### ERD 다이어 그램
+![ERD 다이어 그램](docs/ERD.png)
+* ### [API DOCS]()
 
-# Sequence Diagram
-* User
-  * 대기열 Token 생성  
-    ![img.png](src/main/resources/static/sequenceDiagram/post_create_user_token.png)
-  * 
 
 ## API 명세서 
 
