@@ -1,4 +1,8 @@
 
+## 시나리오 선정
+### Concert Scenario
+* 대기열 구현이 매력적이라 선택했습니다.
+
 ## configuration
 
 * JAVA 17
@@ -7,22 +11,9 @@
 
 ## Milestone 
 
-### JIRA - [Jira 홈페이지 이동](https://zhqmfkv.atlassian.net/jira/software/projects/HHPLUS/boards/2/timeline?shared=&atlOrigin=eyJpIjoiZGIwZmEyM2RjZGI0NDYxNGJiZDg3YmUxYTk3Mjk4OTUiLCJwIjoiaiJ9)
 
-![hhplus_2024-10-09_12.23am.png](src/main/resources/static/hhplus_2024-10-09_12.23am.png)
+## Documents
 
-
-
-## API 명세서
-
-### 유저 토큰 발급 API
-### 예약 가능 날짜 API 
-### 좌석 API 
-### 좌석 예약 요청 API 
-### 결제 API
-### 포인트 충전 API
-### 포인트 조회 API
-
-
-## ERD Diagram 
+* ### [MILESTONE](https://github.com/users/CureLatte/projects/4/views/1?sortedBy%5Bdirection%5D=asc&sortedBy%5BcolumnId%5D=Milestone)
+* ### [시퀀스 다이어 그램](docs/sequence.md)
 
