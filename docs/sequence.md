@@ -15,54 +15,48 @@
 ```mermaid
 sequenceDiagram
     actor User 
-    participant Controller as Facade 
+    participant Controller as ConcertFacade 
+    participant UserService
+    participant WaitService
+    
         
     loop
         User ->>+ Controller : 유저 토큰 발급 API
         
-        Controller ->> +Service: UserService.getUser
-    
-        Service ->> +DataBase: check user
-        DataBase ->> -Service: return user
+        Controller ->> +UserService: getUser
+
+        UserService ->> +DataBase: check user
+        DataBase ->> -UserService: return user
     
        
         
        
         alt 가입되지 않은 유저
-            Service -->> User: 400 response 
-        else  
-            Service ->> - Controller: return user
+            UserService -->> User: 400 response 
+        else
+            UserService ->> - Controller: return user
             
-            Controller ->> + Service: WaitService: getToken
+            Controller ->> + WaitService: getToken
         
         end
+
+
+        WaitService ->> + DataBase: waitQueue.findByUser
         
+        DataBase ->> - WaitService: return token
         
-        
-        Service ->> + DataBase: waitQueue.findByUser
-        
-        DataBase ->> - Service: return token
-        
-        alt 존재하지 않은 Token 
-            Service ->> + DataBase:waitQueue.create
-            DataBase ->> - Service: return new Token
+        alt 존재하지 않은 Token
+            WaitService ->> + DataBase:waitQueue.create
+            DataBase ->> - WaitService: return new Token
            
         end
 
-        Service ->> - Controller:return Token
+        WaitService ->> - Controller:return Token
         
         Controller ->> - User: return Token 
 
-        
-        
     end
 
-
-
-    User ->> Controller : 유저 토큰 발급 API
-    User ->> Controller : 유저 토큰 발급 API
-    
-    
     
 ```
 
@@ -79,61 +73,68 @@ sequenceDiagram
     title 예약 가능 날짜 조회 API
     
     actor User
-    participant Controller as Facade
+    participant Controller as UserFacade
+    participant WaitService
+    participant ConcertService
+
 
     User ->> +  Controller: 예약 날짜 조회 API
     Note right of User: concert_id
 
-    Controller ->> + Service: waitService.check
+    Controller ->> + WaitService: check
 
-    Service ->> + DataBase: waitQueue.findByUser
+    WaitService ->> + DataBase: waitQueue.findByUser
 
-    DataBase ->> - Service: return token
-
+    
+    DataBase ->> - WaitService: return token
+    
+    
+    
+   
 
     alt  존재하지 않은 토큰일 경우
-        Service -->> User: 400 잘못된 접근입니다.
+        WaitService -->> User: 400 잘못된 접근입니다.
     else  대기 상태인 경우
-        Service -->>  User: 400 대기중입니다.
+        WaitService -->>  User: 400 대기중입니다.
 
     else
-        Service ->> - Controller: return token
+        
+        
+        WaitService ->> - Controller: return token
         
         
         
-
-        Controller ->> + Service: ConcertService.getConcert
+        Controller ->> + ConcertService: getConcert
     end
 
 
-    Service ->> + DataBase: Concert.findById
-
-    DataBase ->> - Service: return concert
+    ConcertService ->> + DataBase: Concert.findById
+    
+    DataBase ->> - ConcertService: return concert
 
     alt  잘못된 concert 일 경우
-        Service -->> User: 400 존재하지 않은 콘서트 입니다.
+        ConcertService -->> User: 400 존재하지 않은 콘서트 입니다.
     else
-        
-        Service ->> - Controller: return Concert
+
+        ConcertService ->> - Controller: return Concert
         
         
     end
 
-    Controller ->> + Service: ConcertService.showAvailableTimeList
+    Controller ->> + ConcertService: showAvailableTimeList
 
-    Service ->> + DataBase: ConcertTime.findAllByAvailable
+    ConcertService ->> + DataBase: ConcertTime.findAllByAvailable
+    
 
-    DataBase ->> - Service: return timeList
+    DataBase ->> - ConcertService: return timeList
 
 
     alt 가능한 날짜가 없을 경우
-        Service -->> User: 400 예약가능한 날짜가 없습니다.
+        ConcertService -->> User: 400 예약가능한 날짜가 없습니다.
     else
-        Service ->> - Controller: return timeList
+        ConcertService ->> - Controller: return timeList
         Controller ->> - User: 200: response
     end
-
-
 
 ```
 
@@ -147,60 +148,77 @@ sequenceDiagram
 
 ```mermaid 
 sequenceDiagram
-    title 좌석 조회 API 
+    title 좌석 조회 API
     
+    Actor User as Client 
+    participant ConcertFacade as ConcertFacade
     
-    User -> Server: request: user_id, consert_time_id
-    activate Server #98ff8c
+    participant WaitService 
+    participant ConcertService
+    participant DataBase
     
+    User ->> ConcertFacade: request: user_id, concert_time_id
+    activate ConcertFacade #98ff8c
     
-    Server -> WaitQueueTable: Token 조회 요청
-    activate WaitQueueTable
+    activate WaitService
+    ConcertFacade ->> WaitService: getToken
+    activate WaitService
+    WaitService ->> DataBase: findByUser
+    activate DataBase 
+    DataBase ->> WaitService: return Token
+    deactivate DataBase
+    WaitService ->> ConcertFacade: return Token
+    deactivate WaitService
     
-    WaitQueueTable -> Server: return Token
-    deactivate WaitQueueTable
+    ConcertFacade ->> ConcertFacade: token 확인
     
-    Server -> Server: token 확인
+    alt token 없을 경우
+
+        ConcertFacade -->> User: 400 Response: 잘못된 요청입니다.
+      
+    else wait 일경우
+        ConcertFacade -->> User: 400 Response: 접근권한이 없습니다.
+    else 
+        ConcertFacade ->> ConcertService: getConcertTime
+       
+    end
+
+
+
+    activate ConcertService
     
+    ConcertService ->> DataBase: findById
+    activate DataBase 
     
-    activate Server #fad0ca
-    activate Server #fad0ca
-    alt token 없을 경우 
-     
-      Server -> User: 400 Response: 잘못된 요청입니다.
-      deactivate Server #fad0ca
-    else wait 일경우 
-      Server -> User: 400 Response: 접근권한이 없습니다.
-      deactivate Server #fad0ca
+    DataBase ->> ConcertService: return ConcertTime
+    deactivate DataBase 
+    
+    alt 존재하지 않은 경우 
+        ConcertService -->> User: 400 response: 예약 가능한 날짜가 아닙니다.
+    else
+        ConcertService ->> ConcertFacade: return ConcertTime
     end
     
-    
-    
-    Server -> ConcertTimeTable: concert_time_id 조회 요청
-    activate ConcertTimeTable
-    ConcertTimeTable -> Server: return Concert_time_id 
-    deactivate ConcertTimeTable
-    
-    
-    Server -> Server: concert_time 확인
-    
-    activate Server #fad0ca
-    
-    alt 없을 경우 
-      Server -> User: 400 response: 예약 가능한 날짜가 아닙니다.
-      deactivate Server #fad0ca
+    deactivate ConcertService
+
+    ConcertFacade ->> ConcertService: getSeatList
+    activate ConcertService
+
+    ConcertService ->> DataBase: 예약 가능한 좌석 요청 
+    activate DataBase
+    DataBase ->> ConcertService: return 좌석 리스트
+    deactivate DataBase
+
+    alt 남은 좌석이 없을 경우 
+        ConcertService -->> User: 400 Response: 남은 좌석이 존재하지 않습니다.
+    else
+    ConcertService ->> ConcertFacade: return SeatList
     end
-    
-    
-    Server -> SeatTable: 예약 가능한 좌석 요청 
-    activate SeatTable
-    SeatTable -> Server: return 좌석 리스트
-    deactivate SeatTable
-    
-    
-    
-    Server -> User: 200 response
-    deactivate Server
+    deactivate ConcertService
+   
+
+ConcertFacade -> User: 200 response
+    deactivate ConcertFacade
 
 
 ```
@@ -216,81 +234,81 @@ sequenceDiagram
 sequenceDiagram
 
     title 좌석 예약 요청 API
+    
+    actor User 
+    participant ConcertFacade
+    participant WaitService 
+    participant ConcertService 
+    participant DataBase
+    
 
+    User ->> ConcertFacade: request: user_id, concert_seat_id
+    activate ConcertFacade #98ff8c
+    
+    ConcertFacade->> WaitService: getUser
+    activate WaitService
 
-    User -> Server: request: user_id, concert_seat_id
-
-    activate Server #98ff8c
-
-
-    Server -> WaitQueueTable: token 확인 요청
-    activate WaitQueueTable
-
-    WaitQueueTable -> Server: return token
-    deactivate WaitQueueTable
-
-
-
-    Server -> Server: token 확인
-
-    activate Server #fad0ca
-    activate Server #fad0ca
-    alt token 없을 경우
-
-        Server -> User: 400 Response: 잘못된 요청입니다.
-        deactivate Server #fad0ca
-    else wait 일경우
-        Server -> User: 400 Response: 접근권한이 없습니다.
-        deactivate Server #fad0ca
+    WaitService ->> DataBase: findById 
+    activate DataBase 
+    DataBase ->> WaitService: return user 
+    deactivate DataBase 
+    
+    alt 토큰이 없는 경우 
+        WaitService -->> User: 400: 잘못된 요청 입니다.
+    else 대기 상태인 경우 
+         WaitService -->> User: 400: 접근 권한이 없습니다.
+    else 
+        WaitService ->> ConcertFacade: return User
     end
+    
+    deactivate WaitService
+
+    ConcertFacade ->> ConcertService: getSeat
+    activate ConcertService
 
 
+    ConcertService ->> DataBase: 좌석 조회 요청
 
-    Server -> SeatTable: 좌석 조회 요청
+    activate DataBase
 
-    activate SeatTable
+    DataBase ->> ConcertService: return 좌석
 
-    SeatTable -> Server: return 좌석
+    deactivate DataBase
 
-    deactivate SeatTable
-
-
-    Server -> Server: 좌석 확인
-
-    activate Server #fad0ca
 
     alt 이미 선택된 좌석일 경우
 
-        Server -> User: 400 response: 이미 선택된 좌석입니다.
-        deactivate Server #fad0ca
+        ConcertService -->> User: 400 response: 이미 선택된 좌석입니다.
+    else 
+        ConcertService ->> ConcertFacade: return Seat 
     end
+    
 
+    ConcertFacade ->> ConcertService: createSeat
+    activate ConcertService
+    
+    ConcertService ->> DataBase: updateById
+    
+    activate DataBase
 
+    DataBase ->> ConcertService: return seat
 
-    Server -> SeatTable: 좌석 생성 요청
-    activate SeatTable
+    deactivate DataBase
+    
+    
+        
+    ConcertService ->> DataBase: create reservation 
+    
+    activate DataBase
+    DataBase ->> ConcertService: return  new
+    deactivate DataBase
 
-    SeatTable -> Server: return 좌석
-
-    deactivate SeatTable
-
-    Server -> SeatTable: 남은 좌석 조회: concert_time_id
-    activate SeatTable
-
-    SeatTable -> Server: return 남은 좌석
-    deactivate SeatTable
-
-    Server -> ConcertTimeTable: 남은 좌석 업데이트 요청
-    activate ConcertTimeTable
-
-    ConcertTimeTable -> Server: success
-    deactivate ConcertTimeTable
-
-
-
-    Server -> User: 200 response
-    deactivate Server #98ff8c
-
+    ConcertService ->> ConcertFacade: return seat
+    
+    deactivate ConcertService
+    
+    ConcertFacade ->> User: 200 response
+    deactivate ConcertFacade
 
 
 
@@ -307,49 +325,59 @@ sequenceDiagram
 sequenceDiagram
 
     title 포인트 조회 API
+    
+    actor Client 
+    participant PointFacade
+    participant UserService 
+    participant PointService 
+    participant DataBase
+
+    Client ->> PointFacade: request: user_id
+
+    activate PointFacade
 
 
-    User -> Server: request: user_id
+    PointFacade ->> UserService: getUser
+    activate UserService
+    
+    UserService ->> DataBase: findById 
+    activate DataBase 
+    DataBase ->> UserService: return User 
+    deactivate DataBase 
+    
+    alt 존재하지 않은 유저일 경우
+        UserService -->> Client: 400 Response: 존재하지 않은 유저 입니다.
+    else 
+        UserService ->> PointFacade: return User 
+    end
 
-    activate Server #98ff8c
+    deactivate UserService
 
-
-    Server -> UserTable: user_id 조회요청
-    activate UserTable
-
-    UserTable -> Server: return User
-    deactivate UserTable
-
-    activate Server #fad0ca
-
+    
+    PointFacade ->> PointService: getPoint
+    activate PointService #fad0ca
+    
+    PointService ->> DataBase: findById 
+    activate DataBase 
+    DataBase ->> PointService: return Point 
+    deactivate DataBase 
+    
     alt 존재하지 않은 유저
 
-        Server -> User: 400 Response: 존재하지 않은 유저 입니다.
-
-        deactivate Server
-
+        PointService ->> DataBase: create Point
+        activate DataBase
+        
+        DataBase ->> PointService: return Point 
+        deactivate DataBase
     end
+    
+    PointService ->> PointFacade: return Point 
+    
+    deactivate PointService
 
+    PointFacade ->> Client: 200 response
 
-    Server -> PointTable: 포인트 조회 요청
-    activate PointTable
-
-    PointTable -> Server: return point
-    deactivate PointTable
-
-    Server -> Server: point 확인
-
-    alt 포인트가 존재 하지 않음 (첫 조회)
-        Server -> PointTable: 포인트 생성 요청
-        activate PointTable
-        PointTable -> Server: return Point
-    end
-
-
-
-    Server -> User: 200 response
-
-    deactivate Server #98ff8c
+    deactivate PointFacade #98ff8c
 
 
 ```
@@ -366,59 +394,85 @@ sequenceDiagram
 
     title 포인트 충전 API
 
-    User -> Server: request: user_id, point
-    activate Server #98ff8c
-
-    Server -> UserTable: user 조회 요청
-    activate UserTable
-
-    UserTable -> Server: return user
-
-    deactivate UserTable
+    actor Client 
+    participant PointFacade
+    participant UserService
+    participant PointService 
+    participant DataBase
 
 
-    Server -> PointTable: 포인트 조회 요청
-    activate PointTable
+    Client ->> PointFacade: request: user_id, point
+    activate PointFacade #98ff8c
 
+    PointFacade ->> UserService: user 조회 요청
+    activate UserService
 
-    PointTable -> Server: return 포인트 (잔액)
-
-    deactivate PointTable
-
-
-    Server -> Server: 포인트 확인
-
-    alt 포인트 없을 경우
-        Server -> PointTable: 포인트 생성 요청
-        activate PointTable
-
-        PointTable -> Server: return 포인트
-
-        deactivate PointTable
-
+    UserService ->> DataBase: findById 
+    activate DataBase 
+    
+    DataBase ->> UserService: return user 
+    alt 없는 유저 일 경우 
+        UserService -->> Client: 400 response: 존재하지 않은 유저 입니다.
+    else
+        UserService ->> PointFacade: return user
     end
 
-
-    Server -> PointTable: 포인트 증가 요청
-    activate PointTable
-
-    PointTable -> Server: 요청 결과
-
-    deactivate PointTable
+    deactivate UserService
 
 
-    Server -> PointHistoryTable: 포인트 기록 생성 요청
-    activate PointHistoryTable
-
-    PointHistoryTable -> Server: return 포인트 기록
-
-    deactivate PointHistoryTable
+    PointFacade ->> PointService: getPoint
+    activate PointService
 
 
+    PointService ->> DataBase: findById
+    activate DataBase 
+    
+    
+    DataBase ->> PointService: return Point
+    deactivate DataBase
+    
+    alt 포인트 없을 경우
+        PointService ->> DataBase: 포인트 생성 요청
+        activate DataBase
 
-    Server -> User: 200 response
+        DataBase ->> PointService: return 포인트
 
-    deactivate Server
+        deactivate DataBase
+        
+        
+    end
+    
+    create participant Point
+    PointService ->> Point: create
+    
+    PointService ->> PointFacade: return Point
+    
+    deactivate PointService
+
+
+    PointFacade ->> PointService: charge
+    activate PointService
+
+    PointService ->> Point: charge
+    activate Point
+
+    Point ->> PointService: done
+
+    deactivate Point
+
+    PointService ->> DataBase: create PointHistory
+    activate DataBase
+
+    DataBase ->> PointService: return done
+
+    deactivate DataBase
+
+    PointService ->> PointFacade: return Done
+    
+    deactivate PointService
+    PointFacade -> Client: 200 response
+    
+    deactivate PointFacade
 
 ```
 
@@ -433,80 +487,128 @@ sequenceDiagram
 sequenceDiagram
     title 결제 API
 
-    User -> Server: request: user_id, reservation_id
+    actor Client 
+    participant ConcertFacade 
+    
+    participant WaitService 
+    participant ConcertService 
+    participant PointService
+    participant UserService
+    participant DataBase
 
-    activate Server #98ff8c
+    
+    Client ->> ConcertFacade: request: user_id, reservation_id
+    activate ConcertFacade #98ff8c
+    ConcertFacade ->> WaitService: getToken
+    activate WaitService 
 
-    Server -> WaitQueueTable: token 조회 요청
-    activate WaitQueueTable
-
-
-    WaitQueueTable -> Server:  return token
-
-    deactivate WaitQueueTable
-
-
-    Server -> Server: token 확인
-    activate Server #fad0ca
-    activate Server #fad0ca
-
-
-    alt token 없을 경우
-
-        Server -> User: 400 Response: 잘못된 요청입니다.
-        deactivate Server #fad0ca
-    else wait 일경우
-        Server -> User: 400 Response: 접근권한이 없습니다.
-        deactivate Server #fad0ca
+    WaitService ->> DataBase: findById
+    activate DataBase 
+    
+    DataBase ->> WaitService: return token 
+    deactivate DataBase 
+    
+    
+    alt 없음, wait 
+        WaitService -->> Client: 400 response: 잘못된 요청입니다.
+    else wait
+        WaitService -->> Client: 400 response: 접근 권한이 없습니다.
+    else 
+        WaitService ->> ConcertFacade: return token
+    end
+    
+    deactivate WaitService 
+    
+    ConcertFacade ->> ConcertService: getReservation 
+    activate ConcertService 
+    
+    
+    ConcertService ->> DataBase: findById 
+    activate DataBase
+        
+    DataBase ->> ConcertService: return Reservation
+    deactivate DataBase
+        
+    alt 없을 경우 
+        ConcertService -->> Client: 좌석 예약이 존재하지 않습니다.
+    else 
+        ConcertService ->> ConcertFacade: return Reservation
+    end
+    
+    deactivate ConcertService
+    
+    ConcertFacade ->> PointService: getPoint
+    activate PointService
+        
+    PointService ->>  DataBase: findById
+    activate DataBase
+    
+    
+    DataBase ->> PointService: return Point
+    deactivate DataBase
+    
+    
+    alt 포인트 없을 경우
+        PointService ->> DataBase: create Point
+        activate DataBase
+        DataBase ->> PointService: return Point
+        deactivate DataBase
     end
 
 
-    Server -> ReservationTable: 예약 조회 요청
-    activate ReservationTable
-    ReservationTable -> Server: return 예약
+    PointService ->> ConcertFacade: return Point
+    deactivate PointService 
+    
+    
+    ConcertFacade ->> ConcertService: getConcert
+    activate ConcertService
+    
+    ConcertService ->> DataBase: findById
+    activate DataBase
+    
+    DataBase ->> ConcertService: return Concert
+    deactivate DataBase
+    ConcertService ->> ConcertFacade: return Concert
+    deactivate ConcertService
+    
+    ConcertFacade ->> ConcertService: payReservation
+    activate ConcertService
+    
+   
+    ConcertService ->> DataBase: save Reservation 
+    activate DataBase 
+    DataBase ->> ConcertService: done
+    deactivate DataBase
+    
+    ConcertService ->> DataBase: save Point 
+    activate DataBase
+    DataBase ->> ConcertService: done 
+    deactivate DataBase
+    
+    
+    ConcertService ->> DataBase: create Point
+    activate DataBase
+    DataBase ->> ConcertService: done 
+    deactivate DataBase
+    
+    ConcertService ->> ConcertFacade: done
+    
+    deactivate ConcertService
 
-    deactivate ReservationTable
-
-    Server -> Server: 예약 확인
-
-    activate Server #fad0ca
-    activate Server #fad0ca
-
-
-    alt 없는 예약 일 경우
-        Server ->  User: 존재하지 않은 예약입니다.
-
-        deactivate Server
-
-    else 이미 결제 완료가 된 경우
-        Server -> User: 결제 완료된 예약입니다.
-        deactivate Server
-    end
-
-
-    Server -> PointTable: user_id 포인트 조회 요청
-    activate PointTable
-
-    PointTable -> Server: return point
-    deactivate PointTable
-
-    activate Server #fad0ca
-
-    alt 포인트가 없을 경우
-        Server -> User: 400 response: 남은 포인트가 존재하지 않습니다.
-        deactivate Server
-    end
-
-
-    Server -> SeatTable: 좌석 조회 요청
-    activate SeatTable
-
-    SeatTable -> Server: return 좌석
-    deactivate SeatTable
-
-
-    Server -> User: 200 response
-    deactivate Server
+    ConcertFacade ->> WaitService: release 
+    activate WaitService
+    
+    WaitService ->> DataBase: delete Queue 
+    activate DataBase
+    
+    DataBase ->> WaitService: done
+    deactivate DataBase
+    
+    WaitService ->> ConcertFacade: done
+    deactivate WaitService
+    
+    ConcertFacade ->> Client: 200 response
+    deactivate ConcertFacade
 
 
 ```
