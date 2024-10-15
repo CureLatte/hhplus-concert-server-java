@@ -264,3 +264,55 @@
 <br>
 <br>
 
+
+
+
+## 결제 API
+***
+### Description
+좌석 결제 
+
+### Request
+* `URL` : `/pay/reservation`
+* `METHOD`: `POST`
+* `HEADER`
+
+    ```json
+    {
+      "Content-Type": "application/json",
+      "Authozation": "Bearer uuid"
+    }
+  
+    ```
+
+
+* `BODY`
+  ```json
+  {
+      "user_id": 1,
+      "reservation_id": 1,
+      "pay_amount": 1000
+  }
+  ```
+
+### Response
+
+* `STATUS`: `200`
+    ```json
+    { 
+      "ok": true
+    }
+    ```
+
+* `STATUS`: `400`
+    ```json
+    { 
+      "message": "잘못된 접근 입니다 / 결제 실패했습니다."
+    }
+    ```
+
+<br>
+<br>
+<br>
+<br>
+
