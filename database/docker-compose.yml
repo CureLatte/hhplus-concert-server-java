@@ -1,0 +1,11 @@
+services:
+  database:
+    container_name: mysql_db
+    image: mysql
+    environment:
+      MYSQL_DATABASE: hhplus_concert
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_ROOT_PASSWORD: 12341234
+
+    ports:
+      - "3308:3306"

@@ -9,11 +9,10 @@
 * JPA
 * MYSQL
 
-## Milestone 
-
-
 ## Documents
 
-* ### [MILESTONE](https://github.com/users/CureLatte/projects/4/views/1?sortedBy%5Bdirection%5D=asc&sortedBy%5BcolumnId%5D=Milestone)
-* ### [시퀀스 다이어 그램](docs/sequence.md)
+* ### [PROJECT MILESTONE](https://github.com/users/CureLatte/projects/4/views/1?sortedBy%5Bdirection%5D=asc&sortedBy%5BcolumnId%5D=Milestone)
+* ### [SEQUENCE Diagram](docs/sequence.md)
+* ### [ERD Diagram](docs/ERD.md)
+* ### [API DOCS](docs/API.md)
 
