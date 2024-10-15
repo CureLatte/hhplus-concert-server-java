@@ -190,7 +190,7 @@
 포인트 조회 
 
 ### Request
-* `URL` : `/point`
+* `URL` : `/point/{userId}`
 * `METHOD`: `GET`
 * `HEADER`
 
