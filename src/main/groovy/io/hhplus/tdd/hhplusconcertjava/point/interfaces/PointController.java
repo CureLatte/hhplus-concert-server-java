@@ -1,10 +1,9 @@
 package io.hhplus.tdd.hhplusconcertjava.point.interfaces;
 
 import io.hhplus.tdd.hhplusconcertjava.point.interfaces.dto.GetPointResponseDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import io.hhplus.tdd.hhplusconcertjava.point.interfaces.dto.PostPointChargeRequestDto;
+import io.hhplus.tdd.hhplusconcertjava.point.interfaces.dto.PostPointChargeResponseDto;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping
@@ -16,6 +15,12 @@ public class PointController implements IPointController{
     public GetPointResponseDto getPoint(@PathVariable("userId") String userId) {
 
         return new GetPointResponseDto(1000);
+    }
+
+    @Override
+    @PostMapping("/point/charge")
+    public PostPointChargeResponseDto getPointCharge(@RequestBody PostPointChargeRequestDto requestDto) {
+        return new PostPointChargeResponseDto(2000);
     }
 }
 
