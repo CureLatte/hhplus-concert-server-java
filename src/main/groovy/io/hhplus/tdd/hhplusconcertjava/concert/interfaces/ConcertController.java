@@ -2,13 +2,14 @@ package io.hhplus.tdd.hhplusconcertjava.concert.interfaces;
 
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.GetConcertSeatListResponseDto;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.GetConcertTimeResponseDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.PostReserveSeatRequestDto;
+import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.PostReserveSeatResponseDto;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping
 public class ConcertController implements IConcertController {
     @Override
     @GetMapping("/concert/time/{concertId}")
@@ -26,5 +27,12 @@ public class ConcertController implements IConcertController {
                     1, "0001", true
             )
         ));
+    }
+
+    @Override
+    @PostMapping("/concert/reservation")
+    public PostReserveSeatResponseDto postReservation(@RequestBody PostReserveSeatRequestDto requestDto) {
+
+        return new PostReserveSeatResponseDto(new PostReserveSeatResponseDto.ReservationDto(1, "wait", 1, 1));
     }
 }
