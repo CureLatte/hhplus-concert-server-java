@@ -1,9 +1,24 @@
 package io.hhplus.tdd.hhplusconcertjava.user.infrastructure;
 
+import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
+import io.hhplus.tdd.hhplusconcertjava.user.domain.repository.UserRepository;
 import io.hhplus.tdd.hhplusconcertjava.user.infrastructure.entity.UserEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
-@Repository
-public interface UserJpaRepository extends JpaRepository<UserEntity, Long> {
+@Component
+public class UserJpaRepository implements UserRepository {
+    private IUserJpaRepository userJpaRepository;
+
+    @Override
+    public User findById(long id){
+
+        UserEntity userEntity = userJpaRepository.findById(id).orElse(null);
+
+        if(userEntity == null){
+            return null;
+        }
+
+        return userEntity.toDomain();
+    }
+
 }
