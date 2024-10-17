@@ -27,6 +27,10 @@ public class WaitQueueJpaRepository implements WaitQueueRepository {
             return null;
         }
 
+
+        System.out.println(entityList.get(0).getStatus());
+
+
         return entityList.get(0).toDomain();
     }
 

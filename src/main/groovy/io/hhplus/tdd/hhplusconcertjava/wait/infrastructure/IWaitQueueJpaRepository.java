@@ -66,7 +66,7 @@ public interface IWaitQueueJpaRepository extends JpaRepository<WaitQueueEntity, 
        
     """,
     nativeQuery = true)
-    @Modifying
+    @Modifying(clearAutomatically = true)
     public void updateStatusByCreatedAt(@Param("leftCnt") Integer leftCnt);
 
 }
