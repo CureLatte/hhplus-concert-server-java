@@ -16,6 +16,17 @@ public class ConcertTimeJpaRepository implements ConcertTimeRepository {
     final IConcertTimeJpaRepository jpaRepository;
 
     @Override
+    public ConcertTime findById(Long concertTimeId) {
+        ConcertTimeEntity concertTimeEntity = this.jpaRepository.findById(concertTimeId).orElse(null);
+
+        if(concertTimeEntity == null) {
+            return null;
+        }
+
+        return concertTimeEntity.toDomain();
+    }
+
+    @Override
     public List<ConcertTime> findAllAvailableTime(Concert concert) {
 
         List<ConcertTimeEntity> concertTimeEntityList = this.jpaRepository.findAlLByAvailableTime(concert.getId());

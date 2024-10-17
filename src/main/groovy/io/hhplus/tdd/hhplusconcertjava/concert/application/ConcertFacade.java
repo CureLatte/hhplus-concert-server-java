@@ -1,9 +1,11 @@
 package io.hhplus.tdd.hhplusconcertjava.concert.application;
 
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.Concert;
+import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.ConcertSeat;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.ConcertTime;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.service.ConcertService;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.service.IConcertService;
+import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.GetConcertSeatListResponseDto;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.GetConcertTimeResponseDto;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.service.IUserService;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.service.IWaitService;
@@ -34,4 +36,18 @@ public class ConcertFacade {
 
         return new GetConcertTimeResponseDto(responseData);
     }
+
+    public GetConcertSeatListResponseDto getConcertSeatList(Long concertTimeId){
+
+        ConcertTime concertTime = this.concertService.getConcertTime(concertTimeId);
+
+        List<ConcertSeat> concertSeatList = this.concertService.getConcertSeats(concertTime);
+
+        List<GetConcertSeatListResponseDto.ConcertSeat> responseData = concertSeatList.stream().map((concertSeat -> {
+            return new GetConcertSeatListResponseDto.ConcertSeat(concertSeat.getId(), concertSeat.number);
+        })).toList();
+
+        return   new GetConcertSeatListResponseDto(responseData);
+    }
+
 }

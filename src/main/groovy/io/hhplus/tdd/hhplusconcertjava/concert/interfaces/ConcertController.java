@@ -33,11 +33,8 @@ public class ConcertController implements IConcertController {
     @GetMapping("/concert/seat/{concertTimeId}")
     @WaitQueueCheck
     public GetConcertSeatListResponseDto getConcertSeatList(@PathVariable("concertTimeId") Long concertTimeId) {
-        return new GetConcertSeatListResponseDto(List.of(
-            new GetConcertSeatListResponseDto.ConcertSeat(
-                    1, "0001", true
-            )
-        ));
+
+        return this.concertFacade.getConcertSeatList(concertTimeId);
     }
 
     @Override

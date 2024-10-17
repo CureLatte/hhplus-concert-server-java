@@ -21,7 +21,7 @@ public class ConcertSeat {
     public LocalDateTime updatedAt;
 
     public enum ConcertSeatStatus{
-        EMPTY,  RESERVATION, PAY
+        EMPTY, PROCESS, RESERVATION, PAY
     }
 
 }
