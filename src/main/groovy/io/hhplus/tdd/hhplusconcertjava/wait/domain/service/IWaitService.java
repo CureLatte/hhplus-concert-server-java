@@ -7,4 +7,7 @@ public interface IWaitService {
     public WaitQueue getWaitQueue(String uuid);
 
     public WaitQueue updateWaitQueue(WaitQueue waitQueue);
+
+    public void updateProcessWaitQueue();
+
 }

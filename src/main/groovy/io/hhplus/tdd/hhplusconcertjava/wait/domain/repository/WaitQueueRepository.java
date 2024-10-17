@@ -11,4 +11,12 @@ public interface WaitQueueRepository {
     public WaitQueue create();
 
     public WaitQueue save(WaitQueue waitQueue);
+
+    public void deleteFinish();
+
+    public void deleteTimeout();
+
+    public Integer countProcess();
+
+    public void updateStatusOrderByCreatedAt(Integer leftCnt);
 }

@@ -4,7 +4,6 @@ import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.WaitQueue;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.repository.WaitQueueRepository;
 import io.hhplus.tdd.hhplusconcertjava.wait.infrastructure.entity.WaitQueueEntity;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -53,6 +52,34 @@ public class WaitQueueJpaRepository implements WaitQueueRepository {
         this.iwaitQueueJpaRepository.save(entity);
 
         return entity.toDomain();
+    }
+
+    @Override
+    public void deleteFinish() {
+
+        WaitQueue.WaitStatus status = WaitQueue.WaitStatus.FINISH;
+
+        this.iwaitQueueJpaRepository.deleteByStatus(status.name());
+    }
+
+    @Override
+    public void deleteTimeout() {
+        WaitQueue waitQueue = WaitQueue.builder().build();
+        this.iwaitQueueJpaRepository.deleteByCreateTime(waitQueue.MaxMinute);
+    }
+
+    @Override
+    public Integer countProcess() {
+        WaitQueue.WaitStatus status = WaitQueue.WaitStatus.PROCESS;
+
+        return this.iwaitQueueJpaRepository.countAllByStatus(status.name());
+    }
+
+    @Override
+    public void updateStatusOrderByCreatedAt(Integer leftCnt) {
+
+        this.iwaitQueueJpaRepository.updateStatusByCreatedAt(leftCnt);
+
     }
 
 

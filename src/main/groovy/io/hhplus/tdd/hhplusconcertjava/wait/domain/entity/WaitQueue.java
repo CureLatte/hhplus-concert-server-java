@@ -17,6 +17,8 @@ public class WaitQueue {
     WaitStatus status;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
+    public final int MaxCnt=10;
+    public final int MaxMinute=5;
 
    public enum WaitStatus{
        WAIT, PROCESS, FINISH

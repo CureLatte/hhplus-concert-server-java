@@ -24,8 +24,6 @@ public class WaitController implements IWaitController{
 
         WaitQueue waitQueue = this.waitService.getWaitQueue(uuid);
 
-        System.out.println("waitQueue :" + waitQueue);
-
         if(userId != null) {
             waitQueue.setUserId(Long.getLong(userId));
             this.waitService.updateWaitQueue(waitQueue);
