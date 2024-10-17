@@ -1,17 +1,24 @@
 package io.hhplus.tdd.hhplusconcertjava.concert.interfaces;
 
 import io.hhplus.tdd.hhplusconcertjava.common.annotaion.WaitQueueCheck;
+import io.hhplus.tdd.hhplusconcertjava.concert.application.ConcertFacade;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.GetConcertSeatListResponseDto;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.GetConcertTimeResponseDto;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.PostReserveSeatRequestDto;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.PostReserveSeatResponseDto;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class ConcertController implements IConcertController {
+
+    ConcertFacade concertFacade;
+
     @Override
     @GetMapping("/concert/time/{concertId}")
     @WaitQueueCheck
