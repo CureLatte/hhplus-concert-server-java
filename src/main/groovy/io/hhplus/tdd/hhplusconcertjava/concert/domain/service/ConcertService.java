@@ -2,16 +2,20 @@ package io.hhplus.tdd.hhplusconcertjava.concert.domain.service;
 
 import io.hhplus.tdd.hhplusconcertjava.common.BusinessError;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.Concert;
+import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.ConcertTime;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ConcertRepository;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ConcertSeatRepository;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ConcertTimeRepository;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ReservationRepository;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
-@RequiredArgsConstructor(onConstructor=@__(@Autowired))
+@AllArgsConstructor(onConstructor=@__(@Autowired))
 public class ConcertService implements IConcertService {
 
     ConcertRepository concertRepository;
@@ -32,6 +36,10 @@ public class ConcertService implements IConcertService {
         return concert;
     }
 
+    @Override
+    public List<ConcertTime> getConcertTimes(Concert concert) {
+        return this.concertTimeRepository.findAllAvailableTime(concert);
+    }
 
 
 }

@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 public interface IConcertController {
-    public GetConcertTimeResponseDto getConcertTimeList(@PathVariable String concertId);
+    public GetConcertTimeResponseDto getConcertTimeList(@PathVariable Long concertId);
 
-    public GetConcertSeatListResponseDto getConcertSeatList(@PathVariable String concertTimeId);
+    public GetConcertSeatListResponseDto getConcertSeatList(@PathVariable Long concertTimeId);
 
     public PostReserveSeatResponseDto postReservation(@RequestBody PostReserveSeatRequestDto requestDto);
 }
