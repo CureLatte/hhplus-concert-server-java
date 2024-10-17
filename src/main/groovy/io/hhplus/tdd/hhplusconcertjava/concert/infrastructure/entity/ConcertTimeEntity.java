@@ -17,7 +17,7 @@ public class ConcertTimeEntity {
     private long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "concert_id")
+    @JoinColumn(name = "concert_id", foreignKey= @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private ConcertEntity concert;
 
     @Column(name="start_time")
