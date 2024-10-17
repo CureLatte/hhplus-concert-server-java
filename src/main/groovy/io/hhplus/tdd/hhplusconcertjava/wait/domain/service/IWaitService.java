@@ -10,4 +10,6 @@ public interface IWaitService {
 
     public void updateProcessWaitQueue();
 
+    public void checkWaitQueue(String uuid);
+
 }

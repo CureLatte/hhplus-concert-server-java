@@ -1,5 +1,6 @@
 package io.hhplus.tdd.hhplusconcertjava.concert.interfaces;
 
+import io.hhplus.tdd.hhplusconcertjava.common.annotaion.WaitQueueCheck;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.GetConcertSeatListResponseDto;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.GetConcertTimeResponseDto;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.PostReserveSeatRequestDto;
@@ -13,14 +14,15 @@ import java.util.List;
 public class ConcertController implements IConcertController {
     @Override
     @GetMapping("/concert/time/{concertId}")
+    @WaitQueueCheck
     public GetConcertTimeResponseDto getConcertTimeList(@PathVariable("concertId") String concertId) {
-        System.out.println(concertId);
 
         return new GetConcertTimeResponseDto(List.of(new GetConcertTimeResponseDto.ConcertTimeDto(1, "1", 1, 1)));
     }
 
     @Override
     @GetMapping("/concert/seat/{concertTimeId}")
+    @WaitQueueCheck
     public GetConcertSeatListResponseDto getConcertSeatList(@PathVariable("concertTimeId") String concertTimeId) {
         return new GetConcertSeatListResponseDto(List.of(
             new GetConcertSeatListResponseDto.ConcertSeat(
@@ -31,6 +33,7 @@ public class ConcertController implements IConcertController {
 
     @Override
     @PostMapping("/concert/reservation")
+    @WaitQueueCheck
     public PostReserveSeatResponseDto postReservation(@RequestBody PostReserveSeatRequestDto requestDto) {
 
         return new PostReserveSeatResponseDto(new PostReserveSeatResponseDto.ReservationDto(1, "wait", 1, 1));

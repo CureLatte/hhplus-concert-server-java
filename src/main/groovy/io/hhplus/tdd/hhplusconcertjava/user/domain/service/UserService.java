@@ -23,7 +23,7 @@ public class UserService implements IUserService{
         User user = this.userRepository.findById(id);
 
         if(user == null) {
-            throw new BusinessError("400", "존재하지 않은 유저");
+            throw new BusinessError(400, "존재하지 않은 유저");
         }
 
         return user;
