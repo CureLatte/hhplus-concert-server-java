@@ -58,7 +58,6 @@ public class WaitService implements IWaitService{
         // wait 변경 인원수 파악
         Integer addCnt = waitQueue.getMaxCnt() - leftCnt;
 
-
         // update
         this.waitQueueRepository.updateStatusOrderByCreatedAt(addCnt);
 
