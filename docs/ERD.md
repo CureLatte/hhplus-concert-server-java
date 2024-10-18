@@ -73,16 +73,38 @@ erDiagram
         id int 
         user_id int
         concert_seat_id int pk
-        point_history_id int pk
+        concert_id int pk
+        concert_time_id int pk
         status int
         expiredAt datetime
         createdAt datetime 
         updatedAt datetime 
         
     }
-    Reservation ||--|| PointHistory: has
-    Reservation ||--|| User: has
+    
+    Reservation || -- || Concert: has
+    Reservation ||--|| ConcertTime: has
+    Reservation ||--|| User: has    
     Reservation ||--|| ConcertSeat: has
+    
+    
+    Payment {
+        id int
+        user_id int
+        reservation_id int pk
+        status string
+        point_history_id int pk
+        createdAt datetime
+        updatedAt datetime
+        
+    }
+    
+    Payment ||--|| Reservation: has
+    Payment ||--|| PointHistory: has
+    Payment ||--|| User: has
+    
+    
+    
     
     
     
