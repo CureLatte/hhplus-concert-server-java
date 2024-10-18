@@ -23,4 +23,11 @@ public class ConcertJpaRepository implements ConcertRepository {
 
         return concertEntity.toDomain();
     }
+
+    @Override
+    public Concert create(Concert concert) {
+        ConcertEntity concertEntity = this.jpaRepository.save(ConcertEntity.fromDomain(concert));
+
+        return concertEntity.toDomain();
+    }
 }

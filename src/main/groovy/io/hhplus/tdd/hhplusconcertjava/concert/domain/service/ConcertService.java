@@ -90,7 +90,6 @@ public class ConcertService implements IConcertService {
 
         this.concertTimeRepository.save(concertTime);
 
-        System.out.println("\nconcertSeat:  "+ concertSeat);
 
         // 좌석 업데이트 uuid, status
         concertSeat.lock();
