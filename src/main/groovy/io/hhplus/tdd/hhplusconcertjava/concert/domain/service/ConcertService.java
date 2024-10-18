@@ -30,6 +30,7 @@ public class ConcertService implements IConcertService {
     final public String NOT_FOUND_CONCERT_ERROR_MESSAGE = "존재하지 않은 콘서트 입니다.";
     final public String NOT_FOUND_CONCERT_TIME_ERROR_MESSAGE = "존재하지 않은 콘서트 날짜 입니다.";
     final public String NOT_FOUND_CONCERT_SEAT_ERROR_MESSAGE = "존재하지 않은 콘서트 좌석 입니다.";
+    final public String NOT_FOUND_RESERVATION_ERROR_MESSAGE = "존재하지 않은 예약 입니다.";
     final public String DUPLICATION_RESERVATION_ERROR_MESSAGE = "이미 신청한 예약입니다.";
 
 
@@ -69,6 +70,17 @@ public class ConcertService implements IConcertService {
 
         System.out.println("\nget concertSeat"+ concertSeat);
         return concertSeat;
+    }
+
+    @Override
+    public Reservation getReservation(Long reservationId) {
+        Reservation reservation = this.reservationRepository.findById(reservationId);
+
+        if(reservation == null){
+            throw new BusinessError(400, this.NOT_FOUND_RESERVATION_ERROR_MESSAGE);
+        }
+
+        return reservation;
     }
 
     @Override

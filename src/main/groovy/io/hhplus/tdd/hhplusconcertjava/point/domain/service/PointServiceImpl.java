@@ -32,7 +32,7 @@ public class PointServiceImpl implements PointService {
     }
 
     @Override
-    public Point charge(Point point, int chargePoint) {
+    public PointHistory charge(Point point, int chargePoint) {
 
         point.charge(chargePoint);
         this.pointRepository.save(point);
@@ -45,6 +45,24 @@ public class PointServiceImpl implements PointService {
                 .build());
 
 
-        return point;
+        return pointHistory;
     }
+
+    @Override
+    public PointHistory use(Point point, int usePoint) {
+        point.use(usePoint);
+
+        this.pointRepository.save(point);
+
+        PointHistory pointHistory = this.pointHistoryRepository.save(PointHistory.builder()
+                        .pointAmount(usePoint)
+                        .status(PointHistory.PointStatus.USE)
+                        .point(point)
+                        .build());
+
+
+        return pointHistory;
+    }
+
+
 }

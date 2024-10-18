@@ -1,6 +1,7 @@
 package io.hhplus.tdd.hhplusconcertjava.point.apllication;
 
 import io.hhplus.tdd.hhplusconcertjava.point.domain.entity.Point;
+import io.hhplus.tdd.hhplusconcertjava.point.domain.entity.PointHistory;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.service.PointService;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.service.PointServiceImpl;
 import io.hhplus.tdd.hhplusconcertjava.point.interfaces.dto.GetPointResponseDto;
@@ -35,7 +36,7 @@ public class PointFacade {
 
         Point point = this.pointService.getPoint(user);
 
-        point = this.pointService.charge(point, chargePoint);
+        PointHistory pointHistory = this.pointService.charge(point, chargePoint);
 
         return new PostPointChargeResponseDto(point.balance);
     }
