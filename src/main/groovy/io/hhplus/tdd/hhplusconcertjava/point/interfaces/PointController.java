@@ -19,8 +19,7 @@ public class PointController implements IPointController{
     @Override
     @GetMapping("/point/{userId}")
     public GetPointResponseDto getPoint(@PathVariable("userId") String userId) {
-
-        return new GetPointResponseDto(1000);
+        return this.pointFacade.getPoint(Long.valueOf(userId));
     }
 
     @Override
