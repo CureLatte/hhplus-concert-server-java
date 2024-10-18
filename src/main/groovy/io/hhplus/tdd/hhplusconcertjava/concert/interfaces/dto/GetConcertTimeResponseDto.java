@@ -8,7 +8,7 @@ public record GetConcertTimeResponseDto(
         List<ConcertTimeDto> date
 ) {
     public record ConcertTimeDto(
-            int ConcertTimeId,
+            Long ConcertTimeId,
             String startTime,
             int maxCnt,
             int leftCnt

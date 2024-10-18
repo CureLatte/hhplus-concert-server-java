@@ -15,4 +15,4 @@
 * ### [SEQUENCE Diagram](docs/sequence.md)
 * ### [ERD Diagram](docs/ERD.md)
 * ### [API DOCS](docs/API.md)
-
+* ![img.png](docs/swagger.png)
