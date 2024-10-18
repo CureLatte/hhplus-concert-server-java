@@ -64,7 +64,7 @@ public class TestConcertService {
         }
 
         @Test
-        public void 콘스터_조회_실패__에러(){
+        public void 콘서트_조회_실패__에러(){
             // GIVEN
             Long id = 1L;
 
@@ -81,10 +81,88 @@ public class TestConcertService {
         }
 
 
+
+    }
+
+    @Nested
+    class TestGetConcertTime{
+        @Test
+        public void 콘서트_시간_조회__성공(){
+            // GIVEN
+
+            Long id = 1L;
+            lenient()
+                    .when(concertTimeRepository.findById(id))
+                    .thenReturn(ConcertTime.builder().id(id).build());
+
+            // WHEN
+            ConcertTime concertTime = concertService.getConcertTime(id);
+
+            // THEN
+            assertEquals(id, concertTime.getId());
+
+        }
+
+
+        @Test
+        public void 콘서트_시간_조회_실패__에러(){
+            // GIVEN
+
+            Long id = 1L;
+            lenient()
+                    .when(concertTimeRepository.findById(id))
+                    .thenReturn(null);
+
+            // WHEN
+
+            BusinessError businessError = assertThrows(BusinessError.class, () -> concertService.getConcertTime(id));
+
+            // THEN
+            assertEquals(400, businessError.status);
+            assertEquals(concertService.NOT_FOUND_CONCERT_TIME_ERROR_MESSAGE, businessError.message);
+
+        }
+
+
     }
 
 
+    @Nested
+    class TestGetConcertSeat{
+        @Test
+        public void 콘서트_좌석_조회__성공(){
+            // GIVEN
 
+            Long id = 1L;
+            lenient()
+                    .when(concertSeatRepository.findById(id))
+                    .thenReturn(ConcertSeat.builder().id(id).build());
+
+            // WHEN
+            ConcertSeat concertSeat = concertService.getConcertSeat(id);
+
+            // THEN
+            assertEquals(id, concertSeat.getId());
+        }
+
+        @Test
+        public void 콘서트_좌석_조회_실패__에러(){
+            // GIVEN
+            Long id = 1L;
+            lenient()
+                    .when(concertSeatRepository.findById(id))
+                    .thenReturn(null);
+
+            // WHEN
+
+            BusinessError businessError = assertThrows(BusinessError.class, () -> concertService.getConcertSeat(id));
+
+            // THEN
+            assertEquals(400, businessError.status);
+            assertEquals(concertService.NOT_FOUND_CONCERT_SEAT_ERROR_MESSAGE, businessError.message);
+
+        }
+    }
 
     @Nested
     class TestReserve{
