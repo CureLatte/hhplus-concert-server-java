@@ -43,6 +43,47 @@ public class TestConcertService {
     @Mock
     ReservationRepository reservationRepository;
 
+    @Nested
+    class TestGetConcert{
+
+        @Test
+        public void 콘서트_조회__성공(){
+            // GIVEN
+            Long id = 1L;
+
+            lenient()
+                    .when(concertRepository.findById(id))
+                    .thenReturn(Concert.builder().id(id).build());
+
+            // WHEN
+            Concert concert = concertService.getConcert(id);
+
+            // THEN
+            assertEquals(id, concert.getId());
+
+        }
+
+        @Test
+        public void 콘스터_조회_실패__에러(){
+            // GIVEN
+            Long id = 1L;
+
+            lenient()
+                    .when(concertRepository.findById(id))
+                    .thenReturn(null);
+
+            // WHEN
+            BusinessError businessError = assertThrows(BusinessError.class, () -> concertService.getConcert(id));
+
+            // THEN
+            assertEquals(400, businessError.status);
+            assertEquals(concertService.NOT_FOUND_CONCERT_ERROR_MESSAGE, businessError.message);
+        }
+
+
+    }
+
+
 
 
     @Nested
