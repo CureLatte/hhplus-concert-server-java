@@ -10,6 +10,6 @@ import java.util.Map;
 public interface IWaitController {
 
 
-    public GetTokenResponseDto getWaitToken(@RequestHeader("Authorization") String uuid, @RequestParam Map<String, String> params);
+    public GetTokenResponseDto getWaitToken(@RequestHeader Map<String, String> header, @RequestParam Map<String, String> params);
 
 }

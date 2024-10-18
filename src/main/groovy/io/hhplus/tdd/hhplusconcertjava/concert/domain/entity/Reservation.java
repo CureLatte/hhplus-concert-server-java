@@ -26,5 +26,8 @@ public class Reservation {
         RESERVATION, PAY_DONE
     }
 
-
+    public void expireDateSetting(){
+        LocalDateTime now = LocalDateTime.now();
+        this.expiredAt = now.plusMinutes(30);
+    }
 }

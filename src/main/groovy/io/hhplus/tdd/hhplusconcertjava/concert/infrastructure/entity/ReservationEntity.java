@@ -1,7 +1,5 @@
 package io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.entity;
 
-import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.Concert;
-import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.ConcertSeat;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.Reservation;
 import io.hhplus.tdd.hhplusconcertjava.user.infrastructure.entity.UserEntity;
 import jakarta.persistence.*;
@@ -56,14 +54,14 @@ public class ReservationEntity {
                 .concertSeat(this.concertSeat.toDomain())
                 .concertTime(this.concertTime.toDomain())
                 .pointHistoryId(this.pointHistoryId)
-                .user(this.user.toDomain())
+                .user(this.user == null ? null: this.user.toDomain())
                 .expiredAt(this.expiredAt)
                 .createdAt(this.createdAt)
                 .updatedAt(this.updatedAt)
                 .build();
     }
 
-    public ReservationEntity fromDomain(Reservation reservation){
+    public static ReservationEntity fromDomain(Reservation reservation){
         ReservationEntity entity = new ReservationEntity();
         entity.id = reservation.getId();
         entity.concert = ConcertEntity.fromDomain(reservation.getConcert());
@@ -74,6 +72,7 @@ public class ReservationEntity {
         entity.expiredAt = reservation.getExpiredAt();
         entity.createdAt = reservation.getCreatedAt();
         entity.updatedAt = reservation.getUpdatedAt();
+        entity.user = UserEntity.fromDomain(reservation.getUser());
 
         return entity;
     }

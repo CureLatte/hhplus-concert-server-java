@@ -24,7 +24,7 @@ public class UserEntity {
                 .build();
     }
 
-    public static UserEntity toEntity(User user){
+    public static UserEntity fromDomain(User user){
         UserEntity userEntity = new UserEntity();
         userEntity.setId(user.getId());
         userEntity.setName(user.getName());

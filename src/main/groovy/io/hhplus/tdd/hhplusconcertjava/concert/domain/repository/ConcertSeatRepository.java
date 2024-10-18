@@ -7,5 +7,9 @@ import java.util.List;
 
 public interface ConcertSeatRepository {
 
+    public ConcertSeat findById(Long id);
+
     public List<ConcertSeat> findAllByAvailableSeat(ConcertTime concertTime);
+
+    public ConcertSeat save(ConcertSeat concertSeat);
 }

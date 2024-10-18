@@ -26,10 +26,6 @@ public class TestAspect {
         //ex. header의 Authorization 값 체크 로직
         String token = httpServletRequest.getHeader(AUTHORIZATION);
 
-        System.out.println(token);
-
-        System.out.println("joinPiont !!! ---->" + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
-
 
     }
 

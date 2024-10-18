@@ -33,4 +33,11 @@ public class ConcertTimeJpaRepository implements ConcertTimeRepository {
 
         return concertTimeEntityList.stream().map(ConcertTimeEntity::toDomain).toList();
     }
+
+    @Override
+    public ConcertTime save(ConcertTime concertTime) {
+        ConcertTimeEntity concertTimeEntity = this.jpaRepository.save(ConcertTimeEntity.fromDomain(concertTime));
+
+        return concertTimeEntity.toDomain();
+    }
 }

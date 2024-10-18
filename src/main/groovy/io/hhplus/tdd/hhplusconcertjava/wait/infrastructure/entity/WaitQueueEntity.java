@@ -41,7 +41,6 @@ public class WaitQueueEntity {
     private LocalDateTime updatedAt;
 
     public WaitQueue toDomain(){
-        System.out.println("Entity ->> toDomain " + this.status);
 
         return WaitQueue.builder()
                 .id(this.id)

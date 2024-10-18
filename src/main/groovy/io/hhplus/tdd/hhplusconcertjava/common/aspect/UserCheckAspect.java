@@ -1,12 +1,13 @@
 package io.hhplus.tdd.hhplusconcertjava.common.aspect;
 
+
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.PostReserveSeatRequestDto;
-import io.hhplus.tdd.hhplusconcertjava.wait.domain.service.WaitService;
+import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
+import io.hhplus.tdd.hhplusconcertjava.user.domain.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,32 +15,28 @@ import org.springframework.stereotype.Component;
 @Component
 @Aspect
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class WaitQueueCheckAspect {
+public class UserCheckAspect {
 
     private final HttpServletRequest httpServletRequest;
+    private final UserService userService;
 
-
-    WaitService waitService;
-
-    @Pointcut("@annotation(io.hhplus.tdd.hhplusconcertjava.common.annotaion.WaitQueueCheck)")
+    @Pointcut("@annotation(io.hhplus.tdd.hhplusconcertjava.common.annotaion.UserCheck)")
     public void pointcut() {
     }
 
-    @Before("pointcut()")
-    public void tokenCheck(JoinPoint joinPoint) {
-        //인증 로직 구현하기.
-        //ex. header의 Authorization 값 체크 로직
-        String token = httpServletRequest.getHeader("token");
+    public void authorizationCheck(JoinPoint joinPoint) {
+        String userIdString =  httpServletRequest.getHeader("userId");
+        if(userIdString == null) {
+            return ;
+        }
 
-
-
-        this.waitService.checkWaitQueue(token);
+        Long userId = Long.valueOf(userIdString);
+        User user = this.userService.getUser(userId);
 
         Object[] args = joinPoint.getArgs();
         if(args[0].getClass() == PostReserveSeatRequestDto.class){
-            PostReserveSeatRequestDto.uuid = token;
+            PostReserveSeatRequestDto.user = user;
         }
-
 
 
     }

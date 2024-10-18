@@ -38,6 +38,7 @@ public class ConcertSeatEntity {
         return ConcertSeat.builder()
                 .id(this.id)
                 .number(this.number)
+                .concertTime(this.concertTime.toDomain())
                 .status(ConcertSeat.ConcertSeatStatus.valueOf(this.status))
                 .uuid(this.uuid)
                 .createdAt(this.createdAt)

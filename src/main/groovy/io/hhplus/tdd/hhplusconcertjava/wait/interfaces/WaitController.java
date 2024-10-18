@@ -18,11 +18,13 @@ public class WaitController implements IWaitController{
     @Override
     @CustomCheck
     @GetMapping("/wait")
-    public GetTokenResponseDto getWaitToken(@RequestHeader("Authorization") String uuid, @RequestParam Map<String, String> params) {
+    public GetTokenResponseDto getWaitToken(@RequestHeader Map<String, String> header, @RequestParam Map<String, String> params) {
 
-        String userId = params.get("userId");
+        String userId = header.get("Authorization");
 
-        WaitQueue waitQueue = this.waitFacade.getWaitToken(uuid,userId);
+        String token = header.get("token");
+
+        WaitQueue waitQueue = this.waitFacade.getWaitToken(token,userId);
 
         return new GetTokenResponseDto(waitQueue.getUuid(), waitQueue.getStatus().name());
     }

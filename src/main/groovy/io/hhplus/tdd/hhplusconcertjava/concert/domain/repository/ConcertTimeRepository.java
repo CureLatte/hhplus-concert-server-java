@@ -10,4 +10,5 @@ public interface ConcertTimeRepository {
 
     public List<ConcertTime> findAllAvailableTime(Concert concert);
 
+    public ConcertTime save(ConcertTime concertTime);
 }

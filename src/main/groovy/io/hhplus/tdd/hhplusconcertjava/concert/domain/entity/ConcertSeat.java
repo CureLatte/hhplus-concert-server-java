@@ -24,4 +24,14 @@ public class ConcertSeat {
         EMPTY, PROCESS, RESERVATION, PAY
     }
 
+    public void lock(){
+        this.status = ConcertSeatStatus.PROCESS;
+    }
+
+    public void reservation(String uuid){
+        this.status = ConcertSeatStatus.RESERVATION;
+        this.uuid = uuid;
+
+    }
+
 }
