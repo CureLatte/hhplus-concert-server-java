@@ -4,6 +4,7 @@ import io.hhplus.tdd.hhplusconcertjava.common.annotaion.CustomCheck;
 import io.hhplus.tdd.hhplusconcertjava.wait.application.WaitFacade;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.WaitQueue;
 import io.hhplus.tdd.hhplusconcertjava.wait.interfaces.dto.GetTokenResponseDto;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
