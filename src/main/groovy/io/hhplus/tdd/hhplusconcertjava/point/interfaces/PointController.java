@@ -25,7 +25,7 @@ public class PointController implements IPointController{
     @Override
     @PostMapping("/point/charge")
     public PostPointChargeResponseDto getPointCharge(@RequestBody PostPointChargeRequestDto requestDto) {
-        return new PostPointChargeResponseDto(2000);
+        return this.pointFacade.chargePoint(requestDto.userId(), requestDto.point());
     }
 }
 

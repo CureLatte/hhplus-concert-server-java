@@ -13,6 +13,7 @@ public interface IPointJpaRepository extends JpaRepository<PointEntity, Long> {
             select * 
             from point
             where user_id= :userId
+            limit 1
         """,
         nativeQuery = true)
     public PointEntity findByUserId(@Param("userId") Long userId);

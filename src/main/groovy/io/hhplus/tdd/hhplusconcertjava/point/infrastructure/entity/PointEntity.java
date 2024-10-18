@@ -24,6 +24,7 @@ public class PointEntity {
 
     public Point toDomain(){
         return Point.builder()
+                .id(this.id)
                 .balance(this.balance)
                 .user(this.user.toDomain())
                 .build();

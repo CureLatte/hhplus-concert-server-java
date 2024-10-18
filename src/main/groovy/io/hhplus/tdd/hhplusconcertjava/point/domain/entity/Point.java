@@ -1,6 +1,7 @@
 package io.hhplus.tdd.hhplusconcertjava.point.domain.entity;
 
 
+import io.hhplus.tdd.hhplusconcertjava.common.BusinessError;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +17,15 @@ public class Point {
     public User user;
     public Integer balance;
 
+    public final String POINT_AMOUNT_VALIDATE_ERROR_MESSAGE="충전 금액은 0원 이상이 어야 합니다.";
+
+    public void charge(int pointAmount){
+        if(pointAmount <=0){
+            throw new BusinessError(400, this.POINT_AMOUNT_VALIDATE_ERROR_MESSAGE);
+        }
+
+        this.balance += pointAmount;
 
 
+    }
 }

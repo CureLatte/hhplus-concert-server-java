@@ -4,6 +4,7 @@ import io.hhplus.tdd.hhplusconcertjava.point.domain.entity.Point;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.service.PointService;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.service.PointServiceImpl;
 import io.hhplus.tdd.hhplusconcertjava.point.interfaces.dto.GetPointResponseDto;
+import io.hhplus.tdd.hhplusconcertjava.point.interfaces.dto.PostPointChargeResponseDto;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.service.UserService;
 import lombok.AllArgsConstructor;
@@ -28,4 +29,14 @@ public class PointFacade {
         return new GetPointResponseDto(point.balance);
     }
 
+
+    public PostPointChargeResponseDto chargePoint(Long userId, int chargePoint){
+        User user = this.userService.getUser(userId);
+
+        Point point = this.pointService.getPoint(user);
+
+        point = this.pointService.charge(point, chargePoint);
+
+        return new PostPointChargeResponseDto(point.balance);
+    }
 }

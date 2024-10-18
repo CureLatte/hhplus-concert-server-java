@@ -7,5 +7,6 @@ public interface PointService {
 
     public Point getPoint(User user);
 
+    public Point charge(Point point, int chargePoint);
 
 }
