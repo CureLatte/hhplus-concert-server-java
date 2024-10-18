@@ -2,6 +2,8 @@ package io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.entity;
 
 
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.Concert;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
