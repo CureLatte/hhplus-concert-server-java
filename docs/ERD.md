@@ -54,6 +54,7 @@ erDiagram
         max_cnt int
         left_cnt int 
         price int 
+        status string
         
     }
     ConcertTime ||--o{ ConcertSeat: has

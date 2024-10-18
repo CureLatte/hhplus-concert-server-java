@@ -1,5 +1,6 @@
 package io.hhplus.tdd.hhplusconcertjava.payment.interfaces;
 
+import io.hhplus.tdd.hhplusconcertjava.common.annotaion.WaitQueueCheck;
 import io.hhplus.tdd.hhplusconcertjava.payment.interfaces.dto.PostPayReservationRequestDto;
 import io.hhplus.tdd.hhplusconcertjava.payment.interfaces.dto.PostPayReservationResponseDto;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ public class PaymentController implements IPaymentController{
 
     @Override
     @PostMapping("/pay/reservation")
+    @WaitQueueCheck
     public PostPayReservationResponseDto postPayReservation(@RequestBody PostPayReservationRequestDto postPayReservationRequestDto) {
         return new PostPayReservationResponseDto(true);
     }

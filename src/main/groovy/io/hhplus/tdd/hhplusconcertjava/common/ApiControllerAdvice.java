@@ -13,6 +13,6 @@ class ApiControllerAdvice extends ResponseEntityExceptionHandler {
 
         System.out.println("Business Error:: "  + businessError);
 
-        return ResponseEntity.status(500).body(new ErrorResponseDto(businessError.status, businessError.getMessage()));
+        return ResponseEntity.status(businessError.status).body(new ErrorResponseDto(businessError.status.toString(), businessError.getMessage()));
     }
 }
