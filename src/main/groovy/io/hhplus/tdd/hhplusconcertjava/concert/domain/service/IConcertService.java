@@ -15,6 +15,8 @@ public interface IConcertService {
 
     public ConcertSeat getConcertSeat(Long concertSeatId);
 
+    public Reservation getReservation(Long reservationId);
+
     public List<ConcertTime> getConcertTimes(Concert concert);
 
     public List<ConcertSeat> getConcertSeats(ConcertTime concertTime);

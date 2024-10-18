@@ -32,5 +32,16 @@ public class ReservationJpaRepository implements ReservationRepository {
 
         return reservationEntity.toDomain();
     }
+
+    @Override
+    public Reservation findById(Long reservationId) {
+        ReservationEntity reservationEntity = this.jpaRepository.findById(reservationId).orElse(null);
+
+        if(reservationEntity == null){
+            return null;
+        }
+
+        return reservationEntity.toDomain();
+    }
 }
 

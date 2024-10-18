@@ -1,8 +1,8 @@
 package io.hhplus.tdd.hhplusconcertjava.payment.interfaces.dto;
 
 public record PostPayReservationRequestDto(
-        int userId,
-        int reservationId,
+        Long userId,
+        Long reservationId,
         int payAmount
 ) {
 }

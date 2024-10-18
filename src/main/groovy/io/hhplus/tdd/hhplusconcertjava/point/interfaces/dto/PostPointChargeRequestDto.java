@@ -1,7 +1,7 @@
 package io.hhplus.tdd.hhplusconcertjava.point.interfaces.dto;
 
 public record PostPointChargeRequestDto (
-        int userId,
+        Long userId,
         int point
 ){
 }
