@@ -5,10 +5,10 @@ public record PostReserveSeatResponseDto(
 ) {
 
     public record ReservationDto(
-            int id,
+            Long id,
             String status,
-            int seatNumber,
-            int concertId
+            String seatNumber,
+            Long concertId
     ){
 
     }

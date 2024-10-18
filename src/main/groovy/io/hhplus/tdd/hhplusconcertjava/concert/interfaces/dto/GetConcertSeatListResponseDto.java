@@ -11,9 +11,8 @@ public record GetConcertSeatListResponseDto(
 
 ) {
     public record ConcertSeat(
-            int concertSeatId,
-            String number,
-            boolean availYn
+            Long concertSeatId,
+            String number
 
     ){
     }
