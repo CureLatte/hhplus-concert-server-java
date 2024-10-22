@@ -16,6 +16,7 @@ import io.hhplus.tdd.hhplusconcertjava.wait.domain.service.IWaitService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -53,6 +54,7 @@ public class ConcertFacade {
 
         return   new GetConcertSeatListResponseDto(responseData);
     }
+
 
 
     public PostReserveSeatResponseDto postReserveSeat(Long concertId, Long concertTimeId, Long concertSeatId, String uuid, Long userId){

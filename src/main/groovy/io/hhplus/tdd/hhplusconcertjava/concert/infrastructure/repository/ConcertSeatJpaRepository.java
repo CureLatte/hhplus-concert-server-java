@@ -5,8 +5,10 @@ import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.ConcertTime;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ConcertSeatRepository;
 import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.entity.ConcertSeatEntity;
 import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.entity.ConcertTimeEntity;
+import jakarta.persistence.LockModeType;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,6 +19,7 @@ public class ConcertSeatJpaRepository implements ConcertSeatRepository {
     final IConcertSeatJpaRepository jpaRepository;
 
     @Override
+    @Lock(LockModeType.PESSIMISTIC_READ)
     public ConcertSeat findById(Long id) {
 
         ConcertSeatEntity concertSeatEntity = jpaRepository.findById(id).orElse(null);
