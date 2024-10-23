@@ -10,6 +10,10 @@ import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ConcertReposito
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ConcertSeatRepository;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ConcertTimeRepository;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ReservationRepository;
+import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.repository.IConcertJpaRepository;
+import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.repository.IConcertSeatJpaRepository;
+import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.repository.IConcertTimeJpaRepository;
+import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.repository.IReservationJpaRepository;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.GetConcertSeatListResponseDto;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.GetConcertTimeResponseDto;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.PostReserveSeatRequestDto;
@@ -17,9 +21,7 @@ import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.PostReserveSeatRes
 import io.hhplus.tdd.hhplusconcertjava.integration.TestBaseIntegration;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.repository.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -422,26 +424,43 @@ public class TestConcertFacade {
         @Autowired
         ReservationRepository reservationRepository;
 
-        long userCnt = 5;
-        List<User> userList;
-        Concert concert;
-        ConcertTime concertTime;
-        ConcertSeat concertSeat;
+        @Autowired
+        IConcertJpaRepository concertJpaRepository;
 
-        @BeforeEach
-        public void settingDB(){
+        @Autowired
+        IConcertTimeJpaRepository concertTimeJpaRepository;
+
+        @Autowired
+        IConcertSeatJpaRepository concertSeatJpaRepository;
+        @Autowired
+        IReservationJpaRepository reservationJpaRepository;
+
+        @AfterEach
+        public void clear(){
+             this.concertJpaRepository.clearTable();
+             this.concertTimeJpaRepository.clearTable();
+             this.concertSeatJpaRepository.clearTable();
+             // this.reservationJpaRepository.clearTable();
+
+        }
+
+
+        @Test
+        public void 한_자리_동시_예약_진행한_경우__성공() throws InterruptedException {
+            // GIVEN
+            int testUserCnt = 5;
+
             List<User> userList = new ArrayList<>();
-            for(long i=0; i<this.userCnt; i++){
+            for(long i=0; i<testUserCnt; i++){
                 userList.add(this.userRepository.save(User.builder().name("testUser" + i).build()));
             }
-            this.userList =  userList;
 
-            this.concert = this.concertRepository.save(Concert.builder()
+            Concert concert = this.concertRepository.save(Concert.builder()
                     .title("test")
                     .status(Concert.ConcertStatus.OPEN)
                     .build());
 
-            this.concertTime = this.concertTimeRepository.save(ConcertTime.builder()
+            ConcertTime concertTime = this.concertTimeRepository.save(ConcertTime.builder()
                     .concert(concert)
                     .startTime(LocalDateTime.now())
                     .endTime(LocalDateTime.now().plusDays(1))
@@ -451,37 +470,22 @@ public class TestConcertFacade {
                     .status(ConcertTime.ConcertTimeStatus.ON_SALE)
                     .build());
 
-            this.concertSeat = this.concertSeatRepository.save(ConcertSeat.builder()
+            ConcertSeat concertSeat= this.concertSeatRepository.save(ConcertSeat.builder()
                     .concertTime(concertTime)
                     .number("1")
                     .uuid(UUID.randomUUID().toString())
                     .status(ConcertSeat.ConcertSeatStatus.EMPTY)
                     .build());
 
-        }
-
-        @Test
-        public void 동시_예약_진행한_경우__성공() throws InterruptedException {
-            // GIVEN
-            // DB SETTING
-
-
-
-
-            Long userCnt = 40L;
-
-
-
             // Concurrency Setting
-            CountDownLatch latch = new CountDownLatch(this.userList.size());
-            ExecutorService executorService = Executors.newFixedThreadPool(userList.size());
+            CountDownLatch latch = new CountDownLatch(testUserCnt);
+            ExecutorService executorService = Executors.newFixedThreadPool(testUserCnt);
 
             AtomicInteger successCnt = new AtomicInteger(0);
             AtomicInteger failCnt = new AtomicInteger(0);
 
             // WHEN
             for(User user : userList){
-                System.out.println(user);
 
                 executorService.execute(() -> {
                     try {
@@ -505,8 +509,97 @@ public class TestConcertFacade {
             System.out.println("FAIL CNT:" + failCnt);
 
             // THEN
+             assertEquals(successCnt.get(), 1);
+             assertEquals(failCnt.get(), testUserCnt -1);
 
         }
 
+        @Test
+        public void 최대_좌석_초과_예약시__일부성공() throws InterruptedException {
+            // GIVEN
+            int testUserCnt = 40;
+
+            List<User> userList = new ArrayList<>();
+            for(long i=0; i<testUserCnt; i++){
+                userList.add(this.userRepository.save(User.builder().name("testUser" + i).build()));
+            }
+
+            Concert concert = this.concertRepository.save(Concert.builder()
+                    .title("test")
+                    .status(Concert.ConcertStatus.OPEN)
+                    .build());
+
+            int maxCnt = 30;
+
+            ConcertTime concertTime = this.concertTimeRepository.save(ConcertTime.builder()
+                    .concert(concert)
+                    .startTime(LocalDateTime.now())
+                    .endTime(LocalDateTime.now().plusDays(1))
+                    .price(1000)
+                    .maxCnt(maxCnt)
+                    .leftCnt(maxCnt)
+                    .status(ConcertTime.ConcertTimeStatus.ON_SALE)
+                    .build());
+
+            List<ConcertSeat> concertSeatList = new ArrayList<>();
+
+            for(int i=0; i<testUserCnt; i++){
+
+                ConcertSeat.ConcertSeatStatus concertSeatStatus = ConcertSeat.ConcertSeatStatus.EMPTY;
+
+                if(i >=maxCnt){
+                    concertSeatStatus = ConcertSeat.ConcertSeatStatus.RESERVATION;
+                }
+
+                concertSeatList.add(this.concertSeatRepository.save(ConcertSeat.builder()
+                                .concertTime(concertTime)
+                                .number("seat_"+ i)
+                                .status(concertSeatStatus)
+                        .build()));
+            }
+
+
+            // Concurrency Setting
+            CountDownLatch latch = new CountDownLatch(testUserCnt);
+            ExecutorService executorService = Executors.newFixedThreadPool(testUserCnt);
+
+            AtomicInteger successCnt = new AtomicInteger(0);
+            AtomicInteger failCnt = new AtomicInteger(0);
+
+            // WHEN
+            for(int i=0; i< testUserCnt ; i ++){
+                final int index = i;
+                User user = userList.get(index);
+
+                executorService.execute(() -> {
+                    try {
+                        ConcertSeat concertSeat = concertSeatList.get(index);
+
+                        this.concertFacade.postReserveSeat(concert.id, concertTime.id, concertSeat.id, UUID.randomUUID().toString(), user.id);
+                        successCnt.getAndIncrement();
+                    } catch(BusinessError businessError){
+
+                        System.out.println(businessError);
+                        failCnt.getAndIncrement();
+                    } finally {
+                        latch.countDown();
+                    }
+                });
+            }
+
+            latch.await();
+
+            System.out.println("SUCCESS CNT:" + successCnt);
+            System.out.println("FAIL CNT:" + failCnt);
+
+            // THEN
+            assertEquals(successCnt.get(), maxCnt);
+            assertEquals(failCnt.get(), testUserCnt -maxCnt);
+
+        }
+
+
     }
+
+
 }

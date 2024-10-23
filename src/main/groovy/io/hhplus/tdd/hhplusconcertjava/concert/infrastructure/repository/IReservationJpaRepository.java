@@ -21,16 +21,22 @@ public interface IReservationJpaRepository extends JpaRepository<ReservationEnti
 
     @Query(value= """
             select *
-            from reservation
-            where user_id= :userId
-                and concert_seat_id= :concertSeatId
-                and concert_time_id= :concertTimeId
-            order by created_at desc
-            limit 1 
-            """
-    , nativeQuery = true)
+            from reservation r
+            where r.concert_seat_id= :concertSeatId
+                and r.concert_time_id= :concertTimeId
+            order by r.created_at desc
+            limit 1 for update
+            """,
+            nativeQuery = true
+   )
+    @Transactional
+    public List<ReservationEntity> findByDuplication(@Param("concertTimeId") Long concertTimeId, @Param("concertSeatId") Long concertSeatId);
 
-    public List<ReservationEntity> findByDuplication(@Param("userId") Long userId, @Param("concertTimeId") Long concertTimeId, @Param("concertSeatId") Long concertSeatId);
-
-
+    @Query(value= """
+        delete from reservation
+        """,
+        nativeQuery = true)
+    @Transactional
+    @Modifying
+    public void clearTable();
 }

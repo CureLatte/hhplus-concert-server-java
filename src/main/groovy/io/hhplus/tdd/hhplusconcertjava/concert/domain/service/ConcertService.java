@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Component
-@Transactional(readOnly = true)
 @AllArgsConstructor(onConstructor=@__(@Autowired))
 public class ConcertService implements IConcertService {
 
@@ -98,8 +97,12 @@ public class ConcertService implements IConcertService {
     @Transactional
     public Reservation reserve(Concert concert, ConcertTime concertTime, ConcertSeat concertSeat, User user, String uuid) {
 
+        System.out.println("\n concertStatus ----> " + concertTime.getLeftCnt() + "\n");
+
         // 남은 좌석 업데이트
         concertTime.decreaseLeftCnt();
+
+        System.out.println("\n concertStatus ----> 2 " + concertTime.getLeftCnt() + "\n");
 
         this.concertTimeRepository.save(concertTime);
 
@@ -121,9 +124,7 @@ public class ConcertService implements IConcertService {
 
         dummyReservation.expireDateSetting();
 
-        System.out.println("\ndummyReservation:  "+ dummyReservation);
-
-        // 중복 check
+        // 중복 check ---> lock!!!
         Reservation duplicateReservation = this.reservationRepository.duplicateCheck(dummyReservation);
         if(duplicateReservation != null){
             throw new BusinessError(400, this.DUPLICATION_RESERVATION_ERROR_MESSAGE);

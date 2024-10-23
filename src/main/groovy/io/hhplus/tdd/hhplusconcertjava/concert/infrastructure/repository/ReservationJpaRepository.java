@@ -28,7 +28,7 @@ public class ReservationJpaRepository implements ReservationRepository {
     @Override
     public Reservation duplicateCheck(Reservation reservation) {
 
-        List<ReservationEntity> reservationEntityList = this.jpaRepository.findByDuplication(reservation.user.id, reservation.concertTime.id, reservation.concertSeat.id);
+        List<ReservationEntity> reservationEntityList = this.jpaRepository.findByDuplication( reservation.concertTime.id, reservation.concertSeat.id);
 
         if(reservationEntityList.size() == 0){
             return null;

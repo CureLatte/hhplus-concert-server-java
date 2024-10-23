@@ -55,8 +55,7 @@ public class ConcertFacade {
         return   new GetConcertSeatListResponseDto(responseData);
     }
 
-
-
+    @Transactional
     public PostReserveSeatResponseDto postReserveSeat(Long concertId, Long concertTimeId, Long concertSeatId, String uuid, Long userId){
 
         User user = this.userService.getUser(userId);
