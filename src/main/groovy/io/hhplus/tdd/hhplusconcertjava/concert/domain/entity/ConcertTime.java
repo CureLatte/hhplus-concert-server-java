@@ -32,7 +32,7 @@ public class ConcertTime {
             throw new BusinessError(400, this.LEFT_CNT_DOES_NOT_EXIST_ERROR_MESSAGE);
         }
 
-        this.leftCnt--;
+        this.leftCnt = this.leftCnt - 1;
     }
 
 }

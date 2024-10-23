@@ -30,6 +30,7 @@ public class ConcertService implements IConcertService {
     final public String NOT_FOUND_CONCERT_ERROR_MESSAGE = "존재하지 않은 콘서트 입니다.";
     final public String NOT_FOUND_CONCERT_TIME_ERROR_MESSAGE = "존재하지 않은 콘서트 날짜 입니다.";
     final public String NOT_FOUND_CONCERT_SEAT_ERROR_MESSAGE = "존재하지 않은 콘서트 좌석 입니다.";
+    final public String NOT_FOUND_RESERVATION_ERROR_MESSAGE = "존재하지 않은 예약 입니다.";
     final public String DUPLICATION_RESERVATION_ERROR_MESSAGE = "이미 신청한 예약입니다.";
 
 
@@ -72,6 +73,17 @@ public class ConcertService implements IConcertService {
     }
 
     @Override
+    public Reservation getReservation(Long reservationId) {
+        Reservation reservation = this.reservationRepository.findById(reservationId);
+
+        if(reservation == null){
+            throw new BusinessError(400, this.NOT_FOUND_RESERVATION_ERROR_MESSAGE);
+        }
+
+        return reservation;
+    }
+
+    @Override
     public List<ConcertTime> getConcertTimes(Concert concert) {
         return this.concertTimeRepository.findAllAvailableTime(concert);
     }
@@ -85,16 +97,17 @@ public class ConcertService implements IConcertService {
     @Transactional
     public Reservation reserve(Concert concert, ConcertTime concertTime, ConcertSeat concertSeat, User user, String uuid) {
 
+        System.out.println("\n concertStatus ----> " + concertTime.getLeftCnt() + "\n");
+
         // 남은 좌석 업데이트
         concertTime.decreaseLeftCnt();
+
+        System.out.println("\n concertStatus ----> 2 " + concertTime.getLeftCnt() + "\n");
 
         this.concertTimeRepository.save(concertTime);
 
 
         // 좌석 업데이트 uuid, status
-        concertSeat.lock();
-        this.concertSeatRepository.save(concertSeat);
-
         concertSeat.reservation(uuid);
         this.concertSeatRepository.save(concertSeat);
 
@@ -111,11 +124,9 @@ public class ConcertService implements IConcertService {
 
         dummyReservation.expireDateSetting();
 
-        System.out.println("\ndummyReservation:  "+ dummyReservation);
-
-        // 중복 check
+        // 중복 check ---> lock!!!
         Reservation duplicateReservation = this.reservationRepository.duplicateCheck(dummyReservation);
-        if(duplicateReservation !=null){
+        if(duplicateReservation != null){
             throw new BusinessError(400, this.DUPLICATION_RESERVATION_ERROR_MESSAGE);
         }
 

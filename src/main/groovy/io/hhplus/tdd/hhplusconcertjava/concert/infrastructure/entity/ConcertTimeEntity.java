@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class ConcertTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "concert_id", foreignKey= @ForeignKey(ConstraintMode.NO_CONSTRAINT))
@@ -55,7 +55,10 @@ public class ConcertTimeEntity {
 
     public static ConcertTimeEntity fromDomain(ConcertTime concertTime){
         ConcertTimeEntity entity = new ConcertTimeEntity();
-        entity.id=concertTime.getId();
+
+        System.out.println("concertTime Info: " + concertTime);
+
+        entity.id = concertTime.getId();
         entity.concert = ConcertEntity.fromDomain(concertTime.getConcert());
         entity.start_time = concertTime.getStartTime();
         entity.end_time = concertTime.getEndTime();

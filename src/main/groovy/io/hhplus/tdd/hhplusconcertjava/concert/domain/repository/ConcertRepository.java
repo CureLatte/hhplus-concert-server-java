@@ -6,4 +6,6 @@ public interface ConcertRepository {
     public Concert findById(Long id);
 
     public Concert create(Concert concert);
+
+    public Concert save(Concert concert);
 }

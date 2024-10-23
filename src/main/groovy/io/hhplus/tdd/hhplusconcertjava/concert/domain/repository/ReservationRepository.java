@@ -9,4 +9,6 @@ public interface ReservationRepository {
     public Reservation save(Reservation reservation);
 
     public Reservation duplicateCheck(Reservation reservation);
+
+    public Reservation findById(Long reservationId);
 }
