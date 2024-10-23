@@ -1,6 +1,7 @@
 package io.hhplus.tdd.hhplusconcertjava.integration.concert;
 
-import io.hhplus.tdd.hhplusconcertjava.common.BusinessError;
+import io.hhplus.tdd.hhplusconcertjava.common.error.BusinessError;
+import io.hhplus.tdd.hhplusconcertjava.common.error.ErrorCode;
 import io.hhplus.tdd.hhplusconcertjava.concert.application.ConcertFacade;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.Concert;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.ConcertSeat;
@@ -16,15 +17,12 @@ import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.repository.IConcer
 import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.repository.IReservationJpaRepository;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.GetConcertSeatListResponseDto;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.GetConcertTimeResponseDto;
-import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.PostReserveSeatRequestDto;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.PostReserveSeatResponseDto;
 import io.hhplus.tdd.hhplusconcertjava.integration.TestBaseIntegration;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.repository.UserRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -357,8 +355,8 @@ public class TestConcertFacade {
             });
 
             // THEN
-            assertEquals(error.status, 400);
-            assertEquals(error.message, concertSeat.ALREADY_RESERVATION_ERROR_MESSAGE);
+            assertEquals(error.status, ErrorCode.ALREADY_RESERVATION_ERROR.getStatus());
+            assertEquals(error.message, ErrorCode.ALREADY_RESERVATION_ERROR.getMessage());
         }
 
         @Test
@@ -395,8 +393,8 @@ public class TestConcertFacade {
             });
 
             // THEN
-            assertEquals(error.status, 400);
-            assertEquals(error.message, concertSeat.CONCERT_TIME_SOLE_OUT_ERROR_MESSAGE);
+            assertEquals(error.status, ErrorCode.CONCERT_TIME_SOLE_OUT_ERROR.getStatus());
+            assertEquals(error.message, ErrorCode.CONCERT_TIME_SOLE_OUT_ERROR.getMessage());
         }
 
 
@@ -440,7 +438,7 @@ public class TestConcertFacade {
              this.concertJpaRepository.clearTable();
              this.concertTimeJpaRepository.clearTable();
              this.concertSeatJpaRepository.clearTable();
-             // this.reservationJpaRepository.clearTable();
+             this.reservationJpaRepository.clearTable();
 
         }
 

@@ -1,10 +1,9 @@
 package io.hhplus.tdd.hhplusconcertjava.user.domain.service;
 
-import io.hhplus.tdd.hhplusconcertjava.common.BusinessError;
+import io.hhplus.tdd.hhplusconcertjava.common.error.BusinessError;
+import io.hhplus.tdd.hhplusconcertjava.common.error.ErrorCode;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.repository.UserRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +23,7 @@ public class UserService implements IUserService{
         User user = this.userRepository.findById(id);
 
         if(user == null) {
-            throw new BusinessError(400, "존재하지 않은 유저");
+            throw new BusinessError(ErrorCode.NOT_FOUND_USER_ERROR.getStatus(), ErrorCode.NOT_FOUND_USER_ERROR.getMessage());
         }
 
         return user;

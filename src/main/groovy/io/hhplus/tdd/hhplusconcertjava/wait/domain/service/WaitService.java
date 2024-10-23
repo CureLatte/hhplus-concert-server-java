@@ -1,10 +1,10 @@
 package io.hhplus.tdd.hhplusconcertjava.wait.domain.service;
 
-import io.hhplus.tdd.hhplusconcertjava.common.BusinessError;
+import io.hhplus.tdd.hhplusconcertjava.common.error.BusinessError;
+import io.hhplus.tdd.hhplusconcertjava.common.error.ErrorCode;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.WaitQueue;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.repository.WaitQueueRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +14,6 @@ public class WaitService implements IWaitService{
 
     WaitQueueRepository waitQueueRepository;
 
-    public final String NOT_FOUND_TOKEN_ERROR_MESSAGE = "토큰이 존재하지 않습니다.";
 
     @Override
     public WaitQueue getWaitQueue(String uuid){
@@ -71,13 +70,13 @@ public class WaitService implements IWaitService{
     public void checkWaitQueue(String uuid) {
         // wait queue Check
         if(uuid == null){
-            throw new BusinessError(400, this.NOT_FOUND_TOKEN_ERROR_MESSAGE);
+            throw new BusinessError(ErrorCode.NOT_FOUND_TOKEN_ERROR.getStatus(), ErrorCode.NOT_FOUND_TOKEN_ERROR.getMessage());
         }
 
         WaitQueue waitQueue = this.waitQueueRepository.findByUUID(uuid);
 
         if(waitQueue == null){
-            throw new BusinessError(400, this.NOT_FOUND_TOKEN_ERROR_MESSAGE);
+            throw new BusinessError(ErrorCode.NOT_FOUND_CONCERT_ERROR.getStatus(), ErrorCode.NOT_FOUND_TOKEN_ERROR.getMessage());
         }
 
         waitQueue.validate();
