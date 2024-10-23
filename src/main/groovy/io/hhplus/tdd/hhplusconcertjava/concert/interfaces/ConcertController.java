@@ -1,8 +1,6 @@
 package io.hhplus.tdd.hhplusconcertjava.concert.interfaces;
 
 import io.hhplus.tdd.hhplusconcertjava.common.error.BusinessError;
-import io.hhplus.tdd.hhplusconcertjava.common.annotaion.UserCheck;
-import io.hhplus.tdd.hhplusconcertjava.common.annotaion.WaitQueueCheck;
 import io.hhplus.tdd.hhplusconcertjava.concert.application.ConcertFacade;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.GetConcertSeatListResponseDto;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.GetConcertTimeResponseDto;
@@ -23,7 +21,6 @@ public class ConcertController implements IConcertController {
 
     @Override
     @GetMapping("/concert/time/{concertId}")
-    @WaitQueueCheck
     public GetConcertTimeResponseDto getConcertTimeList(@PathVariable("concertId") Long concertId) {
 
 
@@ -33,7 +30,6 @@ public class ConcertController implements IConcertController {
 
     @Override
     @GetMapping("/concert/seat/{concertTimeId}")
-    @WaitQueueCheck
     public GetConcertSeatListResponseDto getConcertSeatList(@PathVariable("concertTimeId") Long concertTimeId) {
 
         return this.concertFacade.getConcertSeatList(concertTimeId);
@@ -41,8 +37,6 @@ public class ConcertController implements IConcertController {
 
     @Override
     @PostMapping("/concert/reservation")
-    @WaitQueueCheck
-    @UserCheck
     public PostReserveSeatResponseDto postReservation(@RequestBody PostReserveSeatRequestDto requestDto) {
 
         String userIdString =  httpServletRequest.getHeader("Authorization");
