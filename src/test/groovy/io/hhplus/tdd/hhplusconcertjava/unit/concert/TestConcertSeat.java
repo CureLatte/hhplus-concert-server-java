@@ -1,6 +1,7 @@
 package io.hhplus.tdd.hhplusconcertjava.unit.concert;
 
-import io.hhplus.tdd.hhplusconcertjava.common.BusinessError;
+import io.hhplus.tdd.hhplusconcertjava.common.error.BusinessError;
+import io.hhplus.tdd.hhplusconcertjava.common.error.ErrorCode;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.ConcertSeat;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.ConcertTime;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,12 @@ public class TestConcertSeat {
     @Test
     public void 예약_설정_하기__성공(){
         // GIVEN
-        ConcertSeat concertSeat = ConcertSeat.builder().build();
+        ConcertSeat concertSeat = ConcertSeat.builder()
+                .concertTime(ConcertTime.builder()
+                        .status(ConcertTime.ConcertTimeStatus.ON_SALE)
+                        .build())
+                .status(ConcertSeat.ConcertSeatStatus.EMPTY)
+                .build();
         String uuid = UUID.randomUUID().toString();
 
         // WHEN
@@ -44,7 +50,7 @@ public class TestConcertSeat {
         BusinessError error = assertThrows(BusinessError.class, () -> concertSeat.reservation(uuid));
 
         // THEN
-        assertEquals(error.message, concertSeat.ALREADY_RESERVATION_ERROR_MESSAGE);
+        assertEquals( ErrorCode.ALREADY_RESERVATION_ERROR.getMessage(), error.message);
     }
 
     @Test
@@ -60,6 +66,6 @@ public class TestConcertSeat {
         BusinessError error = assertThrows(BusinessError.class, () -> concertSeat.reservation(uuid));
 
         // THEN
-        assertEquals(error.message, concertSeat.CONCERT_TIME_SOLE_OUT_ERROR_MESSAGE);
+        assertEquals(ErrorCode.CONCERT_TIME_SOLE_OUT_ERROR.getMessage(), error.message );
     }
 }

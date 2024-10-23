@@ -1,4 +1,4 @@
-package io.hhplus.tdd.hhplusconcertjava.common;
+package io.hhplus.tdd.hhplusconcertjava.common.error;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,7 @@
 package io.hhplus.tdd.hhplusconcertjava.concert.domain.entity;
 
-import io.hhplus.tdd.hhplusconcertjava.common.BusinessError;
+import io.hhplus.tdd.hhplusconcertjava.common.error.BusinessError;
+import io.hhplus.tdd.hhplusconcertjava.common.error.ErrorCode;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -20,7 +21,6 @@ public class ConcertTime {
     public int leftCnt;
     public int price;
 
-    public final String LEFT_CNT_DOES_NOT_EXIST_ERROR_MESSAGE="잔여 좌석이 존재하지 않습니다.";
 
     public enum ConcertTimeStatus{
         ON_SALE, SOLD_OUT
@@ -29,7 +29,7 @@ public class ConcertTime {
     public void decreaseLeftCnt(){
 
         if(this.leftCnt <=0){
-            throw new BusinessError(400, this.LEFT_CNT_DOES_NOT_EXIST_ERROR_MESSAGE);
+            throw new BusinessError(ErrorCode.LEFT_CNT_DOES_NOT_EXIST_ERROR.getStatus(), ErrorCode.LEFT_CNT_DOES_NOT_EXIST_ERROR.getMessage());
         }
 
         this.leftCnt = this.leftCnt - 1;

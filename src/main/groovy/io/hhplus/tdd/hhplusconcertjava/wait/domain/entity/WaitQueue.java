@@ -1,9 +1,9 @@
 package io.hhplus.tdd.hhplusconcertjava.wait.domain.entity;
 
-import io.hhplus.tdd.hhplusconcertjava.common.BusinessError;
+import io.hhplus.tdd.hhplusconcertjava.common.error.BusinessError;
+import io.hhplus.tdd.hhplusconcertjava.common.error.ErrorCode;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -21,8 +21,6 @@ public class WaitQueue {
     public final int MaxCnt=30;
     public final int MaxMinute=30;
 
-    public final String CHECK_PROCESS_ERROR_MESSAGE="접근 권한이 없습니다.";
-
    public enum WaitStatus{
        WAIT, PROCESS, FINISH
    }
@@ -30,7 +28,7 @@ public class WaitQueue {
     public void validate() throws BusinessError {
         // check
         if(!this.status.equals(WaitStatus.PROCESS)){
-            throw new BusinessError(400, this.CHECK_PROCESS_ERROR_MESSAGE);
+            throw new BusinessError(ErrorCode.CHECK_PROCESS_ERROR.getStatus(), ErrorCode.CHECK_PROCESS_ERROR.getMessage());
         }
 
     }

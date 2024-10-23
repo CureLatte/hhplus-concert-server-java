@@ -1,6 +1,7 @@
 package io.hhplus.tdd.hhplusconcertjava.unit.concert;
 
-import io.hhplus.tdd.hhplusconcertjava.common.BusinessError;
+import io.hhplus.tdd.hhplusconcertjava.common.error.BusinessError;
+import io.hhplus.tdd.hhplusconcertjava.common.error.ErrorCode;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.ConcertTime;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,7 +39,7 @@ public class TestConcertTime {
         BusinessError error = assertThrows(BusinessError.class, () -> concertTime.decreaseLeftCnt());
 
         // THEN
-        assertEquals(error.status, 400);
-        assertEquals(error.message, concertTime.LEFT_CNT_DOES_NOT_EXIST_ERROR_MESSAGE);
+        assertEquals(ErrorCode.LEFT_CNT_DOES_NOT_EXIST_ERROR.getStatus(), error.status);
+        assertEquals(ErrorCode.LEFT_CNT_DOES_NOT_EXIST_ERROR.getMessage(), error.message);
     }
 }

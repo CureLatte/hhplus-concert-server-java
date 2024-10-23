@@ -1,6 +1,5 @@
 package io.hhplus.tdd.hhplusconcertjava.wait.interfaces;
 
-import io.hhplus.tdd.hhplusconcertjava.common.annotaion.CustomCheck;
 import io.hhplus.tdd.hhplusconcertjava.wait.application.WaitFacade;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.WaitQueue;
 import io.hhplus.tdd.hhplusconcertjava.wait.interfaces.dto.GetTokenResponseDto;
@@ -17,7 +16,6 @@ public class WaitController implements IWaitController{
     WaitFacade waitFacade;
 
     @Override
-    @CustomCheck
     @GetMapping("/wait")
     public GetTokenResponseDto getWaitToken(@RequestHeader Map<String, String> header, @RequestParam Map<String, String> params) {
 

@@ -1,8 +1,8 @@
 package io.hhplus.tdd.hhplusconcertjava.unit.wait;
 
-import io.hhplus.tdd.hhplusconcertjava.common.BusinessError;
+import io.hhplus.tdd.hhplusconcertjava.common.error.BusinessError;
+import io.hhplus.tdd.hhplusconcertjava.common.error.ErrorCode;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.WaitQueue;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -41,8 +41,8 @@ public class TestWaitQueue {
         BusinessError businessError = assertThrows(BusinessError.class, waitQueue::validate);
 
         // THEN
-        assertEquals(400, businessError.status);
-        assertEquals(waitQueue.getCHECK_PROCESS_ERROR_MESSAGE(), businessError.message);
+        assertEquals(ErrorCode.CHECK_PROCESS_ERROR.getStatus(), businessError.status);
+        assertEquals(ErrorCode.CHECK_PROCESS_ERROR.getMessage(), businessError.message);
 
     }
 
@@ -58,8 +58,8 @@ public class TestWaitQueue {
         BusinessError businessError = assertThrows(BusinessError.class, waitQueue::validate);
 
         // THEN
-        assertEquals(400, businessError.status);
-        assertEquals(waitQueue.getCHECK_PROCESS_ERROR_MESSAGE(), businessError.message);
+        assertEquals(ErrorCode.CHECK_PROCESS_ERROR.getStatus(), businessError.status);
+        assertEquals(ErrorCode.CHECK_PROCESS_ERROR.getMessage(), businessError.message);
 
     }
 
