@@ -1,5 +1,6 @@
 package io.hhplus.tdd.hhplusconcertjava.payment.interfaces;
 
+import io.hhplus.tdd.hhplusconcertjava.common.dto.ResponseDto;
 import io.hhplus.tdd.hhplusconcertjava.payment.apllication.PaymentFacade;
 import io.hhplus.tdd.hhplusconcertjava.payment.interfaces.dto.PostPayReservationRequestDto;
 import io.hhplus.tdd.hhplusconcertjava.payment.interfaces.dto.PostPayReservationResponseDto;

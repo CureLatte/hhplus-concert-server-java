@@ -36,5 +36,10 @@ public interface IConcertSeatJpaRepository extends JpaRepository<ConcertSeatEnti
     @Transactional
     public void clearTable();
 
+    @Query(value= """
+        select s from ConcertSeatEntity s where s.id= :concertSeatId
+    """)
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    public ConcertSeatEntity findByIdForUpdate(@Param("concertSeatId") Long concertSeatId);
 
 }

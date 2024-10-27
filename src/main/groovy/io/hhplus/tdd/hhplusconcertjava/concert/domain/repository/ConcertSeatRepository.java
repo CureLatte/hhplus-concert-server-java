@@ -9,7 +9,11 @@ public interface ConcertSeatRepository {
 
     public ConcertSeat findById(Long id);
 
+    public ConcertSeat findByIdForUpdate(Long id);
+
     public List<ConcertSeat> findAllByAvailableSeat(ConcertTime concertTime);
 
     public ConcertSeat save(ConcertSeat concertSeat);
+
+
 }

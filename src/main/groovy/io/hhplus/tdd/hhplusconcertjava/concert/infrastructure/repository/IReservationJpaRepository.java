@@ -39,4 +39,8 @@ public interface IReservationJpaRepository extends JpaRepository<ReservationEnti
     @Transactional
     @Modifying
     public void clearTable();
+
+
+
+
 }

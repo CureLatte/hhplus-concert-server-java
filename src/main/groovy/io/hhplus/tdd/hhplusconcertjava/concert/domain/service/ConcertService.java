@@ -14,11 +14,12 @@ import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Component
+@Service
 @AllArgsConstructor(onConstructor=@__(@Autowired))
 public class ConcertService implements IConcertService {
 
@@ -123,5 +124,26 @@ public class ConcertService implements IConcertService {
         return this.reservationRepository.save(dummyReservation);
     }
 
+    @Transactional
+    public Reservation reserveV2(Long concertSeatId, User user,  String uuid){
+
+        ConcertSeat concertSeat = this.concertSeatRepository.findByIdForUpdate(concertSeatId);
+
+        Reservation dummyReservation = Reservation.builder()
+                .status(Reservation.ReservationStatus.RESERVATION)
+                .concertSeat(concertSeat)
+                .concertTime(concertSeat.concertTime)
+                .concert(concertSeat.concertTime.concert)
+                .user(user)
+                .build();
+        Reservation duplicateReservation = this.reservationRepository.duplicateCheck(dummyReservation);
+        if(duplicateReservation != null){
+            throw new BusinessError(ErrorCode.DUPLICATION_RESERVATION_ERROR.getStatus(), ErrorCode.DUPLICATION_RESERVATION_ERROR.getMessage());
+        }
+
+
+
+        return this.reservationRepository.save(dummyReservation);
+    }
 
 }

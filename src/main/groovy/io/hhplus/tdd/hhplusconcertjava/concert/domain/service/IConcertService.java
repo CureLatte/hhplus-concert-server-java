@@ -22,4 +22,6 @@ public interface IConcertService {
     public List<ConcertSeat> getConcertSeats(ConcertTime concertTime);
 
     public Reservation reserve(Concert concert, ConcertTime concertTime, ConcertSeat concertSeat, User user, String uuid);
+
+    public Reservation reserveV2(Long concertSeatId, User user,  String uuid);
 }
