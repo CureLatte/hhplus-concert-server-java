@@ -1,10 +1,12 @@
 package io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.entity;
 
+import io.hhplus.tdd.hhplusconcertjava.common.entity.BaseEntity;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.Reservation;
 import io.hhplus.tdd.hhplusconcertjava.user.infrastructure.entity.UserEntity;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -14,7 +16,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class ReservationEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -45,6 +47,7 @@ public class ReservationEntity {
     private LocalDateTime createdAt;
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
 
     public Reservation toDomain(){
         return Reservation.builder()

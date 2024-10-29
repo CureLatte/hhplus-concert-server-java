@@ -7,5 +7,7 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository {
     public User findById(long id);
 
+    public User findByIdForUpdate(long id);
+
     public User save(User user);
 }

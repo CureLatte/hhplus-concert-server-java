@@ -25,6 +25,18 @@ public class UserJpaRepository implements UserRepository {
     }
 
     @Override
+    public User findByIdForUpdate(long id) {
+
+        UserEntity userEntity = userJpaRepository.findByIdForUpdate(id).orElse(null);
+
+        if(userEntity == null){
+            return null;
+        }
+
+        return userEntity.toDomain();
+    }
+
+    @Override
     public User save(User user) {
         UserEntity userEntity = this.userJpaRepository.save(UserEntity.fromDomain(user));
 

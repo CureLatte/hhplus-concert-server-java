@@ -4,11 +4,9 @@ import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.Reservation;
 import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.entity.ReservationEntity;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.LockModeType;
+import jakarta.persistence.QueryHint;
 import org.hibernate.annotations.OptimisticLock;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Lock;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,18 +17,21 @@ import java.util.List;
 @Hidden
 public interface IReservationJpaRepository extends JpaRepository<ReservationEntity, Long> {
 
-    @Query(value= """
-            select *
-            from reservation r
-            where r.concert_seat_id= :concertSeatId
-                and r.concert_time_id= :concertTimeId
-            order by r.created_at desc
-            limit 1 for update
-            """,
-            nativeQuery = true
-   )
+    @Query(value = """
+            select r
+            from ReservationEntity r
+            where r.concertSeat.id= :concertSeatId
+                and r.concertTime.id= :concertTimeId
+            order by r.createdAt desc
+            """
+    )
     @Transactional
-    public List<ReservationEntity> findByDuplication(@Param("concertTimeId") Long concertTimeId, @Param("concertSeatId") Long concertSeatId);
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value = "10000")})
+    public default List<ReservationEntity> findByDuplication(@Param("concertTimeId") Long concertTimeId, @Param("concertSeatId") Long concertSeatId) {
+        return null;
+    }
+
 
     @Query(value= """
         delete from reservation
@@ -39,8 +40,6 @@ public interface IReservationJpaRepository extends JpaRepository<ReservationEnti
     @Transactional
     @Modifying
     public void clearTable();
-
-
 
 
 }

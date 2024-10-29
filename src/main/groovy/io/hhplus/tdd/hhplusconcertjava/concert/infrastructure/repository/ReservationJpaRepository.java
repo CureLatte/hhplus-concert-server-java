@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class ReservationJpaRepository implements ReservationRepository {
 
         List<ReservationEntity> reservationEntityList = this.jpaRepository.findByDuplication( reservation.concertTime.id, reservation.concertSeat.id);
 
-        if(reservationEntityList.size() == 0){
+        if(reservationEntityList == null || reservationEntityList.size() == 0){
             return null;
         }
 
