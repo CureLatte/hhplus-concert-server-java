@@ -1,6 +1,7 @@
 package io.hhplus.tdd.hhplusconcertjava.unit.concert;
 
-import io.hhplus.tdd.hhplusconcertjava.common.BusinessError;
+import io.hhplus.tdd.hhplusconcertjava.common.error.BusinessError;
+import io.hhplus.tdd.hhplusconcertjava.common.error.ErrorCode;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.Concert;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.ConcertSeat;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.ConcertTime;
@@ -76,8 +77,8 @@ public class TestConcertService {
             BusinessError businessError = assertThrows(BusinessError.class, () -> concertService.getConcert(id));
 
             // THEN
-            assertEquals(400, businessError.status);
-            assertEquals(concertService.NOT_FOUND_CONCERT_ERROR_MESSAGE, businessError.message);
+            assertEquals( ErrorCode.NOT_FOUND_CONCERT_ERROR.getStatus(), businessError.status);
+            assertEquals( ErrorCode.NOT_FOUND_CONCERT_ERROR.getMessage(), businessError.message);
         }
 
 
@@ -118,8 +119,8 @@ public class TestConcertService {
             BusinessError businessError = assertThrows(BusinessError.class, () -> concertService.getConcertTime(id));
 
             // THEN
-            assertEquals(400, businessError.status);
-            assertEquals(concertService.NOT_FOUND_CONCERT_TIME_ERROR_MESSAGE, businessError.message);
+            assertEquals(ErrorCode.NOT_FOUND_CONCERT_TIME_ERROR.getStatus(), businessError.status);
+            assertEquals(ErrorCode.NOT_FOUND_CONCERT_TIME_ERROR.getMessage(), businessError.message);
 
         }
 
@@ -158,8 +159,8 @@ public class TestConcertService {
             BusinessError businessError = assertThrows(BusinessError.class, () -> concertService.getConcertSeat(id));
 
             // THEN
-            assertEquals(400, businessError.status);
-            assertEquals(concertService.NOT_FOUND_CONCERT_SEAT_ERROR_MESSAGE, businessError.message);
+            assertEquals(ErrorCode.NOT_FOUND_CONCERT_SEAT_ERROR.getStatus(), businessError.status);
+            assertEquals(ErrorCode.NOT_FOUND_CONCERT_SEAT_ERROR.getMessage(), businessError.message);
 
         }
     }
@@ -287,7 +288,7 @@ public class TestConcertService {
 
             // THEN
             assertEquals(400, businessError.status);
-            assertEquals(concertTime.LEFT_CNT_DOES_NOT_EXIST_ERROR_MESSAGE, businessError.message);
+            assertEquals(ErrorCode.LEFT_CNT_DOES_NOT_EXIST_ERROR.getMessage(), businessError.message);
 
         }
 

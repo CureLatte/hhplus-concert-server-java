@@ -69,4 +69,13 @@ public class ConcertFacade {
         return new PostReserveSeatResponseDto(new PostReserveSeatResponseDto.ReservationDto(reservation.id, reservation.status.name(), reservation.concertSeat.number, reservation.concert.getId()));
     }
 
+    @Transactional
+    public PostReserveSeatResponseDto postReserveSeatV2(Long concertSeatId, String uuid, Long userId){
+
+
+        Reservation reservation = this.concertService.reserveV2(concertSeatId, userId, uuid);
+
+        return new PostReserveSeatResponseDto(new PostReserveSeatResponseDto.ReservationDto(reservation.id, reservation.status.name(), reservation.concertSeat.number, reservation.concertSeat.concertTime.concert.getId()));
+    }
+
 }

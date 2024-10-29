@@ -1,7 +1,6 @@
 package io.hhplus.tdd.hhplusconcertjava.payment.domain.entity;
 
-import io.hhplus.tdd.hhplusconcertjava.common.BusinessError;
-import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.ConcertSeat;
+import io.hhplus.tdd.hhplusconcertjava.common.error.BusinessError;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.Reservation;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.entity.PointHistory;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;

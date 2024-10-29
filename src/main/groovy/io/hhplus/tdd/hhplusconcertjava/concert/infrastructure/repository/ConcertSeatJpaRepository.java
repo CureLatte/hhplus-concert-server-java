@@ -31,6 +31,17 @@ public class ConcertSeatJpaRepository implements ConcertSeatRepository {
     }
 
     @Override
+    public ConcertSeat findByIdForUpdate(Long id) {
+        ConcertSeatEntity concertSeatEntity = jpaRepository.findByIdForUpdate(id);
+
+        if(concertSeatEntity == null){
+            return null;
+        }
+
+        return concertSeatEntity.toDomain();
+    }
+
+    @Override
     public List<ConcertSeat> findAllByAvailableSeat(ConcertTime concertTime) {
         List<ConcertSeatEntity> concertSeatEntityList = this.jpaRepository.findAllByAvailableSeat(concertTime.getId());
 

@@ -1,7 +1,7 @@
 package io.hhplus.tdd.hhplusconcertjava.point.domain.entity;
 
 
-import io.hhplus.tdd.hhplusconcertjava.common.BusinessError;
+import io.hhplus.tdd.hhplusconcertjava.common.error.BusinessError;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
 import lombok.Builder;
 import lombok.Getter;

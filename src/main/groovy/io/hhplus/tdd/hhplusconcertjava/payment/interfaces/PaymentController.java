@@ -1,6 +1,6 @@
 package io.hhplus.tdd.hhplusconcertjava.payment.interfaces;
 
-import io.hhplus.tdd.hhplusconcertjava.common.annotaion.WaitQueueCheck;
+import io.hhplus.tdd.hhplusconcertjava.common.dto.ResponseDto;
 import io.hhplus.tdd.hhplusconcertjava.payment.apllication.PaymentFacade;
 import io.hhplus.tdd.hhplusconcertjava.payment.interfaces.dto.PostPayReservationRequestDto;
 import io.hhplus.tdd.hhplusconcertjava.payment.interfaces.dto.PostPayReservationResponseDto;
@@ -20,7 +20,6 @@ public class PaymentController implements IPaymentController{
 
     @Override
     @PostMapping("/pay/reservation")
-    @WaitQueueCheck
     public PostPayReservationResponseDto postPayReservation(@RequestBody PostPayReservationRequestDto postPayReservationRequestDto) {
         return this.paymentFacade.payReservation(postPayReservationRequestDto.userId(), postPayReservationRequestDto.reservationId(), postPayReservationRequestDto.payAmount());
     }
