@@ -11,16 +11,15 @@ import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ConcertReposito
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ConcertSeatRepository;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ConcertTimeRepository;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ReservationRepository;
-import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.repository.IConcertJpaRepository;
-import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.repository.IConcertSeatJpaRepository;
-import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.repository.IConcertTimeJpaRepository;
-import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.repository.IReservationJpaRepository;
+import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.repository.*;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.GetConcertSeatListResponseDto;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.GetConcertTimeResponseDto;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.PostReserveSeatResponseDto;
 import io.hhplus.tdd.hhplusconcertjava.integration.TestBaseIntegration;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.repository.UserRepository;
+import io.hhplus.tdd.hhplusconcertjava.user.infrastructure.IUserJpaRepository;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -630,6 +629,11 @@ public class TestConcertFacade {
         IConcertSeatJpaRepository concertSeatJpaRepository;
         @Autowired
         IReservationJpaRepository reservationJpaRepository;
+        @Autowired
+        IUserJpaRepository userJpaRepository;
+
+        @Autowired
+        IReservation2JpaRepository reservation2JpaRepository;
 
         int testUserCnt;
         int maxCnt;
@@ -639,15 +643,19 @@ public class TestConcertFacade {
 
         @AfterEach
         public void clear(){
-            this.concertJpaRepository.clearTable();
-            this.concertTimeJpaRepository.clearTable();
-            this.concertSeatJpaRepository.clearTable();
-            this.reservationJpaRepository.clearTable();
 
         }
 
         @BeforeEach
         public void setting(){
+
+            this.concertJpaRepository.clearTable();
+            this.concertTimeJpaRepository.clearTable();
+            this.concertSeatJpaRepository.clearTable();
+            this.reservationJpaRepository.clearTable();
+            this.userJpaRepository.clearTable();
+            this.reservation2JpaRepository.clearTable();
+
 
             int testUserCnt = 10;
 
@@ -668,8 +676,8 @@ public class TestConcertFacade {
                     .startTime(LocalDateTime.now())
                     .endTime(LocalDateTime.now().plusDays(1))
                     .price(1000)
-                    .maxCnt(maxCnt)
-                    .leftCnt(maxCnt)
+                    .maxCnt(testUserCnt)
+                    .leftCnt(testUserCnt - maxCnt)
                     .status(ConcertTime.ConcertTimeStatus.ON_SALE)
                     .build());
 

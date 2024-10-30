@@ -10,6 +10,7 @@ import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ConcertReposito
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ConcertSeatRepository;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ConcertTimeRepository;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ReservationRepository;
+import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.entity.ConcertTimeEntity;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -131,10 +132,16 @@ public class ConcertService implements IConcertService {
         ConcertSeat concertSeat = this.concertSeatRepository.findByIdForUpdate(concertSeatId);
 
         concertSeat.reservation(uuid);
+        this.concertSeatRepository.save(concertSeat);
+        ConcertTime concertTime = concertSeat.getConcertTime();
+        concertTime.decreaseLeftCnt();
+
+        this.concertTimeRepository.save(concertSeat.getConcertTime());
 
         User user = this.userRepository.findByIdForUpdate(userId);
 
         Reservation dummyReservation = Reservation.builder()
+                .id(0L)
                 .status(Reservation.ReservationStatus.RESERVATION)
                 .concertSeat(concertSeat)
                 .concertTime(concertSeat.concertTime)

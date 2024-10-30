@@ -75,7 +75,7 @@ public class ConcertFacade {
 
         Reservation reservation = this.concertService.reserveV2(concertSeatId, userId, uuid);
 
-        return new PostReserveSeatResponseDto(new PostReserveSeatResponseDto.ReservationDto(reservation.id, reservation.status.name(), reservation.concertSeat.number, reservation.concertSeat.concertTime.concert.getId()));
+        return new PostReserveSeatResponseDto(new PostReserveSeatResponseDto.ReservationDto(reservation.id, reservation.status.name(), reservation.concertSeat.number, reservation.concert.getId()));
     }
 
 }

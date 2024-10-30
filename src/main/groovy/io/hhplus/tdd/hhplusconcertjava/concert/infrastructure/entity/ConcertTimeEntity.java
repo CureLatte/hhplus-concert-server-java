@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Table(name="concert_time")
 @EntityListeners(AuditingEntityListener.class)
 public class ConcertTimeEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
