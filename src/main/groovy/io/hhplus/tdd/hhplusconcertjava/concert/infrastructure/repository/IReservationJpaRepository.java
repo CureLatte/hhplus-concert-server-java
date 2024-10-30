@@ -28,9 +28,7 @@ public interface IReservationJpaRepository extends JpaRepository<ReservationEnti
     @Transactional
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value = "10000")})
-    public default List<ReservationEntity> findByDuplication(@Param("concertTimeId") Long concertTimeId, @Param("concertSeatId") Long concertSeatId) {
-        return null;
-    }
+    public List<ReservationEntity> findByDuplication(@Param("concertTimeId") Long concertTimeId, @Param("concertSeatId") Long concertSeatId);
 
 
     @Query(value= """
