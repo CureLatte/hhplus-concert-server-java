@@ -20,7 +20,7 @@ public interface IUserJpaRepository extends JpaRepository<UserEntity, Long> {
     @Query(value = """
         select u from UserEntity u where u.id= :userId
     """)
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    // @Lock(LockModeType.PESSIMISTIC_WRITE)
     public Optional<UserEntity> findByIdForUpdate(@Param("userId") Long userId);
 
     @Transactional

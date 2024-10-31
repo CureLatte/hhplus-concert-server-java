@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-// @Component
+@Component
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class ReservationJpaRepository implements ReservationRepository {
 

@@ -152,9 +152,6 @@ public class ConcertService implements IConcertService {
             throw new BusinessError(ErrorCode.DUPLICATION_RESERVATION_ERROR.getStatus(), ErrorCode.DUPLICATION_RESERVATION_ERROR.getMessage());
         }
 
-
-
-
         dummyReservation.setUser(user);
         dummyReservation.setConcert(concertSeat.concertTime.concert);
 

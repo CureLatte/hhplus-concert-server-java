@@ -654,6 +654,7 @@ public class TestConcertFacade {
             this.concertSeatJpaRepository.clearTable();
             this.reservationJpaRepository.clearTable();
             this.userJpaRepository.clearTable();
+
             this.reservation2JpaRepository.clearTable();
 
 

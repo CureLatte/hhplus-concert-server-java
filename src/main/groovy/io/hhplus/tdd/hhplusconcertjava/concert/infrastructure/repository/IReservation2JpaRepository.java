@@ -5,7 +5,10 @@ import jakarta.persistence.LockModeType;
 import jakarta.persistence.QueryHint;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+@Repository
 public interface IReservation2JpaRepository extends JpaRepository<Reservation2Entity, Long> {
 
     @Query(value = """
@@ -14,8 +17,8 @@ public interface IReservation2JpaRepository extends JpaRepository<Reservation2En
         where R.concert_seat_id= :concertSeatId
             and R.concert_time_id = :concertTimeId
     """)
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value = "10000")})
+//    @Lock(LockModeType.PESSIMISTIC_WRITE)
+//    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value = "10000")})
     public Reservation2Entity duplicateCheck(@Param("concertSeatId") Long concertSeatId, @Param("concertTimeId") Long concertTimeId);
 
 
@@ -24,5 +27,6 @@ public interface IReservation2JpaRepository extends JpaRepository<Reservation2En
     """,
     nativeQuery = true)
     @Modifying
+    @Transactional
     public void clearTable();
 }
