@@ -54,4 +54,9 @@ public class ConcertSeatJpaRepository implements ConcertSeatRepository {
 
         return updatedConcertSeatEntity.toDomain();
     }
+
+    @Override
+    public void deleteAll() {
+        this.jpaRepository.deleteAll();
+    }
 }

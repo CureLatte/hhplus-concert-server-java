@@ -8,4 +8,6 @@ public interface ConcertRepository {
     public Concert create(Concert concert);
 
     public Concert save(Concert concert);
+
+    public void deleteAll();
 }

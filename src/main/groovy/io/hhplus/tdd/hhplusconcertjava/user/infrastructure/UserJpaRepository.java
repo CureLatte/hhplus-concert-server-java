@@ -13,6 +13,14 @@ public class UserJpaRepository implements UserRepository {
     private IUserJpaRepository userJpaRepository;
 
     @Override
+    public User create(User user) {
+        UserEntity userEntity = this.userJpaRepository.save(UserEntity.fromDomain(user));
+
+
+        return userEntity.toDomain();
+    }
+
+    @Override
     public User findById(long id){
 
         UserEntity userEntity = userJpaRepository.findById(id).orElse(null);
@@ -41,6 +49,11 @@ public class UserJpaRepository implements UserRepository {
         UserEntity userEntity = this.userJpaRepository.save(UserEntity.fromDomain(user));
 
         return userEntity.toDomain();
+    }
+
+    @Override
+    public void clearTable() {
+        this.userJpaRepository.clearTable();
     }
 
 

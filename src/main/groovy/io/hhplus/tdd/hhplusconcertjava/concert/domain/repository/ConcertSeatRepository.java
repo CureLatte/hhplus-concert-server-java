@@ -15,5 +15,5 @@ public interface ConcertSeatRepository {
 
     public ConcertSeat save(ConcertSeat concertSeat);
 
-
+    public void deleteAll();
 }
