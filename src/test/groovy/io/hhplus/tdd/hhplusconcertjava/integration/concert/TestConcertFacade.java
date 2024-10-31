@@ -597,7 +597,7 @@ public class TestConcertFacade {
 
 
     @Nested
-    class TestConcurrencyReservationWithPessimstic extends TestBaseIntegration{
+    class TestConcurrencyReservationWithPessimistic extends TestBaseIntegration{
 
         @Autowired
         ConcertFacade concertFacade;
@@ -732,7 +732,7 @@ public class TestConcertFacade {
 
                 executorService.execute(() -> {
                     try {
-                        this.concertFacade.postReserveSeatV2(concertSeat.id, UUID.randomUUID().toString(), user.id);
+                        this.concertFacade.postReserveSeatPessimistic(concertSeat.id, UUID.randomUUID().toString(), user.id);
                         successCnt.getAndIncrement();
                     } catch(BusinessError businessError){
 
@@ -778,7 +778,7 @@ public class TestConcertFacade {
                     try {
                         ConcertSeat concertSeat = concertSeatList.get(index);
 
-                        this.concertFacade.postReserveSeatV2(concertSeat.id, UUID.randomUUID().toString(), user.id) ;
+                        this.concertFacade.postReserveSeatPessimistic(concertSeat.id, UUID.randomUUID().toString(), user.id) ;
                         successCnt.getAndIncrement();
                     } catch(BusinessError businessError){
 

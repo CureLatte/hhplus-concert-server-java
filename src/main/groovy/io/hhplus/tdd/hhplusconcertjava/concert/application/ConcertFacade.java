@@ -68,7 +68,7 @@ public class ConcertFacade {
     }
 
     @Transactional
-    public PostReserveSeatResponseDto postReserveSeatV2(Long concertSeatId, String uuid, Long userId){
+    public PostReserveSeatResponseDto postReserveSeatPessimistic(Long concertSeatId, String uuid, Long userId){
 
 
         Reservation reservation = this.concertService.reserveWithPessimistic(concertSeatId, userId, uuid);
