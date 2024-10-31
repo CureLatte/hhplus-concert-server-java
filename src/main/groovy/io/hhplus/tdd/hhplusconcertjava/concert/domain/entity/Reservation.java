@@ -21,6 +21,8 @@ public class Reservation {
     public LocalDateTime expiredAt;
     public LocalDateTime createdAt;
     public LocalDateTime updatedAt;
+    @Builder.Default
+    public Integer version = 0;
 
     public enum ReservationStatus{
         RESERVATION, PAY_DONE

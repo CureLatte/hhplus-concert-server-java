@@ -64,6 +64,6 @@ public class ConcertSeatJpaRepository implements ConcertSeatRepository {
 
     @Override
     public void deleteAll() {
-        this.jpaRepository.deleteAll();
+        this.jpaRepository.deleteAllInBatch();
     }
 }

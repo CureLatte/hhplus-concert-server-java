@@ -4,6 +4,7 @@ import io.hhplus.tdd.hhplusconcertjava.common.entity.BaseEntity;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.Reservation;
 import io.hhplus.tdd.hhplusconcertjava.user.infrastructure.entity.UserEntity;
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.domain.Persistable;
@@ -48,6 +49,9 @@ public class ReservationEntity {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    @Version
+    @ColumnDefault("0")
+    private Integer version;
 
     public Reservation toDomain(){
         return Reservation.builder()
@@ -61,6 +65,7 @@ public class ReservationEntity {
                 .expiredAt(this.expiredAt)
                 .createdAt(this.createdAt)
                 .updatedAt(this.updatedAt)
+                 .version(this.version)
                 .build();
     }
 
@@ -73,6 +78,7 @@ public class ReservationEntity {
         entity.pointHistoryId = reservation.getPointHistoryId();
         entity.status = reservation.getStatus().name();
         entity.expiredAt = reservation.getExpiredAt();
+         entity.version = reservation.getVersion();
         entity.createdAt = reservation.getCreatedAt();
         entity.updatedAt = reservation.getUpdatedAt();
         entity.user = UserEntity.fromDomain(reservation.getUser());

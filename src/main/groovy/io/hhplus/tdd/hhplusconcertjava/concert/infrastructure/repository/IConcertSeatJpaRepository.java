@@ -41,7 +41,7 @@ public interface IConcertSeatJpaRepository extends JpaRepository<ConcertSeatEnti
     @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value = "10000")})
     public ConcertSeatEntity findByIdForUpdate(@Param("concertSeatId") Long concertSeatId);
 
-
+    @Transactional
     @Query(value = """
         select s from ConcertSeatEntity s where s.id= :concertSeatId
     """)

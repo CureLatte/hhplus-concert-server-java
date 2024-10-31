@@ -77,6 +77,7 @@ public class ConcertFacade {
     }
 
 
+    @Transactional
     public PostReserveSeatResponseDto postReserveSeatOptimistic(Long concertSeatId, String uuid, Long userId){
 
         Reservation reservation = this.concertService.reserveWithOptimistic(concertSeatId, userId, uuid);

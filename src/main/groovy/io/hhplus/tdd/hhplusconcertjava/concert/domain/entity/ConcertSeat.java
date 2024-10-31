@@ -20,6 +20,8 @@ public class ConcertSeat {
     public String uuid;
     public LocalDateTime createdAt;
     public LocalDateTime updatedAt;
+    @Builder.Default
+    public Integer version =0;
 
     public enum ConcertSeatStatus{
         EMPTY, PROCESS, RESERVATION, PAY
