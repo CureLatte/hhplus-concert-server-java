@@ -37,4 +37,9 @@ public class ConcertJpaRepository implements ConcertRepository {
 
         return concertEntity.toDomain();
     }
+
+    @Override
+    public void deleteAll() {
+        this.jpaRepository.deleteAll();
+    }
 }

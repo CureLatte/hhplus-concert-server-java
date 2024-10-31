@@ -48,5 +48,10 @@ public class ReservationJpaRepository implements ReservationRepository {
 
         return reservationEntity.toDomain();
     }
+
+    @Override
+    public void clearTable() {
+        this.jpaRepository.deleteAll();
+    }
 }
 

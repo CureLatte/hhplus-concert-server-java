@@ -41,4 +41,9 @@ public class ConcertTimeJpaRepository implements ConcertTimeRepository {
 
         return concertTimeEntity.toDomain();
     }
+
+    @Override
+    public void deleteAll(Long concertTimeId) {
+        this.jpaRepository.deleteAll();
+    }
 }

@@ -33,4 +33,9 @@ public class Reservation2JpaRepository implements ReservationRepository {
     public Reservation findById(Long reservationId) {
         return null;
     }
+
+    @Override
+    public void clearTable() {
+        this.jpaRepository.deleteAll();
+    }
 }

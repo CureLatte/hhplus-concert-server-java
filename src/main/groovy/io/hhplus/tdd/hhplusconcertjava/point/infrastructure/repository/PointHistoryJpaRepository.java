@@ -7,10 +7,22 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PointHistoryJpaRepository implements PointHistoryRepository {
     IPointHistoryJpaRepository jpaRepository;
+
+    @Override
+    public List<PointHistory> findByStatus(PointHistory.PointStatus status) {
+
+        List<PointHistoryEntity> pointHistoryEntityList = this.jpaRepository.findByStatus(status.name());
+
+        if(pointHistoryEntityList.isEmpty()) return null;
+
+        return pointHistoryEntityList.stream().map(PointHistoryEntity::toDomain).toList();
+    }
 
     @Override
     public PointHistory save(PointHistory pointHistory) {

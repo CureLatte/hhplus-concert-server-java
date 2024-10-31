@@ -13,6 +13,7 @@ import io.hhplus.tdd.hhplusconcertjava.user.domain.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -22,6 +23,7 @@ public class PaymentFacade {
     ConcertService concertService;
     PointService pointService;
 
+    @Transactional
     public PostPayReservationResponseDto payReservation(Long userId, Long reservationId, int payAmount){
 
         User user = this.userService.getUser(userId);

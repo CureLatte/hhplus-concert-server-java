@@ -31,7 +31,7 @@ public class Point {
     }
 
     public void use(int pointAmount){
-        if(this.balance - pointAmount <=0){
+        if(this.balance - pointAmount <0){
             throw new BusinessError(400, this.BALANCE_DOES_NOT_EXIST_ERROR_MESSAGE);
         }
 

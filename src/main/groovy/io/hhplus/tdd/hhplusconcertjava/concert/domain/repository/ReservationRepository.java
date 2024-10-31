@@ -11,4 +11,6 @@ public interface ReservationRepository {
     public Reservation duplicateCheck(Reservation reservation);
 
     public Reservation findById(Long reservationId);
+
+    public void clearTable();
 }
