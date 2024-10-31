@@ -54,7 +54,7 @@ public class ReservationJpaRepository implements ReservationRepository {
 
     @Override
     public void clearTable() {
-        this.jpaRepository.deleteAllInBatch();
+        this.jpaRepository.clearTable();
     }
 }
 

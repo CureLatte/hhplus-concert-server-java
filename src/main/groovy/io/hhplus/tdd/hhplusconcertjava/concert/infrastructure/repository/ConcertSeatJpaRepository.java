@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -56,6 +57,7 @@ public class ConcertSeatJpaRepository implements ConcertSeatRepository {
     }
 
     @Override
+    @Transactional
     public ConcertSeat save(ConcertSeat concertSeat) {
         ConcertSeatEntity updatedConcertSeatEntity = this.jpaRepository.save(ConcertSeatEntity.fromDomain(concertSeat));
 
@@ -64,6 +66,6 @@ public class ConcertSeatJpaRepository implements ConcertSeatRepository {
 
     @Override
     public void deleteAll() {
-        this.jpaRepository.deleteAllInBatch();
+        this.jpaRepository.clearTable();
     }
 }

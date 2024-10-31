@@ -22,6 +22,7 @@ import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -621,13 +622,6 @@ public class TestConcertFacade {
         @Autowired
         ReservationRepository reservationRepository;
 
-
-        int testUserCnt;
-        int maxCnt;
-
-        List<ConcertSeat> concertSeatList;
-        List<User> userList;
-
         @AfterEach
         public void clear(){
 
@@ -642,55 +636,6 @@ public class TestConcertFacade {
             this.reservationRepository.clearTable();
             this.userRepository.clearTable();
 
-
-            int testUserCnt = 10;
-
-            List<User> userList = new ArrayList<>();
-            for(long i=0; i<testUserCnt; i++){
-                userList.add(this.userRepository.save(User.builder().name("testUser" + i).build()));
-            }
-
-            Concert concert = this.concertRepository.save(Concert.builder()
-                    .title("test")
-                    .status(Concert.ConcertStatus.OPEN)
-                    .build());
-
-            int maxCnt = 5;
-
-            ConcertTime concertTime = this.concertTimeRepository.save(ConcertTime.builder()
-                    .concert(concert)
-                    .startTime(LocalDateTime.now())
-                    .endTime(LocalDateTime.now().plusDays(1))
-                    .price(1000)
-                    .maxCnt(testUserCnt)
-                    .leftCnt(testUserCnt - maxCnt)
-                    .status(ConcertTime.ConcertTimeStatus.ON_SALE)
-                    .build());
-
-            log.info("ConcertTime: {}", concertTime);
-
-            List<ConcertSeat> concertSeatList = new ArrayList<>();
-
-            for(int i=0; i<testUserCnt; i++){
-
-                ConcertSeat.ConcertSeatStatus concertSeatStatus = ConcertSeat.ConcertSeatStatus.EMPTY;
-
-                if(i >=maxCnt){
-                    concertSeatStatus = ConcertSeat.ConcertSeatStatus.RESERVATION;
-                }
-
-                concertSeatList.add(this.concertSeatRepository.save(ConcertSeat.builder()
-                        .concertTime(concertTime)
-                        .number("seat_"+ i)
-                        .status(concertSeatStatus)
-                        .build()));
-            }
-
-
-            this.testUserCnt = testUserCnt;
-            this.maxCnt = maxCnt;
-            this.concertSeatList = concertSeatList;
-            this.userList = userList;
         }
 
 
@@ -768,6 +713,50 @@ public class TestConcertFacade {
         public void 최대_좌석_초과_예약시__일부성공() throws InterruptedException {
             // GIVEN
 
+            int testUserCnt = 10;
+
+            List<User> userList = new ArrayList<>();
+            for(long i=0; i<testUserCnt; i++){
+                userList.add(this.userRepository.save(User.builder().name("testUser" + i).build()));
+            }
+
+            Concert concert = this.concertRepository.save(Concert.builder()
+                    .title("test")
+                    .status(Concert.ConcertStatus.OPEN)
+                    .build());
+
+            int maxCnt = 5;
+
+            ConcertTime concertTime = this.concertTimeRepository.save(ConcertTime.builder()
+                    .concert(concert)
+                    .startTime(LocalDateTime.now())
+                    .endTime(LocalDateTime.now().plusDays(1))
+                    .price(1000)
+                    .maxCnt(testUserCnt)
+                    .leftCnt(testUserCnt - maxCnt)
+                    .status(ConcertTime.ConcertTimeStatus.ON_SALE)
+                    .build());
+
+            log.info("ConcertTime: {}", concertTime);
+
+            List<ConcertSeat> concertSeatList = new ArrayList<>();
+
+            for(int i=0; i<testUserCnt; i++){
+
+                ConcertSeat.ConcertSeatStatus concertSeatStatus = ConcertSeat.ConcertSeatStatus.EMPTY;
+
+                if(i >=maxCnt){
+                    concertSeatStatus = ConcertSeat.ConcertSeatStatus.RESERVATION;
+                }
+
+                concertSeatList.add(this.concertSeatRepository.save(ConcertSeat.builder()
+                        .concertTime(concertTime)
+                        .number("seat_"+ i)
+                        .status(concertSeatStatus)
+                        .build()));
+            }
+
+
 
             // Concurrency Setting
             CountDownLatch latch = new CountDownLatch(testUserCnt);
@@ -832,12 +821,6 @@ public class TestConcertFacade {
         ReservationRepository reservationRepository;
 
 
-        int testUserCnt;
-        int maxCnt;
-
-        List<ConcertSeat> concertSeatList;
-        List<User> userList;
-
         @AfterEach
         public void clear(){
 
@@ -852,53 +835,6 @@ public class TestConcertFacade {
             this.reservationRepository.clearTable();
             this.userRepository.clearTable();
 
-
-            int testUserCnt = 10;
-
-            List<User> userList = new ArrayList<>();
-            for(long i=0; i<testUserCnt; i++){
-                userList.add(this.userRepository.save(User.builder().name("testUser" + i).build()));
-            }
-
-            Concert concert = this.concertRepository.save(Concert.builder()
-                    .title("test")
-                    .status(Concert.ConcertStatus.OPEN)
-                    .build());
-
-            int maxCnt = 5;
-
-            ConcertTime concertTime = this.concertTimeRepository.save(ConcertTime.builder()
-                    .concert(concert)
-                    .startTime(LocalDateTime.now())
-                    .endTime(LocalDateTime.now().plusDays(1))
-                    .price(1000)
-                    .maxCnt(testUserCnt)
-                    .leftCnt(testUserCnt - maxCnt)
-                    .status(ConcertTime.ConcertTimeStatus.ON_SALE)
-                    .build());
-
-            List<ConcertSeat> concertSeatList = new ArrayList<>();
-
-            for(int i=0; i<testUserCnt; i++){
-
-                ConcertSeat.ConcertSeatStatus concertSeatStatus = ConcertSeat.ConcertSeatStatus.EMPTY;
-
-                if(i >=maxCnt){
-                    concertSeatStatus = ConcertSeat.ConcertSeatStatus.RESERVATION;
-                }
-
-                concertSeatList.add(this.concertSeatRepository.save(ConcertSeat.builder()
-                        .concertTime(concertTime)
-                        .number("seat_"+ i)
-                        .status(concertSeatStatus)
-                        .build()));
-            }
-
-
-            this.testUserCnt = testUserCnt;
-            this.maxCnt = maxCnt;
-            this.concertSeatList = concertSeatList;
-            this.userList = userList;
         }
 
 
@@ -952,6 +888,10 @@ public class TestConcertFacade {
 
                         System.out.println(businessError);
                         failCnt.getAndIncrement();
+                    }  catch(ObjectOptimisticLockingFailureException optimisticError){
+
+                        System.out.println(optimisticError);
+                        failCnt.getAndIncrement();
                     } finally {
                         latch.countDown();
                     }
@@ -974,6 +914,47 @@ public class TestConcertFacade {
         @Test
         public void 최대_좌석_초과_예약시__일부성공() throws InterruptedException {
             // GIVEN
+            int testUserCnt = 10;
+
+            List<User> userList = new ArrayList<>();
+            for(long i=0; i<testUserCnt; i++){
+                userList.add(this.userRepository.save(User.builder().name("testUser" + i).build()));
+            }
+
+            Concert concert = this.concertRepository.save(Concert.builder()
+                    .title("test")
+                    .status(Concert.ConcertStatus.OPEN)
+                    .build());
+
+            int maxCnt = 5;
+
+            ConcertTime concertTime = this.concertTimeRepository.save(ConcertTime.builder()
+                    .concert(concert)
+                    .startTime(LocalDateTime.now())
+                    .endTime(LocalDateTime.now().plusDays(1))
+                    .price(1000)
+                    .maxCnt(testUserCnt)
+                    .leftCnt(testUserCnt - maxCnt)
+                    .status(ConcertTime.ConcertTimeStatus.ON_SALE)
+                    .build());
+
+            List<ConcertSeat> concertSeatList = new ArrayList<>();
+
+            for(int i=0; i<testUserCnt; i++){
+
+                ConcertSeat.ConcertSeatStatus concertSeatStatus = ConcertSeat.ConcertSeatStatus.EMPTY;
+
+                if(i >=maxCnt){
+                    concertSeatStatus = ConcertSeat.ConcertSeatStatus.RESERVATION;
+                }
+
+                concertSeatList.add(this.concertSeatRepository.save(ConcertSeat.builder()
+                        .concertTime(concertTime)
+                        .number("seat_"+ i)
+                        .status(concertSeatStatus)
+                        .build()));
+            }
+
 
 
             // Concurrency Setting
@@ -997,6 +978,10 @@ public class TestConcertFacade {
                     } catch(BusinessError businessError){
 
                         System.out.println(businessError);
+                        failCnt.getAndIncrement();
+                    }  catch(ObjectOptimisticLockingFailureException optimisticError){
+
+                        System.out.println(optimisticError);
                         failCnt.getAndIncrement();
                     } finally {
                         latch.countDown();

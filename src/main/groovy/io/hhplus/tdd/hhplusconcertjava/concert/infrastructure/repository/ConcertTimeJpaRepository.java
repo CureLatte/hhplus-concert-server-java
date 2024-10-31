@@ -44,6 +44,6 @@ public class ConcertTimeJpaRepository implements ConcertTimeRepository {
 
     @Override
     public void deleteAll() {
-        this.jpaRepository.deleteAllInBatch();
+        this.jpaRepository.clearTable();
     }
 }
