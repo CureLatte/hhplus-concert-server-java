@@ -23,5 +23,5 @@ public interface IConcertService {
 
     public Reservation reserve(Concert concert, ConcertTime concertTime, ConcertSeat concertSeat, User user, String uuid);
 
-    public Reservation reserveV2(Long concertSeatId, Long userId,  String uuid);
+    public Reservation reserveWithPessimistic(Long concertSeatId, Long userId, String uuid);
 }

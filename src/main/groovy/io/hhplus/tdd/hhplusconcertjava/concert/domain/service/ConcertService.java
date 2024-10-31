@@ -127,7 +127,7 @@ public class ConcertService implements IConcertService {
     }
 
     @Transactional
-    public Reservation reserveV2(Long concertSeatId, Long userId,  String uuid){
+    public Reservation reserveWithPessimistic(Long concertSeatId, Long userId, String uuid){
 
         ConcertSeat concertSeat = this.concertSeatRepository.findByIdForUpdate(concertSeatId);
 
@@ -157,5 +157,6 @@ public class ConcertService implements IConcertService {
 
         return this.reservationRepository.save(dummyReservation);
     }
+
 
 }

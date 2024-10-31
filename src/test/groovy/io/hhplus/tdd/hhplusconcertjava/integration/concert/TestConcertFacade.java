@@ -18,8 +18,6 @@ import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.PostReserveSeatRes
 import io.hhplus.tdd.hhplusconcertjava.integration.TestBaseIntegration;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.repository.UserRepository;
-import io.hhplus.tdd.hhplusconcertjava.user.infrastructure.IUserJpaRepository;
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -599,7 +597,7 @@ public class TestConcertFacade {
 
 
     @Nested
-    class TestConcurrencyReserveV2 extends TestBaseIntegration{
+    class TestConcurrencyReservationWithPessimstic extends TestBaseIntegration{
 
         @Autowired
         ConcertFacade concertFacade;
@@ -619,21 +617,6 @@ public class TestConcertFacade {
         @Autowired
         ReservationRepository reservationRepository;
 
-        @Autowired
-        IConcertJpaRepository concertJpaRepository;
-
-        @Autowired
-        IConcertTimeJpaRepository concertTimeJpaRepository;
-
-        @Autowired
-        IConcertSeatJpaRepository concertSeatJpaRepository;
-        @Autowired
-        IReservationJpaRepository reservationJpaRepository;
-        @Autowired
-        IUserJpaRepository userJpaRepository;
-
-        @Autowired
-        IReservation2JpaRepository reservation2JpaRepository;
 
         int testUserCnt;
         int maxCnt;
@@ -649,13 +632,11 @@ public class TestConcertFacade {
         @BeforeEach
         public void setting(){
 
-            this.concertJpaRepository.clearTable();
-            this.concertTimeJpaRepository.clearTable();
-            this.concertSeatJpaRepository.clearTable();
-            this.reservationJpaRepository.clearTable();
-            this.userJpaRepository.clearTable();
-
-            this.reservation2JpaRepository.clearTable();
+            this.concertRepository.deleteAll();
+            this.concertTimeRepository.deleteAll();
+            this.concertSeatRepository.deleteAll();
+            this.reservationRepository.clearTable();
+            this.userRepository.clearTable();
 
 
             int testUserCnt = 10;
