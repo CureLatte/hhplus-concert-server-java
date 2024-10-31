@@ -42,6 +42,13 @@ public class ConcertSeatJpaRepository implements ConcertSeatRepository {
     }
 
     @Override
+    public ConcertSeat findByIdForShare(Long id) {
+        ConcertSeatEntity concertSeatEntity = this.jpaRepository.findByIdForShare(id);
+
+        return concertSeatEntity.toDomain();
+    }
+
+    @Override
     public List<ConcertSeat> findAllByAvailableSeat(ConcertTime concertTime) {
         List<ConcertSeatEntity> concertSeatEntityList = this.jpaRepository.findAllByAvailableSeat(concertTime.getId());
 

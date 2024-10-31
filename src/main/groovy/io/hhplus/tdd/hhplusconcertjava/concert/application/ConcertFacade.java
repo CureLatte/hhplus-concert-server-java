@@ -76,4 +76,12 @@ public class ConcertFacade {
         return new PostReserveSeatResponseDto(new PostReserveSeatResponseDto.ReservationDto(reservation.id, reservation.status.name(), reservation.concertSeat.number, reservation.concert.getId()));
     }
 
+
+    public PostReserveSeatResponseDto postReserveSeatOptimistic(Long concertSeatId, String uuid, Long userId){
+
+        Reservation reservation = this.concertService.reserveWithOptimistic(concertSeatId, userId, uuid);
+
+        return new PostReserveSeatResponseDto(new PostReserveSeatResponseDto.ReservationDto(reservation.id, reservation.status.name(), reservation.concertSeat.number, reservation.concert.getId()));
+
+    }
 }

@@ -15,6 +15,7 @@ import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -156,6 +157,48 @@ public class ConcertService implements IConcertService {
         dummyReservation.setConcert(concertSeat.concertTime.concert);
 
         return this.reservationRepository.save(dummyReservation);
+    }
+
+    @Override
+    public Reservation reserveWithOptimistic(Long concertSeatId, Long userId, String uuid) {
+        try {
+
+            ConcertSeat concertSeat = this.concertSeatRepository.findByIdForShare(concertSeatId);
+
+            concertSeat.reservation(uuid);
+            this.concertSeatRepository.save(concertSeat);
+            ConcertTime concertTime = concertSeat.getConcertTime();
+            concertTime.decreaseLeftCnt();
+
+            this.concertTimeRepository.save(concertSeat.getConcertTime());
+
+            User user = this.userRepository.findById(userId);
+
+            Reservation dummyReservation = Reservation.builder()
+                    .id(0L)
+                    .status(Reservation.ReservationStatus.RESERVATION)
+                    .concertSeat(concertSeat)
+                    .concertTime(concertSeat.concertTime)
+                    .build();
+
+            Reservation duplicateReservation = this.reservationRepository.duplicateCheck(dummyReservation);
+            if(duplicateReservation != null){
+                throw new BusinessError(ErrorCode.DUPLICATION_RESERVATION_ERROR.getStatus(), ErrorCode.DUPLICATION_RESERVATION_ERROR.getMessage());
+            }
+
+            dummyReservation.setUser(user);
+            dummyReservation.setConcert(concertSeat.concertTime.concert);
+
+            return this.reservationRepository.save(dummyReservation);
+
+
+        } catch(ObjectOptimisticLockingFailureException error){
+            // 낙관적 Lock 진행시 Error 핸들링
+            throw new BusinessError(ErrorCode.ALREADY_RESERVATION_ERROR.getStatus(), ErrorCode.ALREADY_RESERVATION_ERROR.getMessage());
+        }
+
+
+
     }
 
 
