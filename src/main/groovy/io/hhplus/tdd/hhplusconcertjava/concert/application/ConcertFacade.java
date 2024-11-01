@@ -68,21 +68,13 @@ public class ConcertFacade {
     }
 
     @Transactional
-    public PostReserveSeatResponseDto postReserveSeatPessimistic(Long concertSeatId, String uuid, Long userId){
+    public PostReserveSeatResponseDto postReserveSeatV2(Long concertSeatId, String uuid, Long userId){
 
 
-        Reservation reservation = this.concertService.reserveWithPessimistic(concertSeatId, userId, uuid);
+        Reservation reservation = this.concertService.reserveV2(concertSeatId, userId, uuid);
 
         return new PostReserveSeatResponseDto(new PostReserveSeatResponseDto.ReservationDto(reservation.id, reservation.status.name(), reservation.concertSeat.number, reservation.concert.getId()));
     }
 
 
-    @Transactional
-    public PostReserveSeatResponseDto postReserveSeatOptimistic(Long concertSeatId, String uuid, Long userId){
-
-        Reservation reservation = this.concertService.reserveWithOptimistic(concertSeatId, userId, uuid);
-
-        return new PostReserveSeatResponseDto(new PostReserveSeatResponseDto.ReservationDto(reservation.id, reservation.status.name(), reservation.concertSeat.number, reservation.concert.getId()));
-
-    }
 }

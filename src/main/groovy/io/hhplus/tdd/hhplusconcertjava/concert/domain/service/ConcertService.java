@@ -128,9 +128,9 @@ public class ConcertService implements IConcertService {
     }
 
     @Transactional
-    public Reservation reserveWithPessimistic(Long concertSeatId, Long userId, String uuid){
+    public Reservation reserveV2(Long concertSeatId, Long userId, String uuid){
 
-        ConcertSeat concertSeat = this.concertSeatRepository.findByIdForUpdate(concertSeatId);
+        ConcertSeat concertSeat = this.concertSeatRepository.findById(concertSeatId);
 
         concertSeat.reservation(uuid);
         this.concertSeatRepository.save(concertSeat);
@@ -139,7 +139,7 @@ public class ConcertService implements IConcertService {
 
         this.concertTimeRepository.save(concertSeat.getConcertTime());
 
-        User user = this.userRepository.findByIdForUpdate(userId);
+        User user = this.userRepository.findById(userId);
 
         Reservation dummyReservation = Reservation.builder()
                 .id(0L)
@@ -159,47 +159,7 @@ public class ConcertService implements IConcertService {
         return this.reservationRepository.save(dummyReservation);
     }
 
-    @Override
-    public Reservation reserveWithOptimistic(Long concertSeatId, Long userId, String uuid) {
-        try {
 
-            ConcertSeat concertSeat = this.concertSeatRepository.findByIdForShare(concertSeatId);
-
-            concertSeat.reservation(uuid);
-            this.concertSeatRepository.save(concertSeat);
-            ConcertTime concertTime = concertSeat.getConcertTime();
-            concertTime.decreaseLeftCnt();
-
-            this.concertTimeRepository.save(concertSeat.getConcertTime());
-
-            User user = this.userRepository.findById(userId);
-
-            Reservation dummyReservation = Reservation.builder()
-                    .id(0L)
-                    .status(Reservation.ReservationStatus.RESERVATION)
-                    .concertSeat(concertSeat)
-                    .concertTime(concertSeat.concertTime)
-                    .build();
-
-            Reservation duplicateReservation = this.reservationRepository.duplicateCheck(dummyReservation);
-            if(duplicateReservation != null){
-                throw new BusinessError(ErrorCode.DUPLICATION_RESERVATION_ERROR.getStatus(), ErrorCode.DUPLICATION_RESERVATION_ERROR.getMessage());
-            }
-
-            dummyReservation.setUser(user);
-            dummyReservation.setConcert(concertSeat.concertTime.concert);
-
-            return this.reservationRepository.save(dummyReservation);
-
-
-        } catch(ObjectOptimisticLockingFailureException error){
-            // 낙관적 Lock 진행시 Error 핸들링
-            throw new BusinessError(ErrorCode.ALREADY_RESERVATION_ERROR.getStatus(), ErrorCode.ALREADY_RESERVATION_ERROR.getMessage());
-        }
-
-
-
-    }
 
 
 }

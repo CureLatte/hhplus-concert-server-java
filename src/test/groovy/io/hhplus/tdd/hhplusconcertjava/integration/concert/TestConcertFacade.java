@@ -11,6 +11,9 @@ import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ConcertReposito
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ConcertSeatRepository;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ConcertTimeRepository;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ReservationRepository;
+import io.hhplus.tdd.hhplusconcertjava.concert.domain.service.ConcertService;
+import io.hhplus.tdd.hhplusconcertjava.concert.domain.service.ConcertServiceWithOptimistic;
+import io.hhplus.tdd.hhplusconcertjava.concert.domain.service.ConcertServiceWithPessimistic;
 import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.repository.*;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.GetConcertSeatListResponseDto;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.GetConcertTimeResponseDto;
@@ -22,6 +25,8 @@ import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -604,6 +609,17 @@ public class TestConcertFacade {
     @Nested
     class TestConcurrencyReservationWithPessimistic extends TestBaseIntegration{
 
+        @TestConfiguration
+        static class EmployeeServiceImplTestContextConfiguration {
+            @Bean
+            public ConcertService concertService(ConcertRepository concertRepository, ConcertTimeRepository concertTimeRepository, ConcertSeatRepository concertSeatRepository, ReservationRepository reservationRepository, UserRepository userRepository) {
+                return new ConcertServiceWithPessimistic(
+                        concertRepository, concertTimeRepository, concertSeatRepository, reservationRepository, userRepository
+                );
+            }
+        }
+
+
         @Autowired
         ConcertFacade concertFacade;
 
@@ -684,7 +700,7 @@ public class TestConcertFacade {
 
                 executorService.execute(() -> {
                     try {
-                        this.concertFacade.postReserveSeatPessimistic(concertSeat.id, UUID.randomUUID().toString(), user.id);
+                        this.concertFacade.postReserveSeatV2(concertSeat.id, UUID.randomUUID().toString(), user.id);
                         successCnt.getAndIncrement();
                     } catch(BusinessError businessError){
 
@@ -774,7 +790,7 @@ public class TestConcertFacade {
                     try {
                         ConcertSeat concertSeat = concertSeatList.get(index);
 
-                        this.concertFacade.postReserveSeatPessimistic(concertSeat.id, UUID.randomUUID().toString(), user.id) ;
+                        this.concertFacade.postReserveSeatV2(concertSeat.id, UUID.randomUUID().toString(), user.id) ;
                         successCnt.getAndIncrement();
                     } catch(BusinessError businessError){
 
@@ -802,6 +818,18 @@ public class TestConcertFacade {
 
     @Nested
     class TestConcurrencyWithOptimistic extends TestBaseIntegration{
+
+
+        @TestConfiguration
+        static class EmployeeServiceImplTestContextConfiguration {
+            @Bean
+            public ConcertService concertService(ConcertRepository concertRepository, ConcertTimeRepository concertTimeRepository, ConcertSeatRepository concertSeatRepository, ReservationRepository reservationRepository, UserRepository userRepository) {
+                return new ConcertServiceWithOptimistic(
+                        concertRepository, concertTimeRepository, concertSeatRepository, reservationRepository, userRepository
+                );
+            }
+        }
+
         @Autowired
         ConcertFacade concertFacade;
 
@@ -882,7 +910,7 @@ public class TestConcertFacade {
 
                 executorService.execute(() -> {
                     try {
-                        this.concertFacade.postReserveSeatOptimistic(concertSeat.id, UUID.randomUUID().toString(), user.id);
+                        this.concertFacade.postReserveSeatV2(concertSeat.id, UUID.randomUUID().toString(), user.id);
                         successCnt.getAndIncrement();
                     } catch(BusinessError businessError){
 
@@ -973,7 +1001,7 @@ public class TestConcertFacade {
                     try {
                         ConcertSeat concertSeat = concertSeatList.get(index);
 
-                        this.concertFacade.postReserveSeatOptimistic(concertSeat.id, UUID.randomUUID().toString(), user.id) ;
+                        this.concertFacade.postReserveSeatV2(concertSeat.id, UUID.randomUUID().toString(), user.id) ;
                         successCnt.getAndIncrement();
                     } catch(BusinessError businessError){
 
