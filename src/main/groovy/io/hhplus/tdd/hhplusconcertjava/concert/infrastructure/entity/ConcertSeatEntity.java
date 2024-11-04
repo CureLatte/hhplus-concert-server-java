@@ -3,6 +3,9 @@ package io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.entity;
 
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.ConcertSeat;
 import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.domain.Persistable;
@@ -10,6 +13,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
+@Slf4j
 @Entity
 @Table(name="concert_seat")
 @EntityListeners(AuditingEntityListener.class)
@@ -35,6 +39,11 @@ public class ConcertSeatEntity {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+
+    @Version
+    @ColumnDefault("0")
+    private Integer version;
+
     public ConcertSeat toDomain(){
         return ConcertSeat.builder()
                 .id(this.id)
@@ -44,6 +53,7 @@ public class ConcertSeatEntity {
                 .uuid(this.uuid)
                 .createdAt(this.createdAt)
                 .updatedAt(this.updatedAt)
+                 .version(this.version)
                 .build();
     }
 
@@ -57,6 +67,7 @@ public class ConcertSeatEntity {
         entity.uuid = domain.getUuid();
         entity.createdAt = domain.getCreatedAt();
         entity.updatedAt = domain.getUpdatedAt();
+         entity.version = domain.getVersion();
 
         return entity;
 

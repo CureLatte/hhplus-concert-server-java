@@ -40,6 +40,6 @@ public class ConcertJpaRepository implements ConcertRepository {
 
     @Override
     public void deleteAll() {
-        this.jpaRepository.deleteAll();
+        this.jpaRepository.clearTable();
     }
 }

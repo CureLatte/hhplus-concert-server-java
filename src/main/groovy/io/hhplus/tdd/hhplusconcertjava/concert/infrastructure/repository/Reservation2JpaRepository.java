@@ -36,6 +36,6 @@ public class Reservation2JpaRepository implements ReservationRepository {
 
     @Override
     public void clearTable() {
-        this.jpaRepository.deleteAll();
+        this.jpaRepository.clearTable();
     }
 }

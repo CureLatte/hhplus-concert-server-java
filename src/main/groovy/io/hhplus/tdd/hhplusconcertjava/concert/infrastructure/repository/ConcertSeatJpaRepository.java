@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -42,6 +43,13 @@ public class ConcertSeatJpaRepository implements ConcertSeatRepository {
     }
 
     @Override
+    public ConcertSeat findByIdForShare(Long id) {
+        ConcertSeatEntity concertSeatEntity = this.jpaRepository.findByIdForShare(id);
+
+        return concertSeatEntity.toDomain();
+    }
+
+    @Override
     public List<ConcertSeat> findAllByAvailableSeat(ConcertTime concertTime) {
         List<ConcertSeatEntity> concertSeatEntityList = this.jpaRepository.findAllByAvailableSeat(concertTime.getId());
 
@@ -49,6 +57,7 @@ public class ConcertSeatJpaRepository implements ConcertSeatRepository {
     }
 
     @Override
+    @Transactional
     public ConcertSeat save(ConcertSeat concertSeat) {
         ConcertSeatEntity updatedConcertSeatEntity = this.jpaRepository.save(ConcertSeatEntity.fromDomain(concertSeat));
 
@@ -57,6 +66,6 @@ public class ConcertSeatJpaRepository implements ConcertSeatRepository {
 
     @Override
     public void deleteAll() {
-        this.jpaRepository.deleteAll();
+        this.jpaRepository.clearTable();
     }
 }

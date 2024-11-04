@@ -43,7 +43,7 @@ public class ConcertTimeJpaRepository implements ConcertTimeRepository {
     }
 
     @Override
-    public void deleteAll(Long concertTimeId) {
-        this.jpaRepository.deleteAll();
+    public void deleteAll() {
+        this.jpaRepository.clearTable();
     }
 }

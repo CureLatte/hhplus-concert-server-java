@@ -5,6 +5,7 @@ import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ReservationRepo
 import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.entity.ReservationEntity;
 import jakarta.persistence.LockModeType;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Component
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class ReservationJpaRepository implements ReservationRepository {
@@ -21,6 +23,7 @@ public class ReservationJpaRepository implements ReservationRepository {
 
     @Override
     public Reservation save(Reservation reservation) {
+        log.info("saved Reservation {}", reservation);
         ReservationEntity reservationEntity = this.jpaRepository.save(ReservationEntity.fromDomain(reservation));
 
         return reservationEntity.toDomain();
@@ -51,7 +54,7 @@ public class ReservationJpaRepository implements ReservationRepository {
 
     @Override
     public void clearTable() {
-        this.jpaRepository.deleteAll();
+        this.jpaRepository.clearTable();
     }
 }
 
