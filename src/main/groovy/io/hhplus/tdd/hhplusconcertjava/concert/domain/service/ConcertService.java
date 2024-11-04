@@ -15,6 +15,7 @@ import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -127,9 +128,9 @@ public class ConcertService implements IConcertService {
     }
 
     @Transactional
-    public Reservation reserveV2(Long concertSeatId, Long userId,  String uuid){
+    public Reservation reserveV2(Long concertSeatId, Long userId, String uuid){
 
-        ConcertSeat concertSeat = this.concertSeatRepository.findByIdForUpdate(concertSeatId);
+        ConcertSeat concertSeat = this.concertSeatRepository.findById(concertSeatId);
 
         concertSeat.reservation(uuid);
         this.concertSeatRepository.save(concertSeat);
@@ -138,7 +139,7 @@ public class ConcertService implements IConcertService {
 
         this.concertTimeRepository.save(concertSeat.getConcertTime());
 
-        User user = this.userRepository.findByIdForUpdate(userId);
+        User user = this.userRepository.findById(userId);
 
         Reservation dummyReservation = Reservation.builder()
                 .id(0L)
@@ -157,5 +158,8 @@ public class ConcertService implements IConcertService {
 
         return this.reservationRepository.save(dummyReservation);
     }
+
+
+
 
 }

@@ -13,5 +13,5 @@ public interface ConcertTimeRepository {
 
     public ConcertTime save(ConcertTime concertTime);
 
-    public void deleteAll(Long concertTimeId);
+    public void deleteAll();
 }

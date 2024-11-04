@@ -21,7 +21,8 @@ public interface IConcertService {
 
     public List<ConcertSeat> getConcertSeats(ConcertTime concertTime);
 
+    // 예약하기
     public Reservation reserve(Concert concert, ConcertTime concertTime, ConcertSeat concertSeat, User user, String uuid);
-
-    public Reservation reserveV2(Long concertSeatId, Long userId,  String uuid);
+    // 예약하기 변경
+    public Reservation reserveV2(Long concertSeatId, Long userId, String uuid);
 }

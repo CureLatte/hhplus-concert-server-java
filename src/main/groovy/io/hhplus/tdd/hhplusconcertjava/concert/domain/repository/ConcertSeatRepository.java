@@ -11,6 +11,8 @@ public interface ConcertSeatRepository {
 
     public ConcertSeat findByIdForUpdate(Long id);
 
+    public ConcertSeat findByIdForShare(Long id);
+
     public List<ConcertSeat> findAllByAvailableSeat(ConcertTime concertTime);
 
     public ConcertSeat save(ConcertSeat concertSeat);
