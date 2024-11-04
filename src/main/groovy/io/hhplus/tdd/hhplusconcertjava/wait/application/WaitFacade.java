@@ -14,7 +14,6 @@ public class WaitFacade {
 
 
     public WaitQueue getWaitToken(String uuid, String userId){
-
         WaitQueue waitQueue = this.waitService.getWaitQueue(uuid);
 
         if(userId != null) {
