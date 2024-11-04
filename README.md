@@ -18,5 +18,6 @@
 * ![img.png](docs/swagger.png)
 
 
-## 동시성 
+## 보고서
 * ### [동시성 문제 보고서](docs/concurrencyReport.md)
+* ### [Cache 적용 보고서](docs/cacheReport.md)
