@@ -20,4 +20,4 @@
 
 ## 보고서
 * ### [동시성 문제 보고서](docs/concurrencyReport.md)
-* ### [Cache 적용 보고서](docs/cacheReport.md)
+* ### [대기열 Redis 전환 보고서](docs/convertRedisReport)
