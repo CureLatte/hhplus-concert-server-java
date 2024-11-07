@@ -3,7 +3,10 @@ package io.hhplus.tdd.hhplusconcertjava.wait.domain.service;
 import io.hhplus.tdd.hhplusconcertjava.common.error.BusinessError;
 import io.hhplus.tdd.hhplusconcertjava.common.error.ErrorCode;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.WaitQueue;
+import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.WaitToken;
+import io.hhplus.tdd.hhplusconcertjava.wait.domain.repository.ActivateTokenRepository;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.repository.WaitQueueRepository;
+import io.hhplus.tdd.hhplusconcertjava.wait.domain.repository.WaitTokenRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class WaitService implements IWaitService{
 
     WaitQueueRepository waitQueueRepository;
+    WaitTokenRepository waitTokenRepository;
+    ActivateTokenRepository activateTokenRepository;
 
 
     @Override
@@ -81,6 +86,18 @@ public class WaitService implements IWaitService{
 
         waitQueue.validate();
 
+    }
+
+    @Override
+    public WaitToken getWaitToken(String uuid) {
+
+        WaitToken waitToken = this.waitTokenRepository.getWaitToken(uuid);
+
+        if(waitToken == null){
+            waitToken = this.waitTokenRepository.createWaitToken();
+        }
+
+        return waitToken;
     }
 
 

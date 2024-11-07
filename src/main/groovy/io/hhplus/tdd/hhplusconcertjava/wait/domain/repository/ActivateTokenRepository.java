@@ -1,4 +1,4 @@
 package io.hhplus.tdd.hhplusconcertjava.wait.domain.repository;
 
-public interface WaitQueueRedisRepository {
+public interface ActivateTokenRepository {
 }
