@@ -1,25 +1,25 @@
 package io.hhplus.tdd.hhplusconcertjava.wait.infrastructure;
 
-import io.hhplus.tdd.hhplusconcertjava.common.error.BusinessError;
-import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.WaitToken;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.repository.WaitTokenRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Slf4j
 @Repository
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class WaitQueueRedisRepository implements WaitTokenRepository {
+public class WaitTokenRedisRepository implements WaitTokenRepository {
 
-    RedisTemplate<String, Object> redisTemplate;
+    RedisTemplate<String, String> redisTemplate;
 
-    final String WAIT_QUEUE_KEY="WaitQueue";
+    public final String WAIT_QUEUE_KEY = "WaitQueue";
+
 
     @Override
     public WaitToken getWaitToken(String uuid) {
@@ -28,7 +28,7 @@ public class WaitQueueRedisRepository implements WaitTokenRepository {
             return null;
         }
 
-        ZSetOperations <String, Object> zSetOperations = redisTemplate.opsForZSet();
+        ZSetOperations <String, String> zSetOperations = redisTemplate.opsForZSet();
 
         Long rank = zSetOperations.rank(WAIT_QUEUE_KEY, uuid);
         if(rank == null){
@@ -49,9 +49,9 @@ public class WaitQueueRedisRepository implements WaitTokenRepository {
         double now =  (double) System.currentTimeMillis();
         String uuid = UUID.randomUUID().toString();
 
-        ZSetOperations<String, Object> ZSetOperation =  redisTemplate.opsForZSet();
+        ZSetOperations<String, String> ZSetOperation =  redisTemplate.opsForZSet();
 
-        ZSetOperation.add(this.WAIT_QUEUE_KEY,uuid, now);
+        ZSetOperation.add(WAIT_QUEUE_KEY, uuid, now);
         Long rank = ZSetOperation.rank(this.WAIT_QUEUE_KEY, uuid);
 
         return WaitToken.builder()

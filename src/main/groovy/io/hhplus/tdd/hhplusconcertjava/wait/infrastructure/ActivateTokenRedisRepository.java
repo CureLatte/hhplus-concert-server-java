@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class ActivateQueueRedisRepository implements ActivateTokenRepository {
+public class ActivateTokenRedisRepository implements ActivateTokenRepository {
     RedisTemplate<String, Object> redisTemplate;
 
 }
