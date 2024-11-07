@@ -22,4 +22,6 @@ public interface IWaitService {
     public ActivateToken getActivateToken(String uuid);
 
     public void checkActivateToken(String uuid);
+
+    public void deleteActivateToken(String uuid);
 }

@@ -62,4 +62,9 @@ public class ActivateTokenRedisRepository implements ActivateTokenRepository {
 
         return token;
     }
+
+    @Override
+    public void delete(String uuid) {
+        this.redisTemplate.delete(uuid);
+    }
 }

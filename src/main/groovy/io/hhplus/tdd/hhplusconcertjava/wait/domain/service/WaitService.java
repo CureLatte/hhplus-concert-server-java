@@ -160,4 +160,9 @@ public class WaitService implements IWaitService{
 
 
     }
+
+    @Override
+    public void deleteActivateToken(String uuid) {
+        this.activateTokenRepository.delete(uuid);
+    }
 }

@@ -7,4 +7,6 @@ public interface ActivateTokenRepository {
     public ActivateToken get(String uuid);
 
     public ActivateToken create(String uuid);
+
+    public void delete(String uuid);
 }
