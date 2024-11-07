@@ -22,6 +22,7 @@ public class WaitScheduler {
     public void updateWaitToken(){
         Long updateTokenCnt = 30L;
         this.waitService.updateWaitToken(updateTokenCnt);
+
     }
 
 }

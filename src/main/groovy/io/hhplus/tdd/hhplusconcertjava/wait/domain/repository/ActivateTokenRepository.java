@@ -4,5 +4,7 @@ import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.ActivateToken;
 
 public interface ActivateTokenRepository {
 
+    public ActivateToken get(String uuid);
+
     public ActivateToken create(String uuid);
 }

@@ -16,15 +16,36 @@ import java.time.LocalDateTime;
 @Repository
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class ActivateTokenRedisRepository implements ActivateTokenRepository {
-    RedisTemplate<String, Object> redisTemplate;
+    RedisTemplate<String, String> redisTemplate;
 
     public final Duration TTL = Duration.ofMinutes(30);
 
 
     @Override
+    public ActivateToken get(String uuid) {
+
+        ValueOperations<String, String> operations = redisTemplate.opsForValue();
+
+        String value = operations.get(uuid);
+
+        if(value == null) {
+            return null;
+        }
+
+        Long leftTime = redisTemplate.getExpire(uuid);
+
+        log.info("leftTime:  {}", leftTime);
+
+        return ActivateToken.builder()
+                .uuid(uuid)
+                .expiresAt(LocalDateTime.now().plusSeconds(leftTime))
+                .build();
+    }
+
+    @Override
     public ActivateToken create(String uuid) {
 
-        ValueOperations<String, Object> operations = redisTemplate.opsForValue();
+        ValueOperations<String, String> operations = redisTemplate.opsForValue();
         // 30 분 TTL
         operations.set( uuid, "active" );
 
