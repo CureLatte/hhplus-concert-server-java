@@ -5,6 +5,7 @@ import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.entity.Reservation
 import io.hhplus.tdd.hhplusconcertjava.payment.domain.entity.Payment;
 import io.hhplus.tdd.hhplusconcertjava.point.infrastructure.entity.PointHistoryEntity;
 import io.hhplus.tdd.hhplusconcertjava.user.infrastructure.entity.UserEntity;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name="payment")
 @EntityListeners(AuditingEntityListener.class)
+@Hidden
 public class PaymentEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

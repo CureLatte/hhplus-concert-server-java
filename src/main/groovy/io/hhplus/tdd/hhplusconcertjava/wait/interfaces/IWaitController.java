@@ -14,5 +14,6 @@ public interface IWaitController {
     
     public GetTokenResponseDto getWaitQueue(@RequestHeader Map<String, String> header, @RequestParam Map<String, String> params);
 
+
     public GetWaitTokenResponseDto getWaitToken(@RequestHeader Map<String, String> header, @RequestParam Map<String, String> Params);
 }

@@ -32,6 +32,7 @@ public class WaitController implements IWaitController{
     }
 
     @Override
+    @GetMapping("/waitToken")
     public GetWaitTokenResponseDto getWaitToken(Map<String, String> header, Map<String, String> Params) {
         String userId = header.get("Authorization");
 

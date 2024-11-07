@@ -1,6 +1,7 @@
 package io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.repository;
 
 import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.entity.Reservation2Entity;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.QueryHint;
 import org.springframework.data.jpa.repository.*;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
+@Hidden
 public interface IReservation2JpaRepository extends JpaRepository<Reservation2Entity, Long> {
 
     @Query(value = """
