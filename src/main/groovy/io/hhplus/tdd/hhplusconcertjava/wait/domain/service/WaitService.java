@@ -140,4 +140,24 @@ public class WaitService implements IWaitService{
         return activateToken;
     }
 
+
+
+    @Override
+    public void checkActivateToken(String uuid) {
+
+        if(uuid == null){
+
+            throw new BusinessError(ErrorCode.NOT_FOUND_TOKEN_ERROR.getStatus(), ErrorCode.NOT_FOUND_TOKEN_ERROR.getMessage());
+        }
+
+        ActivateToken activateToken = this.activateTokenRepository.get(uuid);
+        log.info("activateToken: " , activateToken);
+
+
+        if(activateToken == null){
+            throw new BusinessError(ErrorCode.NOT_FOUND_TOKEN_ERROR.getStatus(), ErrorCode.NOT_FOUND_TOKEN_ERROR.getMessage());
+        }
+
+
+    }
 }

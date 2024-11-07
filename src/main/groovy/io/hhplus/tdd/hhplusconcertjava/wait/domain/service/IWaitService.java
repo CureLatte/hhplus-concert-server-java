@@ -20,4 +20,6 @@ public interface IWaitService {
 
     // activateToken
     public ActivateToken getActivateToken(String uuid);
+
+    public void checkActivateToken(String uuid);
 }
