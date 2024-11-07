@@ -33,15 +33,15 @@ public class WaitController implements IWaitController{
 
     @Override
     @GetMapping("/waitToken")
-    public GetWaitTokenResponseDto getWaitToken(Map<String, String> header, Map<String, String> Params) {
+    public GetTokenResponseDto getWaitToken(Map<String, String> header, Map<String, String> Params) {
         String userId = header.get("Authorization");
 
         String token = header.get("token");
 
-        WaitToken waitToken = this.waitFacade.getWaitToken(token);
+        WaitQueue waitToken = this.waitFacade.getWaitToken(token);
 
 
-        return new GetWaitTokenResponseDto(waitToken.getUuid(), waitToken.getTimeStamp(), waitToken.getRank());
+        return new GetTokenResponseDto(waitToken.getUuid(), waitToken.getStatus().name());
     }
 
 

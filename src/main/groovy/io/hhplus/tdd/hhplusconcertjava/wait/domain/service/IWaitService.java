@@ -1,5 +1,6 @@
 package io.hhplus.tdd.hhplusconcertjava.wait.domain.service;
 
+import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.ActivateToken;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.WaitQueue;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.WaitToken;
 
@@ -16,4 +17,7 @@ public interface IWaitService {
     public WaitToken getWaitToken(String uuid);
 
     public void updateWaitToken(Long updateCnt);
+
+    // activateToken
+    public ActivateToken getActivateToken(String uuid);
 }

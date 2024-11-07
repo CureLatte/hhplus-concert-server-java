@@ -1,5 +1,6 @@
 package io.hhplus.tdd.hhplusconcertjava.wait.application;
 
+import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.ActivateToken;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.WaitQueue;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.WaitToken;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.service.WaitService;
@@ -32,8 +33,25 @@ public class WaitFacade {
         return waitQueue;
     }
 
-    public WaitToken getWaitToken(String uuid){
-        return this.waitService.getWaitToken(uuid);
+    public WaitQueue getWaitToken(String uuid){
+        if(uuid != null) {
+            // activateToken first Check
+            ActivateToken activateToken = this.waitService.getActivateToken(uuid);
+
+            if(activateToken != null) {
+                return WaitQueue.builder()
+                        .uuid(activateToken.getUuid())
+                        .status(WaitQueue.WaitStatus.PROCESS)
+                        .build();
+            }
+        }
+
+
+        WaitToken waitToken =  this.waitService.getWaitToken(uuid);
+        return WaitQueue.builder()
+                .status(WaitQueue.WaitStatus.WAIT)
+                .uuid(waitToken.getUuid())
+                .build();
     }
 
 }

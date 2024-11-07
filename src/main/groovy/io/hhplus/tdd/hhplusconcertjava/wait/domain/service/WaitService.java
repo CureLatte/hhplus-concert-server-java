@@ -129,4 +129,15 @@ public class WaitService implements IWaitService{
 
     }
 
+    @Override
+    public ActivateToken getActivateToken(String uuid) {
+
+        ActivateToken activateToken = this.activateTokenRepository.get(uuid);
+        if(activateToken == null){
+            return null;
+        }
+
+        return activateToken;
+    }
+
 }
