@@ -205,4 +205,30 @@ public class TestWaitService {
 
         }
     }
+
+    @Nested
+    class TestDeleteActivateToken extends TestBaseIntegration{
+        @Autowired
+        WaitService waitService;
+
+        @Autowired
+        ActivateTokenRepository activateTokenRepository;
+
+        @Test
+        public void 토큰_삭제_확인__성공(){
+            // Given
+            String uuid = UUID.randomUUID().toString();
+
+            ActivateToken activateToken = this.activateTokenRepository.create(uuid);
+
+            // WHEN
+            this.waitService.deleteActivateToken(uuid);
+
+
+            // THEN
+            ActivateToken checkActivateToken = this.activateTokenRepository.get(uuid);
+            assertNull(checkActivateToken);
+        }
+
+    }
 }
