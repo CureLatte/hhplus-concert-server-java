@@ -1,5 +1,7 @@
 package io.hhplus.tdd.hhplusconcertjava.integration.wait;
 
+import io.hhplus.tdd.hhplusconcertjava.common.error.BusinessError;
+import io.hhplus.tdd.hhplusconcertjava.common.error.ErrorCode;
 import io.hhplus.tdd.hhplusconcertjava.integration.TestBaseIntegration;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.ActivateToken;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.WaitToken;
@@ -16,6 +18,8 @@ import org.springframework.data.redis.core.ZSetOperations;
 
 import java.security.Key;
 import java.time.LocalDateTime;
+import java.util.Random;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -146,5 +150,59 @@ public class TestWaitService {
             assertEquals(expiredAt.getMinute(), activateToken.getExpiresAt().getMinute());
         }
 
+    }
+
+    @Nested
+    class TestCheckActivateToken extends TestBaseIntegration{
+        @Autowired
+        WaitService waitService;
+
+        @Autowired
+        ActivateTokenRepository activateTokenRepository;
+
+        @Test
+        public void UUID_가_없을_경우__에러(){
+
+            // GIVEN
+            String uuid = null;
+
+            // WHEN
+            BusinessError error = assertThrows(BusinessError.class, () -> waitService.checkActivateToken(uuid));
+
+            // THEN
+            assertEquals(ErrorCode.NOT_FOUND_TOKEN_ERROR.getStatus(), error.getStatus());
+            assertEquals(ErrorCode.NOT_FOUND_TOKEN_ERROR.getMessage(), error.getMessage());
+        }
+
+        @Test
+        public void 잘못된_UUID_일_경우__예러(){
+            // GIVEN
+            String uuid = UUID.randomUUID().toString();
+
+            // WHEN
+            BusinessError error = assertThrows(BusinessError.class, () -> waitService.checkActivateToken(uuid));
+
+            // THEN
+            assertEquals(ErrorCode.NOT_FOUND_TOKEN_ERROR.getStatus(), error.getStatus());
+            assertEquals(ErrorCode.NOT_FOUND_TOKEN_ERROR.getMessage(), error.getMessage());
+
+        }
+
+
+        @Test
+        public void 활성화_된_토큰_일_경우__성공(){
+            // GIVEN
+            String uuid = UUID.randomUUID().toString();
+
+            ActivateToken activateToken = this.activateTokenRepository.create(uuid);
+
+
+            // WHEN
+            assertDoesNotThrow(() -> waitService.checkActivateToken(uuid));
+
+            // THEN
+
+
+        }
     }
 }
