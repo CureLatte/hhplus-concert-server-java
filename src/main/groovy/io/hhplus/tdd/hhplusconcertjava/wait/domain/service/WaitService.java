@@ -2,6 +2,7 @@ package io.hhplus.tdd.hhplusconcertjava.wait.domain.service;
 
 import io.hhplus.tdd.hhplusconcertjava.common.error.BusinessError;
 import io.hhplus.tdd.hhplusconcertjava.common.error.ErrorCode;
+import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.ActivateToken;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.WaitQueue;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.WaitToken;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.repository.ActivateTokenRepository;
@@ -11,6 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -102,6 +105,28 @@ public class WaitService implements IWaitService{
         log.info(waitToken.toString());
 
         return waitToken;
+    }
+
+    @Override
+    public void updateWaitToken(Long updateCnt) {
+        // update Wait Token
+
+        // 상위 N 명 조회
+        List<WaitToken> waitTokenList = this.waitTokenRepository.getFastestWaitTokens(updateCnt);
+
+        if(waitTokenList == null){
+            return;
+        }
+
+        for(WaitToken waitToken : waitTokenList){
+
+            ActivateToken activateToken = this.activateTokenRepository.create(waitToken.getUuid());
+
+            this.waitTokenRepository.deleteToken(waitToken);
+        }
+
+
+
     }
 
 

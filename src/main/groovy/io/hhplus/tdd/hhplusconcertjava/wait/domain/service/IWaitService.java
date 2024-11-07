@@ -14,4 +14,6 @@ public interface IWaitService {
     public void checkWaitQueue(String uuid);
 
     public WaitToken getWaitToken(String uuid);
+
+    public void updateWaitToken(Long updateCnt);
 }

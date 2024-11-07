@@ -19,4 +19,9 @@ public class WaitScheduler {
         // this.waitService.updateProcessWaitQueue();
     }
 
+    public void updateWaitToken(){
+        Long updateTokenCnt = 30L;
+        this.waitService.updateWaitToken(updateTokenCnt);
+    }
+
 }
