@@ -16,7 +16,7 @@ public class WaitScheduler {
 
     @Scheduled(cron="*/5 * * * * *")
     public void updateProcessCnt(){
-        this.waitService.updateProcessWaitQueue();
+        // this.waitService.updateProcessWaitQueue();
     }
 
 }

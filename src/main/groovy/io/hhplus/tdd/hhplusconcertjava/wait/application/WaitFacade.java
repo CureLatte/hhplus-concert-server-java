@@ -1,16 +1,13 @@
 package io.hhplus.tdd.hhplusconcertjava.wait.application;
 
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.WaitQueue;
+import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.WaitToken;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.service.WaitService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Component
@@ -24,7 +21,7 @@ public class WaitFacade {
     WaitService waitService;
 
 
-    public WaitQueue getWaitToken(String uuid, String userId){
+    public WaitQueue getWaitQueue(String uuid, String userId){
         WaitQueue waitQueue = this.waitService.getWaitQueue(uuid);
 
         if(userId != null) {
@@ -33,6 +30,10 @@ public class WaitFacade {
         }
 
         return waitQueue;
+    }
+
+    public WaitToken getWaitToken(String uuid){
+        return this.waitService.getWaitToken(uuid);
     }
 
 }

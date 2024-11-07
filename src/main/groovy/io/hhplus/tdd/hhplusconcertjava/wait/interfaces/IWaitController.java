@@ -1,9 +1,8 @@
 package io.hhplus.tdd.hhplusconcertjava.wait.interfaces;
 
 import io.hhplus.tdd.hhplusconcertjava.wait.interfaces.dto.GetTokenResponseDto;
-import io.swagger.v3.oas.annotations.Operation;
+import io.hhplus.tdd.hhplusconcertjava.wait.interfaces.dto.GetWaitTokenResponseDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -13,6 +12,7 @@ import java.util.Map;
 public interface IWaitController {
 
     
-    public GetTokenResponseDto getWaitToken(@RequestHeader Map<String, String> header, @RequestParam Map<String, String> params);
+    public GetTokenResponseDto getWaitQueue(@RequestHeader Map<String, String> header, @RequestParam Map<String, String> params);
 
+    public GetWaitTokenResponseDto getWaitToken(@RequestHeader Map<String, String> header, @RequestParam Map<String, String> Params);
 }

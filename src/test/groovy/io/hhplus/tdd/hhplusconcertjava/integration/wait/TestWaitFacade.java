@@ -32,7 +32,7 @@ public class TestWaitFacade {
             // GIVEN
 
             // WHEN
-            WaitQueue waitQueue = this.waitFacade.getWaitToken(null, null);
+            WaitQueue waitQueue = this.waitFacade.getWaitQueue(null, null);
 
             // THEN
             assertEquals(waitQueue.getStatus(), WaitQueue.WaitStatus.WAIT);
@@ -46,7 +46,7 @@ public class TestWaitFacade {
 
 
             // WHEN
-            WaitQueue checkWaitQueue = this.waitFacade.getWaitToken(waitQueue.getUuid(), null);
+            WaitQueue checkWaitQueue = this.waitFacade.getWaitQueue(waitQueue.getUuid(), null);
 
             // THEN
             assertEquals(checkWaitQueue.getStatus(), WaitQueue.WaitStatus.WAIT);
@@ -61,7 +61,7 @@ public class TestWaitFacade {
             waitScheduler.updateProcessCnt();
 
             // WHEN
-            WaitQueue checkWaitQueue = this.waitFacade.getWaitToken(waitQueue.getUuid(), null);
+            WaitQueue checkWaitQueue = this.waitFacade.getWaitQueue(waitQueue.getUuid(), null);
 
             // THEN
 
