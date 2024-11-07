@@ -19,6 +19,7 @@ public class WaitScheduler {
         // this.waitService.updateProcessWaitQueue();
     }
 
+    @Scheduled(cron = "*/10 * * * * *")
     public void updateWaitToken(){
         Long updateTokenCnt = 30L;
         this.waitService.updateWaitToken(updateTokenCnt);
