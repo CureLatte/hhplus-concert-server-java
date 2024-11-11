@@ -10,6 +10,8 @@ import io.hhplus.tdd.hhplusconcertjava.point.domain.entity.PointHistory;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.service.PointService;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.service.UserService;
+import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.ActivateToken;
+import io.hhplus.tdd.hhplusconcertjava.wait.domain.service.WaitService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,9 +24,10 @@ public class PaymentFacade {
     UserService userService;
     ConcertService concertService;
     PointService pointService;
+    WaitService waitService;
 
     @Transactional
-    public PostPayReservationResponseDto payReservation(Long userId, Long reservationId, int payAmount){
+    public PostPayReservationResponseDto payReservation(Long userId, Long reservationId, int payAmount, String uuid){
 
         User user = this.userService.getUser(userId);
 
@@ -34,6 +37,9 @@ public class PaymentFacade {
         PointHistory pointHistory = this.pointService.use(point, payAmount);
 
         Payment payment = this.paymentService.payReservation(user, reservation, pointHistory);
+
+
+        this.waitService.deleteActivateToken(uuid);
 
         return new PostPayReservationResponseDto(payment != null);
     }
