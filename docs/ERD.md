@@ -40,11 +40,96 @@ erDiagram
     Concert{
         id int 
         title string 
-        status int 
+        runing_time int
+        status int
+        explanation text
+        
+        concert_place_id int
+        concert_view_rank_id int
+        concert_category_id int
+        
+        
         createdAt datetime
         updatedAt datetime 
+        deletedAt datetime
     }
+
+
     Concert ||--o{ ConcertTime: has
+    
+    ConcertViewRank{
+        id int    
+        name varchar
+        limit_age int
+        
+        createdAt datetime
+        updatedAt datetime
+        delatedAt datetime
+    }
+
+ConcertViewRank ||--o{ Concert: has
+    
+   
+    
+
+    ConcertPlace {
+        id int
+        name varchar
+        address varchar 
+        latitude double
+        longitude double
+        
+        
+        createdAt datetime
+        updatedAt datetime 
+        delatedAt datetime
+            
+    }
+
+ConcertPlace ||--o{ Concert : has
+    
+     
+    ConcertCategory{
+        id int
+        title varchar
+        
+        
+
+        createdAt datetime
+        updatedAt datetime
+        delatedAt datetime
+    }
+    
+    ConcertCategory ||--o{ Concert: has
+     
+    ConcertCastList{
+        id int
+        concert_id int 
+        concet_cast_id int
+        status int
+        
+        createdAt datetime
+        updatedAt datetime
+        delatedAt datetime
+        
+    }
+
+    ConcertCastList ||--o{ ConcertCast: has
+    ConcertCastList ||--o{ Concert : has
+
+
+    ConcertCast{
+        id int
+        name varchar
+        
+        
+        createdAt datetime
+        udpatedAt datetime 
+        deletedAt datetime
+        
+    }  
+    
+
 
     ConcertTime {
         id int
