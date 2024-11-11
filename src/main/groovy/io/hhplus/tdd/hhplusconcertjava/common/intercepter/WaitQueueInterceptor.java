@@ -24,7 +24,8 @@ public class WaitQueueInterceptor implements HandlerInterceptor {
         String token = request.getHeader("token");
         log.info("token {}", token);
 
-        this.waitService.checkWaitQueue(token);
+
+        this.waitService.checkActivateToken(token);
 
         return true;
 

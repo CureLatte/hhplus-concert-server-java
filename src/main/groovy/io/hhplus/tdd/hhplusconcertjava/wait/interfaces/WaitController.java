@@ -2,8 +2,9 @@ package io.hhplus.tdd.hhplusconcertjava.wait.interfaces;
 
 import io.hhplus.tdd.hhplusconcertjava.wait.application.WaitFacade;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.WaitQueue;
+import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.WaitToken;
 import io.hhplus.tdd.hhplusconcertjava.wait.interfaces.dto.GetTokenResponseDto;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.hhplus.tdd.hhplusconcertjava.wait.interfaces.dto.GetWaitTokenResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,14 +18,31 @@ public class WaitController implements IWaitController{
 
     @Override
     @GetMapping("/wait")
-    public GetTokenResponseDto getWaitToken(@RequestHeader Map<String, String> header, @RequestParam Map<String, String> params) {
+    public GetTokenResponseDto getWaitQueue(@RequestHeader Map<String, String> header, @RequestParam Map<String, String> params) {
 
         String userId = header.get("Authorization");
 
         String token = header.get("token");
 
-        WaitQueue waitQueue = this.waitFacade.getWaitToken(token,userId);
+        WaitQueue waitQueue = this.waitFacade.getWaitQueue(token,userId);
+
+
 
         return new GetTokenResponseDto(waitQueue.getUuid(), waitQueue.getStatus().name());
     }
+
+    @Override
+    @GetMapping("/waitToken")
+    public GetTokenResponseDto getWaitToken(Map<String, String> header, Map<String, String> Params) {
+        String userId = header.get("Authorization");
+
+        String token = header.get("token");
+
+        WaitQueue waitToken = this.waitFacade.getWaitToken(token);
+
+
+        return new GetTokenResponseDto(waitToken.getUuid(), waitToken.getStatus().name());
+    }
+
+
 }

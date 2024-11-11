@@ -19,4 +19,6 @@ public interface WaitQueueRepository {
     public Integer countProcess();
 
     public void updateStatusOrderByCreatedAt(Integer leftCnt);
+
+    public void clearTable();
 }

@@ -18,5 +18,6 @@
 * ![img.png](docs/swagger.png)
 
 
-## 동시성 
+## 보고서
 * ### [동시성 문제 보고서](docs/concurrencyReport.md)
+* ### [대기열 Redis 전환 보고서](docs/convertRedisReport)

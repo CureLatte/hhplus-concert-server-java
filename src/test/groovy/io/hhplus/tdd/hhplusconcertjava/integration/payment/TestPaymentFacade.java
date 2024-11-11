@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -131,7 +132,7 @@ public class TestPaymentFacade {
 
 
             // WHEN
-            this.paymentFacade.payReservation(user.getId(), reservation.getId(), concertPrice);
+            this.paymentFacade.payReservation(user.getId(), reservation.getId(), concertPrice, UUID.randomUUID().toString());
 
             // THEN
             // 예약 상태 확인

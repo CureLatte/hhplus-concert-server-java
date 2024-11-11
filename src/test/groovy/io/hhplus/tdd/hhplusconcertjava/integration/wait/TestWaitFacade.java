@@ -5,6 +5,7 @@ import io.hhplus.tdd.hhplusconcertjava.wait.application.WaitFacade;
 import io.hhplus.tdd.hhplusconcertjava.wait.application.WaitScheduler;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.WaitQueue;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.repository.WaitQueueRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +28,17 @@ public class TestWaitFacade {
         @Autowired
         WaitQueueRepository waitQueueRepository;
 
+        @BeforeEach
+        public void DBReset(){
+            waitQueueRepository.clearTable();
+        }
+
         @Test
         public void 유저_토큰_생성_조회__성공(){
             // GIVEN
 
             // WHEN
-            WaitQueue waitQueue = this.waitFacade.getWaitToken(null, null);
+            WaitQueue waitQueue = this.waitFacade.getWaitQueue(null, null);
 
             // THEN
             assertEquals(waitQueue.getStatus(), WaitQueue.WaitStatus.WAIT);
@@ -46,7 +52,7 @@ public class TestWaitFacade {
 
 
             // WHEN
-            WaitQueue checkWaitQueue = this.waitFacade.getWaitToken(waitQueue.getUuid(), null);
+            WaitQueue checkWaitQueue = this.waitFacade.getWaitQueue(waitQueue.getUuid(), null);
 
             // THEN
             assertEquals(checkWaitQueue.getStatus(), WaitQueue.WaitStatus.WAIT);
@@ -61,7 +67,7 @@ public class TestWaitFacade {
             waitScheduler.updateProcessCnt();
 
             // WHEN
-            WaitQueue checkWaitQueue = this.waitFacade.getWaitToken(waitQueue.getUuid(), null);
+            WaitQueue checkWaitQueue = this.waitFacade.getWaitQueue(waitQueue.getUuid(), null);
 
             // THEN
 

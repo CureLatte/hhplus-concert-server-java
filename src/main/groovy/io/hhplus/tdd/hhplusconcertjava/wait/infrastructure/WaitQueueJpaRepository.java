@@ -83,5 +83,10 @@ public class WaitQueueJpaRepository implements WaitQueueRepository {
 
     }
 
+    @Override
+    public void clearTable() {
+        this.iwaitQueueJpaRepository.clearTable();
+    }
+
 
 }
