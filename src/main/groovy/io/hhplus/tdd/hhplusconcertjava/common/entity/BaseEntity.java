@@ -1,9 +1,7 @@
 package io.hhplus.tdd.hhplusconcertjava.common.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -15,6 +13,10 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
 public abstract class BaseEntity {
+
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
     @Column(name = "created_at", updatable = false)
     @CreatedDate
     private LocalDateTime createdAt;
