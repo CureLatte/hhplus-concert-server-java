@@ -11,6 +11,15 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 class ApiControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
+    public ResponseEntity<ErrorResponseDto> handleExceptionError(Exception error) {
+
+        System.out.println("Business Error:: "  + error);
+
+        return ResponseEntity.status(500).body(new ErrorResponseDto("500", error.getMessage()));
+    }
+
+
+    @ExceptionHandler(value = BusinessError.class)
     public ResponseEntity<ErrorResponseDto> handleBusinessError(BusinessError businessError) {
 
         System.out.println("Business Error:: "  + businessError);

@@ -2,15 +2,17 @@ package io.hhplus.tdd.hhplusconcertjava.concert.interfaces;
 
 import io.hhplus.tdd.hhplusconcertjava.common.error.BusinessError;
 import io.hhplus.tdd.hhplusconcertjava.concert.application.ConcertFacade;
-import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.GetConcertSeatListResponseDto;
-import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.GetConcertTimeResponseDto;
-import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.PostReserveSeatRequestDto;
-import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.PostReserveSeatResponseDto;
+import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.Concert;
+import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@Slf4j
 @RestController
 @RequestMapping
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -50,5 +52,12 @@ public class ConcertController implements IConcertController {
         return this.concertFacade.postReserveSeat(
                 requestDto.concertId(), requestDto.concertTimeId(), requestDto.concertSeatId(), requestDto.uuid, userId
         );
+    }
+
+    @Override
+    @GetMapping("/concert/{concertId}/detail")
+    public GetConcertInfoDetailDto getConcertInfoDetail(@PathVariable("concertId") Long concertId) {
+
+        return this.concertFacade.getConcertDetailInfo(concertId);
     }
 }

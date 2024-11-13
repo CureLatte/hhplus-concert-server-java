@@ -6,6 +6,7 @@ import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.ConcertSeat;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.ConcertTime;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.Reservation;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.service.IConcertService;
+import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.GetConcertInfoDetailDto;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.GetConcertSeatListResponseDto;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.GetConcertTimeResponseDto;
 import io.hhplus.tdd.hhplusconcertjava.concert.interfaces.dto.PostReserveSeatResponseDto;
@@ -111,5 +112,27 @@ public class ConcertFacade {
 
     }
 
+
+    public GetConcertInfoDetailDto getConcertDetailInfo(Long concertId){
+
+        try {
+
+            Concert concert = this.concertService.getConcert(concertId);
+
+
+
+
+
+            return GetConcertInfoDetailDto.builder()
+                    .concertId(concert.getId())
+
+                    .build();
+
+        } catch (BusinessError businessError){
+            log.error("[ConcertFacade] getConcertDetailInfo: {}", businessError.getMessage());
+
+            throw businessError;
+        }
+    }
 
 }
