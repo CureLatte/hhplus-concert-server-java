@@ -36,6 +36,7 @@ public class ConcertService implements IConcertService {
 
     @Override
     public Concert getConcert(Long concertId) {
+
         Concert concert = this.concertRepository.findById(concertId);
 
         if(concert == null) {
