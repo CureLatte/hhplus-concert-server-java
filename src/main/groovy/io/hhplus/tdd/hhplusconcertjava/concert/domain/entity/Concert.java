@@ -16,6 +16,9 @@ public class Concert {
     public LocalDateTime createdAt;
     public LocalDateTime updatedAt;
 
+    public ConcertPlace place;
+    public ConcertViewRank viewRank;
+
 
     public enum ConcertStatus{
         READY, OPEN, CLOSED
