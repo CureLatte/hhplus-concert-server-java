@@ -32,27 +32,19 @@ public class PaymentFacade {
     @Transactional
     public PostPayReservationResponseDto payReservation(Long userId, Long reservationId, int payAmount, String uuid){
 
-        try {
+        User user = this.userService.getUser(userId);
 
-            User user = this.userService.getUser(userId);
+        Reservation reservation = this.concertService.getReservation(reservationId);
+        Point point = this.pointService.getPoint(user);
 
-            Reservation reservation = this.concertService.getReservation(reservationId);
-            Point point = this.pointService.getPoint(user);
+        PointHistory pointHistory = this.pointService.use(point, payAmount);
 
-            PointHistory pointHistory = this.pointService.use(point, payAmount);
-
-            Payment payment = this.paymentService.payReservation(user, reservation, pointHistory);
+        Payment payment = this.paymentService.payReservation(user, reservation, pointHistory);
 
 
-            this.waitService.deleteActivateToken(uuid);
+        this.waitService.deleteActivateToken(uuid);
 
-            return new PostPayReservationResponseDto(payment != null);
-
-        } catch (BusinessError businessError){
-            log.error("[PaymentFacade] payReservation: {}" , businessError.getMessage());
-            throw businessError;
-        }
-
+        return new PostPayReservationResponseDto(payment != null);
 
     }
 

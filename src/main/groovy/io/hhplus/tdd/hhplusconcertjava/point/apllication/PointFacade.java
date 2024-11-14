@@ -25,44 +25,25 @@ public class PointFacade {
 
     public GetPointResponseDto getPoint(Long userId){
 
-        try {
-
-            User user = this.userService.getUser(userId);
+        User user = this.userService.getUser(userId);
 
 
-            Point point = this.pointService.getPoint(user);
+        Point point = this.pointService.getPoint(user);
 
-            return new GetPointResponseDto(point.balance);
-
-        } catch (BusinessError businessError) {
-
-            log.error("[PointFacade] getPoint: {}", businessError.getMessage());
-            throw businessError;
-        }
-
+        return new GetPointResponseDto(point.balance);
 
     }
 
 
     public PostPointChargeResponseDto chargePoint(Long userId, int chargePoint){
 
-        try {
+        User user = this.userService.getUser(userId);
 
-            User user = this.userService.getUser(userId);
+        Point point = this.pointService.getPoint(user);
 
-            Point point = this.pointService.getPoint(user);
+        PointHistory pointHistory = this.pointService.charge(point, chargePoint);
 
-            PointHistory pointHistory = this.pointService.charge(point, chargePoint);
-
-            return new PostPointChargeResponseDto(point.balance);
-
-        } catch (BusinessError businessError) {
-
-            log.error("[PointFacade] chargePoint: {}", businessError.getMessage());
-
-            throw businessError;
-
-        }
+        return new PostPointChargeResponseDto(point.balance);
 
     }
 }
