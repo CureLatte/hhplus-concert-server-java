@@ -21,3 +21,4 @@
 ## 보고서
 * ### [동시성 문제 보고서](docs/concurrencyReport.md)
 * ### [대기열 Redis 전환 보고서](docs/convertRedisReport)
+* ### [Index 를 활용한 Query 최적화](docs/DBIndex.md)
