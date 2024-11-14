@@ -2,6 +2,7 @@ package io.hhplus.tdd.hhplusconcertjava.integration;
 
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.Concert;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.ConcertPlace;
+import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.ConcertTime;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ConcertRepository;
 import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.entity.ConcertEntity;
 import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.repository.ConcertJpaRepository;
@@ -18,6 +19,7 @@ import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class BigDataInsert {
     private static final Logger log = LoggerFactory.getLogger(BigDataInsert.class);
@@ -25,6 +27,63 @@ public class BigDataInsert {
     private Connection connection;
 
     public void execute(String sql){
+
+    }
+
+    public static String insertConcertTime(){
+        String baseSql = """
+        
+            insert into concert_time(concert_id, status, price, max_cnt, left_cnt, start_time, end_time)
+            
+            values 
+        
+        """;
+
+        List<ConcertTime> concertTimeList = new ArrayList<ConcertTime>();
+
+
+
+        for(int i=0; i< 10000;i++){
+
+            int concertId = (int)( Math.random() * 1690000 + 29);
+
+            LocalDateTime startDate  = LocalDateTime.of(2024, i%12 ==0? 12: i%12, i%30 ==0? 30:i%30   , 0, 0, 0);
+
+
+            concertTimeList.add(ConcertTime.builder()
+                            .concert(Concert.builder()
+                                    .id((long)concertId )
+
+                                    .build())
+                            .price(1000)
+                            .startTime(startDate)
+                            .endTime(startDate.plusHours(2))
+                            .maxCnt(30)
+                            .status(ConcertTime.ConcertTimeStatus.ON_SALE)
+                    .build());
+
+        }
+
+        String value = "";
+
+        for(ConcertTime concertTime : concertTimeList){
+            value += "(";
+
+            value +=  concertTime.concert.getId() + ",";
+
+            value +=  "\"" + concertTime.status.name() + "\",";
+            value +=  "\"" + concertTime.price + "\",";
+            value +=  "\"" + concertTime.maxCnt + "\",";
+            value +=  "\"" + concertTime.leftCnt + "\",";
+            value +=  "\"" + concertTime.startTime + "\",";
+            value +=  "\"" + concertTime.endTime + "\"";
+
+
+            value += "),";
+        }
+
+
+        return baseSql + value.substring(0,value.length()-1);
 
     }
 
@@ -153,14 +212,21 @@ public class BigDataInsert {
 
             log.info("connection established");
 
-            for(int j=0; j<100; j++){
-                String sql = insertConcert(1000L);
-                log.info("insert sql: " + sql);
-                stmt.executeUpdate(sql);
+//            for(int j=0; j<100; j++){
+//                String sql = insertConcert(1000L);
+//                log.info("insert sql: " + sql);
+//                stmt.executeUpdate(sql);
+//
+//            }
 
+            // stmt.executeUpdate(insertConcertPlace());
+
+            for(int j=0; j<100; j++){
+                stmt.executeUpdate(insertConcertTime());
+                log.info("{} insert!", j);
             }
 
-            stmt.executeUpdate(insertConcertPlace());
+
 
             if(stmt != null){
                 stmt.close();

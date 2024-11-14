@@ -12,7 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="concert")
+@Table(name="concert", indexes = {@Index(name = "idx_title", columnList = "title")})
 @EntityListeners(AuditingEntityListener.class)
 public class ConcertEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
