@@ -7,13 +7,14 @@ import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PointJpaRepository implements PointRepository {
     IPointJpaRepository jpaRepository;
 
-
+    @Transactional
     @Override
     public Point findByUser(User user) {
         PointEntity pointEntity = this.jpaRepository.findByUserId(user.id);
