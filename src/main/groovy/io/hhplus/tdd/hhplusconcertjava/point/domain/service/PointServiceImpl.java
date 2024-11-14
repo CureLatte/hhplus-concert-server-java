@@ -32,6 +32,7 @@ public class PointServiceImpl implements PointService {
         return point;
     }
 
+    @Transactional
     @Override
     public PointHistory charge(Point point, int chargePoint) {
 
