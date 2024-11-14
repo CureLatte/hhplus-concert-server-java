@@ -42,7 +42,7 @@
 ### 단점
 해당 방식은 순서정렬을 위해 보인는 거와 다르게 Database 가 숨겨진 정렬 데이터를 갖고 있는데 
 이는 조회할 때는 문제가 되질 않지만 
-해당 Table 에서 Create, Update, Delete 가 실행이 될 때마다 
+해당 `Table` 에서 `Create`, `Update`, `Delete` 가 실행이 될 때마다 
 숨겨진 정렬조건을 다시 재 정렬해야하는 문제가 발생한다.
 
 즉 테이블의 변화가 가장 많이 일어나는 곳에서는 사용할수록 성능이 오히려 나빠지는 단점이 존재한다.
@@ -109,7 +109,7 @@
 <br>
 
 
-## 적합한 INDEX 사용 방법 
+## 적합한 `INDEX` 사용 방법 
 
 적합한 `Index` 를 사용하기 위해선 어떻게 해야 순서정렬에 용인한가? 를 기준으로 봐도 좋을 것같다. 
 
@@ -126,7 +126,7 @@
 
 ### 2. 인덱스로 설정된 `Column` 그대로 사용해야한다.
 
-`Index` 로 testColumn 을 지정한다면 
+`Index` 로 `testColumn` 을 지정한다면 
 
 `Index` 를 이용하기 위해선 `where` 절에서 `testColumn` 자체로 정렬을 해야만한다.
 
@@ -165,7 +165,7 @@
 
 ## 수정 사항
 
-인덱스를 생성하기 위한 적절한 API 는 검색 API 가 
+인덱스를 생성하기 위한 적절한 `API` 는 검색 `API` 가 
 적절할 것으로 보인다.
 
 검색 조건에서 주로 사용하는 조건은 아래로 정리가 될 수 있다.
@@ -200,9 +200,9 @@
 
 ## 코드 구현
 
-JPA 를 이용하기 때문에 
+`JPA` 를 이용하기 때문에 
 
-JPA Entity 에서 Index 설정을 해주면 된다.
+`JPA Entity` 에서 `Index` 설정을 해주면 된다.
 
 ### CONCERT ENTITY
 
@@ -233,12 +233,115 @@ public class ConcertTimeEntity {
 ```
 
 
+### MYSQL 설정
+테스트를 진행하려면
+`Query` 를 이용하여 직접 인덱스를 맺어서 테스트를 할수도 있다.
+
+
+#### 인덱스 조회
+```mysql
+show index from [테이블명];
+
+# 예시)
+show index from concert;
+
+```
+#### 인덱스 생성
+```mysql
+create index [인덱스 이름] on [테이블 명]([컬럼 명] [ASC / DESC])
+
+# 예시)
+create index idx_title on concert(title asc)
+create index idx_id_title on concert(id, title asc)
+```
+
+#### 인덱스 삭제 
+``` mysql
+drop index [인덱스 이름] from [테이블 명];
+
+# 예시
+drop index idx_title from concert;
+```
+
 <br>
+
+
+## 테스트
+해당 인덱스의 성능을 확인하기 위해 대용량 `Data` 를 넣고 테스트를 진행해 보았습니다.  
+[Insert Data 스크립트 참조](../src/test/groovy/io/hhplus/tdd/hhplusconcertjava/integration/BigDataInsert.java)  
+
+
+* 콘서트 데이터 (table: `Concert`)
+  * 제목으로 검색할 가능성이 많으므로 제목이 다른 약 `1,700,000` 만건에 대해 진행
+  * concert_번호 형식 (`concert_1`, `concert_2`, ...) + concertTheme 형식 ( `제 2 회 아이유 콘서트`)   
+    
+
+
+
+### 인덱스 사용 전
+* `Table Index` 리스트 
+<img src="./no_Index.png" height="100">
+
+* Query 
+```mysql 
+select *
+from concert
+where title = "제 7804 회아이유 콘서트";
+```
+
+* 실행 계획  - 인덱스 사용 X 확인
+<img src="./no_index_explain.png" height="100">
+
+* 진행 시간  
+<img src="./no_index_running_time.png"  height="100">
+    
+
+### 약 `1초 550 ms` 소요 
+
+<br>
+
+
+### 인덱스 사용 후
+***
+
+* `Table Index` 리스트
+  <img src="./index.png" height="100">
+
+* Query
+```mysql 
+select *
+from concert
+where title = "제 7804 회아이유 콘서트";
+```
+
+* 실행 계획 - 인덱스 사용 확인
+  <img src="./index_explain.png" height="100">
+
+* 진행 시간  
+  <img src="./index_running_time.png"  height="100">
+
+### 약 `292 ms` 소요
+
+
+
+인덱스 사용전 보다 `1초 258ms` 만큼 빨리 결과가 나왔다.
+
+`430%` 정도 성능이 향상됨
+
+물론 제한 적인 상황이기도 하고 비교한 데이터가 매우 많아서 
+이례적인 수치지만 `INDEX` 를 사용하면 이전보다 성능 향상이 더 된다는 것은
+확연히 차이를 보여준것 같다.
+
+
+
+<br>
+
+
 
 ## 마무리
 
-이처럼 2개의 Table 에 Index 를 적용한다면
-조회시 더 나은 선능 향상을 기대해 볼 수 있을 것 같습니다.
+이처럼 2개의 `Table` 에 `Index` 를 적용한다면
+조회시 더 나은 선능 향상을 기대해 볼 수 있을 거라 예상된다.
 
 
 

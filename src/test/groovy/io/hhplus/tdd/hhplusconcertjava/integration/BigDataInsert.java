@@ -47,7 +47,11 @@ public class BigDataInsert {
 
             int concertId = (int)( Math.random() * 1690000 + 29);
 
-            LocalDateTime startDate  = LocalDateTime.of(2024, i%12 ==0? 12: i%12, i%30 ==0? 30:i%30   , 0, 0, 0);
+            int month = (int)( Math.random() * 12) + 1;
+
+            int day = (int)( Math.random() * 28) + 1;
+
+            LocalDateTime startDate  = LocalDateTime.of(2024, month, day  , 0, 0, 0);
 
 
             concertTimeList.add(ConcertTime.builder()
@@ -162,11 +166,46 @@ public class BigDataInsert {
 
         String value = " ";
 
+        List<String> concertThemeList = List.of(
+                "아이유 콘서트",
+                "김장훈 콘서트",
+                "청춘 드림 콘서트",
+                "아이유 1집 콘서트",
+                "국민 토론 콘서트",
+                "국제 대회 콘서트",
+                "국제 해킹 대회 콘서트",
+                "북 콘서트",
+                "30주년 콘서트",
+                "10주년 콘서트",
+                "심리상담 콘서트",
+                "직업 콘서트",
+                "싸이 콘서트",
+                "흠뻑쇼 콘서트",
+                "블랙핑크 콘서트",
+                "러블리즈 콘서트",
+                "방탄 소년단 콘서트",
+                "윤하 콘서트",
+                "성시경 콘서트",
+                "윤종신 콘서트",
+                "여자친구 콘서트",
+                "블락비 콘서트",
+                "뉴진스 콘서트"
+        );
+
+
+
+
         for(int i=0; i<cnt; i++){
             value += "(";
 
+            int randomIndex = (int) (Math.random() * concertThemeList.size());
+            int count = (int)((Math.random() * 10000) + 1);
+
+            String concertTitle = "제 "+  count + " 회 " + concertThemeList.get(randomIndex);
+
+
             Concert concert = Concert.builder()
-                    .title("concert_" + i)
+                    .title(concertTitle)
                     .status(Concert.ConcertStatus.OPEN)
                     .createdAt(LocalDateTime.now())
                     .updatedAt(LocalDateTime.now())
@@ -183,7 +222,7 @@ public class BigDataInsert {
 
 
         String sql = baseSql + value.substring(0, value.length()-1);
-        log.info(sql);
+        // log.info(sql);
         return sql;
 
     }
@@ -206,25 +245,23 @@ public class BigDataInsert {
             Connection connection = DriverManager.getConnection(url, username, pwd);
 
 
-
-
             Statement stmt = connection.createStatement();
 
             log.info("connection established");
 
-//            for(int j=0; j<100; j++){
-//                String sql = insertConcert(1000L);
-//                log.info("insert sql: " + sql);
-//                stmt.executeUpdate(sql);
-//
-//            }
+            for(int j=0; j<100; j++){
+                String sql = insertConcert(1000L);
+                // log.info("insert sql: " + sql);
+                stmt.executeUpdate(sql);
+
+            }
 
             // stmt.executeUpdate(insertConcertPlace());
 
-            for(int j=0; j<100; j++){
-                stmt.executeUpdate(insertConcertTime());
-                log.info("{} insert!", j);
-            }
+//            for(int j=0; j<100; j++){
+//                stmt.executeUpdate(insertConcertTime());
+//                log.info("{} insert!", j);
+//            }
 
 
 
