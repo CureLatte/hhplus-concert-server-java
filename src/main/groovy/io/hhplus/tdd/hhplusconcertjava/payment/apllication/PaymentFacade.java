@@ -29,7 +29,7 @@ public class PaymentFacade {
     PointService pointService;
     WaitService waitService;
 
-    @Transactional
+
     public PostPayReservationResponseDto payReservation(Long userId, Long reservationId, int payAmount, String uuid){
 
         User user = this.userService.getUser(userId);
@@ -37,9 +37,18 @@ public class PaymentFacade {
         Reservation reservation = this.concertService.getReservation(reservationId);
         Point point = this.pointService.getPoint(user);
 
+        // Transaction 분리 작업
         PointHistory pointHistory = this.pointService.use(point, payAmount);
 
-        Payment payment = this.paymentService.payReservation(user, reservation, pointHistory);
+        Payment payment;
+
+        try {
+            payment = this.paymentService.payReservation(user, reservation, pointHistory);
+        } catch (BusinessError businessError) {
+            // 실패시 보상 트랜잭션 적용
+
+            throw businessError;
+        }
 
 
         this.waitService.deleteActivateToken(uuid);

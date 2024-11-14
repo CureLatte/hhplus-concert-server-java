@@ -8,6 +8,7 @@ import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -48,6 +49,7 @@ public class PointServiceImpl implements PointService {
         return pointHistory;
     }
 
+    @Transactional
     @Override
     public PointHistory use(Point point, int usePoint) {
         point.use(usePoint);
