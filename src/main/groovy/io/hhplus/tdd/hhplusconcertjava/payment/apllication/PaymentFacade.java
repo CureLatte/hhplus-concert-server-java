@@ -6,6 +6,7 @@ import io.hhplus.tdd.hhplusconcertjava.concert.domain.service.ConcertService;
 import io.hhplus.tdd.hhplusconcertjava.payment.domain.entity.Payment;
 import io.hhplus.tdd.hhplusconcertjava.payment.domain.service.PaymentService;
 import io.hhplus.tdd.hhplusconcertjava.payment.interfaces.dto.PostPayReservationResponseDto;
+import io.hhplus.tdd.hhplusconcertjava.point.apllication.UseCancelEvent;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.entity.Point;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.entity.PointHistory;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.service.PointService;
@@ -50,8 +51,9 @@ public class PaymentFacade {
         try {
             payment = this.paymentService.payReservation(user, reservation, pointHistory);
         } catch (BusinessError businessError) {
-            // 실패시 보상 트랜잭션 적용
-            this.pointService.useCancel(pointHistory);
+            // 실패시 보상 트랜잭션 적용 -> 이벤트로 전환
+            this.eventPublisher.publishEvent(UseCancelEvent.builder().pointHistory(pointHistory).build());
+            // this.pointService.useCancel(pointHistory);
             throw businessError;
         }
 
