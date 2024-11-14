@@ -11,11 +11,13 @@ import io.hhplus.tdd.hhplusconcertjava.point.domain.entity.PointHistory;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.service.PointService;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.service.UserService;
+import io.hhplus.tdd.hhplusconcertjava.wait.application.DeleteActivateTokenEvent;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.ActivateToken;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.service.WaitService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,9 @@ public class PaymentFacade {
     ConcertService concertService;
     PointService pointService;
     WaitService waitService;
+
+    ApplicationEventPublisher eventPublisher;
+
 
 
     public PostPayReservationResponseDto payReservation(Long userId, Long reservationId, int payAmount, String uuid){
@@ -50,8 +55,9 @@ public class PaymentFacade {
             throw businessError;
         }
 
+        eventPublisher.publishEvent(DeleteActivateTokenEvent.builder().uuid(uuid).build());
 
-        this.waitService.deleteActivateToken(uuid);
+        // this.waitService.deleteActivateToken(uuid);
 
         return new PostPayReservationResponseDto(payment != null);
 
