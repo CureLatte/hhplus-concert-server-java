@@ -66,5 +66,23 @@ public class PointServiceImpl implements PointService {
         return pointHistory;
     }
 
+    @Transactional
+    @Override
+    public void useCancel(PointHistory pointHistory) {
+        // 보상 트랜잭션
+        Point point = pointHistory.getPoint();
+
+        // point  복구
+        point.charge(pointHistory.pointAmount);
+
+        // point 저장
+        this.pointRepository.save(point);
+
+        // history 삭제
+        this.pointHistoryRepository.delete(pointHistory);
+
+
+    }
+
 
 }

@@ -11,4 +11,6 @@ public interface PointService {
     public PointHistory charge(Point point, int chargePoint);
 
     public PointHistory use(Point point, int usePoint);
+
+    public void useCancel(PointHistory pointHistory);
 }
