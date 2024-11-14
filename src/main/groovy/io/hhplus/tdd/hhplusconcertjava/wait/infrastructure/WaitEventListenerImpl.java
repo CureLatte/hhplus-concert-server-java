@@ -1,5 +1,6 @@
-package io.hhplus.tdd.hhplusconcertjava.wait.application;
+package io.hhplus.tdd.hhplusconcertjava.wait.infrastructure;
 
+import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.DeleteActivateTokenEvent;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.service.WaitService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

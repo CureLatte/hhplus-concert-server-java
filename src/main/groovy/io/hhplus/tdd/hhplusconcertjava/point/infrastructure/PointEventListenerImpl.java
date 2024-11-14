@@ -1,5 +1,6 @@
-package io.hhplus.tdd.hhplusconcertjava.point.apllication;
+package io.hhplus.tdd.hhplusconcertjava.point.infrastructure;
 
+import io.hhplus.tdd.hhplusconcertjava.point.domain.entity.UseCancelEvent;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.service.PointService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

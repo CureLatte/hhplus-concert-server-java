@@ -1,7 +1,7 @@
 package io.hhplus.tdd.hhplusconcertjava.integration.point;
 
 import io.hhplus.tdd.hhplusconcertjava.integration.TestBaseIntegration;
-import io.hhplus.tdd.hhplusconcertjava.point.apllication.UseCancelEvent;
+import io.hhplus.tdd.hhplusconcertjava.point.domain.entity.UseCancelEvent;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.entity.Point;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.entity.PointHistory;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.service.PointService;

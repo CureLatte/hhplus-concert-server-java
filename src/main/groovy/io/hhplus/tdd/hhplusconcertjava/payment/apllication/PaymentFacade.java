@@ -6,21 +6,19 @@ import io.hhplus.tdd.hhplusconcertjava.concert.domain.service.ConcertService;
 import io.hhplus.tdd.hhplusconcertjava.payment.domain.entity.Payment;
 import io.hhplus.tdd.hhplusconcertjava.payment.domain.service.PaymentService;
 import io.hhplus.tdd.hhplusconcertjava.payment.interfaces.dto.PostPayReservationResponseDto;
-import io.hhplus.tdd.hhplusconcertjava.point.apllication.UseCancelEvent;
+import io.hhplus.tdd.hhplusconcertjava.point.domain.entity.UseCancelEvent;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.entity.Point;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.entity.PointHistory;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.service.PointService;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.service.UserService;
-import io.hhplus.tdd.hhplusconcertjava.wait.application.DeleteActivateTokenEvent;
-import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.ActivateToken;
+import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.DeleteActivateTokenEvent;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.service.WaitService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Component
