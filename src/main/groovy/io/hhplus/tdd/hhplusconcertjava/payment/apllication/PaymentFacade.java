@@ -46,7 +46,7 @@ public class PaymentFacade {
             payment = this.paymentService.payReservation(user, reservation, pointHistory);
         } catch (BusinessError businessError) {
             // 실패시 보상 트랜잭션 적용
-
+            this.pointService.useCancel(pointHistory);
             throw businessError;
         }
 
