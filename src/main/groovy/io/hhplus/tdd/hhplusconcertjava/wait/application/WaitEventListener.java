@@ -15,7 +15,8 @@ import org.springframework.transaction.event.TransactionalEventListener;
 public class WaitEventListener {
     WaitService waitService;
 
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    // @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @EventListener
     public void deleteActivateToken(DeleteActivateTokenEvent deleteActivateTokenEvent) throws InterruptedException {
 
         log.info("EVENT ON !! uuid: {}", deleteActivateTokenEvent);
