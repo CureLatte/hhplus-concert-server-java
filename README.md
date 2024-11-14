@@ -21,3 +21,4 @@
 ## 보고서
 * ### [동시성 문제 보고서](docs/concurrencyReport.md)
 * ### [대기열 Redis 전환 보고서](docs/convertRedisReport)
+* ### [서비스 확장 설계 문서](docs/extendService.md)
