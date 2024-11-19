@@ -8,6 +8,7 @@ import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -31,6 +32,7 @@ public class PointServiceImpl implements PointService {
         return point;
     }
 
+    @Transactional
     @Override
     public PointHistory charge(Point point, int chargePoint) {
 
@@ -48,6 +50,7 @@ public class PointServiceImpl implements PointService {
         return pointHistory;
     }
 
+    @Transactional
     @Override
     public PointHistory use(Point point, int usePoint) {
         point.use(usePoint);
@@ -62,6 +65,44 @@ public class PointServiceImpl implements PointService {
 
 
         return pointHistory;
+    }
+
+    @Transactional
+    @Override
+    public PointHistory useUser(User user, int usePoint) {
+
+        Point point = this.pointRepository.findByUser(user);
+        point.use(usePoint);
+
+
+        this.pointRepository.save(point);
+
+        PointHistory pointHistory = this.pointHistoryRepository.save(PointHistory.builder()
+                .pointAmount(usePoint)
+                .status(PointHistory.PointStatus.USE)
+                .point(point)
+                .build());
+
+
+        return pointHistory;
+    }
+
+    @Transactional
+    @Override
+    public void useCancel(PointHistory pointHistory) {
+        // 보상 트랜잭션
+        Point point = pointHistory.getPoint();
+
+        // point  복구
+        point.charge(pointHistory.pointAmount);
+
+        // point 저장
+        this.pointRepository.save(point);
+
+        // history 삭제
+        this.pointHistoryRepository.delete(pointHistory);
+
+
     }
 
 

@@ -8,4 +8,6 @@ public interface PointRepository {
     public Point findByUser(User user);
 
     public Point save(Point point);
+
+    public void deleteAll();
 }
