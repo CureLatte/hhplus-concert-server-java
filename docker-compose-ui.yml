@@ -1,0 +1,12 @@
+services:
+  kafka_ui:
+    image: provectuslabs/kafka-ui
+    container_name: kafka_ui
+
+    ports:
+      - "9999:8080"
+    restart: always
+    environment:
+      DYNAMIC_CONFIG_ENABLED: true
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9982
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
