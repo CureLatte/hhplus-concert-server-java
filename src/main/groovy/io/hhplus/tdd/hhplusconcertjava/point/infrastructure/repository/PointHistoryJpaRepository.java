@@ -29,4 +29,9 @@ public class PointHistoryJpaRepository implements PointHistoryRepository {
         PointHistoryEntity pointHistoryEntity = this.jpaRepository.save(PointHistoryEntity.fromDomain(pointHistory));
         return pointHistoryEntity.toDomain();
     }
+
+    @Override
+    public void delete(PointHistory pointHistory) {
+        this.jpaRepository.delete(PointHistoryEntity.fromDomain(pointHistory));
+    }
 }

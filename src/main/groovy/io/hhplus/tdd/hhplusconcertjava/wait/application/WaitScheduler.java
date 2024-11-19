@@ -14,12 +14,12 @@ public class WaitScheduler {
     private IWaitService waitService;
 
 
-    @Scheduled(cron="*/5 * * * * *")
+    @Scheduled(cron="* */30 * * * *")
     public void updateProcessCnt(){
         this.waitService.updateProcessWaitQueue();
     }
 
-    @Scheduled(cron = "*/10 * * * * *")
+    @Scheduled(cron = "* */30 * * * *")
     public void updateWaitToken(){
         Long updateTokenCnt = 30L;
         this.waitService.updateWaitToken(updateTokenCnt);

@@ -1,4 +1,4 @@
-package io.hhplus.tdd.hhplusconcertjava.wait.infrastructure;
+package io.hhplus.tdd.hhplusconcertjava.wait.infrastructure.repository;
 
 import io.hhplus.tdd.hhplusconcertjava.wait.infrastructure.entity.WaitQueueEntity;
 import io.swagger.v3.oas.annotations.Hidden;

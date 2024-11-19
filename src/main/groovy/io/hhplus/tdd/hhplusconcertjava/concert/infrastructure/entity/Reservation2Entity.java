@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Table(name="reservation2")
 @EntityListeners(AuditingEntityListener.class)
 public class Reservation2Entity {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long user_id;

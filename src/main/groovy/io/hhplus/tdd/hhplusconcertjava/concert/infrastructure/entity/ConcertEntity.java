@@ -12,10 +12,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="concert")
+@Table(name="concert", indexes = {@Index(name = "idx_title", columnList = "title")})
 @EntityListeners(AuditingEntityListener.class)
 public class ConcertEntity {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name="title")
@@ -29,6 +29,16 @@ public class ConcertEntity {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="concert_place_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private ConcertPlaceEntity place;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="concert_view_rank_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private ConcertViewRankEntity viewRank;
+
 
 
     public Concert toDomain(){

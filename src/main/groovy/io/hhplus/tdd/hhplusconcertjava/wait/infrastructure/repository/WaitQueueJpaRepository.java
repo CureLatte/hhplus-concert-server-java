@@ -1,4 +1,4 @@
-package io.hhplus.tdd.hhplusconcertjava.wait.infrastructure;
+package io.hhplus.tdd.hhplusconcertjava.wait.infrastructure.repository;
 
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.WaitQueue;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.repository.WaitQueueRepository;
