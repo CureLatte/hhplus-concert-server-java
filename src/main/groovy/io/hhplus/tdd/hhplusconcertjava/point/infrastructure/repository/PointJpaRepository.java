@@ -32,4 +32,9 @@ public class PointJpaRepository implements PointRepository {
 
         return entity.toDomain();
     }
+
+    @Override
+    public void deleteAll() {
+        this.jpaRepository.deleteAll();
+    }
 }

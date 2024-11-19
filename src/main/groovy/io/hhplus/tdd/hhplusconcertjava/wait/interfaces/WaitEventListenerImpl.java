@@ -6,7 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 @Slf4j
 @Component
@@ -14,8 +17,8 @@ import org.springframework.stereotype.Component;
 public class WaitEventListenerImpl implements WaitEventListener {
     WaitService waitService;
 
-    // @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    @EventListener
+    @Async
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void deleteActivateToken(DeleteActivateTokenEvent deleteActivateTokenEvent) {
 
         log.info("EVENT ON !! uuid: {}", deleteActivateTokenEvent);
