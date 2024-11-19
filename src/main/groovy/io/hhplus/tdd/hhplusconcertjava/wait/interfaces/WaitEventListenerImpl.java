@@ -1,4 +1,4 @@
-package io.hhplus.tdd.hhplusconcertjava.wait.infrastructure;
+package io.hhplus.tdd.hhplusconcertjava.wait.interfaces;
 
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.DeleteActivateTokenEvent;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.service.WaitService;

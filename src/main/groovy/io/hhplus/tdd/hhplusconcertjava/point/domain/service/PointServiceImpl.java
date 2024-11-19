@@ -69,6 +69,26 @@ public class PointServiceImpl implements PointService {
 
     @Transactional
     @Override
+    public PointHistory useUser(User user, int usePoint) {
+
+        Point point = this.pointRepository.findByUser(user);
+        point.use(usePoint);
+
+
+        this.pointRepository.save(point);
+
+        PointHistory pointHistory = this.pointHistoryRepository.save(PointHistory.builder()
+                .pointAmount(usePoint)
+                .status(PointHistory.PointStatus.USE)
+                .point(point)
+                .build());
+
+
+        return pointHistory;
+    }
+
+    @Transactional
+    @Override
     public void useCancel(PointHistory pointHistory) {
         // 보상 트랜잭션
         Point point = pointHistory.getPoint();

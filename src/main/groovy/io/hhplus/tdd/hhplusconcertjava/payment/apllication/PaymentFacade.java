@@ -4,6 +4,7 @@ import io.hhplus.tdd.hhplusconcertjava.common.error.BusinessError;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.Reservation;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.service.ConcertService;
 import io.hhplus.tdd.hhplusconcertjava.payment.domain.entity.Payment;
+import io.hhplus.tdd.hhplusconcertjava.payment.domain.event.PaymentEvent;
 import io.hhplus.tdd.hhplusconcertjava.payment.domain.service.PaymentService;
 import io.hhplus.tdd.hhplusconcertjava.payment.interfaces.dto.PostPayReservationResponseDto;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.entity.UseCancelEvent;
@@ -17,8 +18,8 @@ import io.hhplus.tdd.hhplusconcertjava.wait.domain.service.WaitService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Component
@@ -29,33 +30,24 @@ public class PaymentFacade {
     ConcertService concertService;
     PointService pointService;
     WaitService waitService;
-
-    ApplicationEventPublisher eventPublisher;
-
+    PaymentEvent paymentEvent;
 
 
+    @Transactional
     public PostPayReservationResponseDto payReservation(Long userId, Long reservationId, int payAmount, String uuid){
 
         User user = this.userService.getUser(userId);
 
         Reservation reservation = this.concertService.getReservation(reservationId);
-        Point point = this.pointService.getPoint(user);
 
         // Transaction 분리 작업
-        PointHistory pointHistory = this.pointService.use(point, payAmount);
+        PointHistory pointHistory = this.pointService.useUser(user, payAmount);
 
-        Payment payment;
 
-        try {
-            payment = this.paymentService.payReservation(user, reservation, pointHistory);
-        } catch (BusinessError businessError) {
-            // 실패시 보상 트랜잭션 적용 -> 이벤트로 전환
-            this.eventPublisher.publishEvent(UseCancelEvent.builder().pointHistory(pointHistory).build());
-            // this.pointService.useCancel(pointHistory);
-            throw businessError;
-        }
+        Payment payment = this.paymentService.payReservation(user, reservation, pointHistory);
 
-        eventPublisher.publishEvent(DeleteActivateTokenEvent.builder().uuid(uuid).build());
+
+        this.paymentEvent.payDoneEvent(uuid);
 
         // this.waitService.deleteActivateToken(uuid);
 
