@@ -16,6 +16,7 @@ import io.hhplus.tdd.hhplusconcertjava.point.domain.repository.PointRepository;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.repository.UserRepository;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.DeleteActivateTokenEvent;
+import io.hhplus.tdd.hhplusconcertjava.wait.interfaces.WaitSpringEventListener;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -68,7 +69,7 @@ public class TestPaymentFacade {
         PaymentSpringEventListener paymentEventListener;
 
         @MockBean
-        WaitEventListener waitEventListener;
+        WaitSpringEventListener waitEventListener;
 
 
         @BeforeEach

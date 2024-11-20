@@ -5,7 +5,6 @@ import io.hhplus.tdd.hhplusconcertjava.wait.domain.service.WaitService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
@@ -14,7 +13,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Slf4j
 @Component
 @AllArgsConstructor(onConstructor_ = {@Autowired})
-public class WaitEventListenerImpl {
+public class WaitSpringEventListener {
     WaitService waitService;
 
     @Async

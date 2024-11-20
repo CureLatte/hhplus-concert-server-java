@@ -19,7 +19,7 @@ public class PaymentKafkaEventListener {
 
     @KafkaListener(topics="payment")
     public void sendPayment(ConsumerRecord<String, String> data) {
-        log.info("sendPayment: {}", data);
+        log.info("sendPayment: {}", data.value());
 
     }
 }
