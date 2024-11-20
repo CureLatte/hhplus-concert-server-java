@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PaymentKafkaEventPublisher implements PaymentEventPublisher {
 
-    KafkaTemplate<String, Object> kafkaTemplate;
+    KafkaTemplate<String, String> kafkaTemplate;
 
 
 
@@ -26,6 +26,6 @@ public class PaymentKafkaEventPublisher implements PaymentEventPublisher {
     @Override
     public void sendOrderInfo(Payment payment) {
         log.info("Send order info: {}", payment);
-        this.kafkaTemplate.send("payment", payment);
+        this.kafkaTemplate.send("payment", payment.toString());
     }
 }
