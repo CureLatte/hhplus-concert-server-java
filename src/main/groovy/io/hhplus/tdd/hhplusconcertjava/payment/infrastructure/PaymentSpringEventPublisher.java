@@ -1,19 +1,17 @@
-package io.hhplus.tdd.hhplusconcertjava.payment.domain.event;
+package io.hhplus.tdd.hhplusconcertjava.payment.infrastructure;
 
 import io.hhplus.tdd.hhplusconcertjava.payment.domain.entity.Payment;
-import io.hhplus.tdd.hhplusconcertjava.point.domain.entity.PointHistory;
-import io.hhplus.tdd.hhplusconcertjava.point.domain.entity.UseCancelEvent;
+import io.hhplus.tdd.hhplusconcertjava.payment.domain.event.PaymentEventPublisher;
+import io.hhplus.tdd.hhplusconcertjava.payment.domain.event.SendOrderInfoEvent;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.DeleteActivateTokenEvent;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.event.SpringApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class PaymentSpringEvent implements PaymentEvent{
+public class PaymentSpringEventPublisher implements PaymentEventPublisher {
 
     ApplicationEventPublisher publisher;
 

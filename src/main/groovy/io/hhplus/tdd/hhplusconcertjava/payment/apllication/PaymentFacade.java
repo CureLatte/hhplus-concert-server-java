@@ -3,7 +3,7 @@ package io.hhplus.tdd.hhplusconcertjava.payment.apllication;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.Reservation;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.service.ConcertService;
 import io.hhplus.tdd.hhplusconcertjava.payment.domain.entity.Payment;
-import io.hhplus.tdd.hhplusconcertjava.payment.domain.event.PaymentEvent;
+import io.hhplus.tdd.hhplusconcertjava.payment.domain.event.PaymentEventPublisher;
 import io.hhplus.tdd.hhplusconcertjava.payment.domain.service.PaymentService;
 import io.hhplus.tdd.hhplusconcertjava.payment.interfaces.dto.PostPayReservationResponseDto;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.entity.PointHistory;
@@ -26,7 +26,7 @@ public class PaymentFacade {
     ConcertService concertService;
     PointService pointService;
     WaitService waitService;
-    PaymentEvent paymentEvent;
+    PaymentEventPublisher paymentEvent;
 
 
     @Transactional
