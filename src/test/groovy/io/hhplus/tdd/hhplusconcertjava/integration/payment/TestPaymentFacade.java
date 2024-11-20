@@ -1,35 +1,26 @@
 package io.hhplus.tdd.hhplusconcertjava.integration.payment;
 
-import io.hhplus.tdd.hhplusconcertjava.common.error.BusinessError;
-import io.hhplus.tdd.hhplusconcertjava.common.error.ErrorCode;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.entity.*;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ConcertRepository;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ConcertSeatRepository;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ConcertTimeRepository;
 import io.hhplus.tdd.hhplusconcertjava.concert.domain.repository.ReservationRepository;
-import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.repository.IConcertJpaRepository;
-import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.repository.IConcertSeatJpaRepository;
-import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.repository.IConcertTimeJpaRepository;
 import io.hhplus.tdd.hhplusconcertjava.integration.TestBaseIntegration;
 import io.hhplus.tdd.hhplusconcertjava.payment.apllication.PaymentFacade;
-import io.hhplus.tdd.hhplusconcertjava.payment.domain.entity.Payment;
 import io.hhplus.tdd.hhplusconcertjava.payment.domain.event.SendOrderInfoEvent;
-import io.hhplus.tdd.hhplusconcertjava.payment.interfaces.PaymentEventListener;
+import io.hhplus.tdd.hhplusconcertjava.payment.interfaces.PaymentSpringEventListener;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.entity.Point;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.entity.PointHistory;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.repository.PointHistoryRepository;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.repository.PointRepository;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.repository.UserRepository;
-import io.hhplus.tdd.hhplusconcertjava.user.infrastructure.IUserJpaRepository;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.DeleteActivateTokenEvent;
 import io.hhplus.tdd.hhplusconcertjava.wait.interfaces.WaitEventListener;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -41,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static javax.management.Query.times;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -76,7 +66,7 @@ public class TestPaymentFacade {
         PaymentFacade paymentFacade;
 
         @MockBean
-        PaymentEventListener paymentEventListener;
+        PaymentSpringEventListener paymentEventListener;
 
         @MockBean
         WaitEventListener waitEventListener;

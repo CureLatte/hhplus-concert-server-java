@@ -1,8 +1,7 @@
 package io.hhplus.tdd.hhplusconcertjava.integration.kafka;
 
 import io.hhplus.tdd.hhplusconcertjava.integration.TestBaseIntegration;
-import io.hhplus.tdd.hhplusconcertjava.payment.interfaces.PaymentKafkaListener;
-import org.junit.jupiter.api.Nested;
+import io.hhplus.tdd.hhplusconcertjava.payment.interfaces.PaymentKafkaEventListener;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -14,7 +13,7 @@ public class TestKafkaConnect extends TestBaseIntegration {
     KafkaTemplate<String, String> kafkaTemplate;
 
     @MockBean
-    PaymentKafkaListener paymentKafkaListener;
+    PaymentKafkaEventListener paymentKafkaListener;
 
     @Test
     public void 카프카_연결_테스트(){
