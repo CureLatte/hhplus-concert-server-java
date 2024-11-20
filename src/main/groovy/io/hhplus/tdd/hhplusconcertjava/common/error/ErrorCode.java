@@ -21,7 +21,12 @@ public enum ErrorCode {
     NOT_FOUND_TOKEN_ERROR(400, "WAIT_002", "토큰이 존재하지 않습니다."),
 
     // user
-    NOT_FOUND_USER_ERROR(400, "USER_001", "존재하지 않은 유저 입니다.")
+    NOT_FOUND_USER_ERROR(400, "USER_001", "존재하지 않은 유저 입니다."),
+
+    // payment
+    WRONG_PAY_AMOUNT_ERROR(400, "payment_001", "결제금액이 맞지 않습니다."),
+    ALREADY_PAY_ERROR(400, "payment_002", "이미 결제 완료된 예약 입니다.")
+
 
     ;
     private final int status;
