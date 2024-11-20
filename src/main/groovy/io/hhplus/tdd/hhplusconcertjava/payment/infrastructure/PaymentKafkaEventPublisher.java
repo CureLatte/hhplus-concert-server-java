@@ -20,12 +20,12 @@ public class PaymentKafkaEventPublisher implements PaymentEventPublisher {
     @Override
     public void deleteActivateToken(String uuid) {
         log.info("Delete activate token for uuid: {}", uuid);
-        this.kafkaTemplate.send("deactivateToken", uuid);
+        this.kafkaTemplate.send("deactivateToken", uuid, uuid);
     }
 
     @Override
     public void sendOrderInfo(Payment payment) {
         log.info("Send order info: {}", payment);
-        this.kafkaTemplate.send("payment", payment.toString());
+        this.kafkaTemplate.send("payment", payment.getId().toString(), payment.toString());
     }
 }
