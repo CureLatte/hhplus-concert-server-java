@@ -14,7 +14,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Slf4j
 @Component
 @AllArgsConstructor(onConstructor_ = {@Autowired})
-public class WaitEventListenerImpl implements WaitEventListener {
+public class WaitEventListenerImpl {
     WaitService waitService;
 
     @Async
