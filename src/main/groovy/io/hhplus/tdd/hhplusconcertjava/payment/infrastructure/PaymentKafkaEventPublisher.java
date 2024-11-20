@@ -2,30 +2,30 @@ package io.hhplus.tdd.hhplusconcertjava.payment.infrastructure;
 
 import io.hhplus.tdd.hhplusconcertjava.payment.domain.entity.Payment;
 import io.hhplus.tdd.hhplusconcertjava.payment.domain.event.PaymentEventPublisher;
-import io.hhplus.tdd.hhplusconcertjava.payment.domain.event.SendOrderInfoEvent;
-import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.DeleteActivateTokenEvent;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-// @Component
+@Slf4j
+@Component
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class PaymentSpringEventPublisher implements PaymentEventPublisher {
+public class PaymentKafkaEventPublisher implements PaymentEventPublisher {
 
-    ApplicationEventPublisher publisher;
+    KafkaTemplate<String, Object> kafkaTemplate;
+
+
 
     @Override
     public void deleteActivateToken(String uuid) {
-        this.publisher.publishEvent(DeleteActivateTokenEvent.builder().uuid(uuid).build());
-
+        log.info("Delete activate token for uuid: {}", uuid);
+        this.kafkaTemplate.send("deactivateToken", uuid);
     }
 
     @Override
     public void sendOrderInfo(Payment payment) {
-        this.publisher.publishEvent(SendOrderInfoEvent.builder().payment(payment).build());
+        log.info("Send order info: {}", payment);
+        this.kafkaTemplate.send("payment", payment);
     }
-
-
-
 }
