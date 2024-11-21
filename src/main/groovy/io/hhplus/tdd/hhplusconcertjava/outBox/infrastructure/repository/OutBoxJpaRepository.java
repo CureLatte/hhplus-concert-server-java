@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @Component
 @Transactional
@@ -47,5 +49,13 @@ public class OutBoxJpaRepository implements OutBoxRepository {
         OutBoxEntity outBoxEntity = this.jpaRepository.save(OutBoxEntity.fromDomain(outBox));
 
         return outBoxEntity.toDomain();
+    }
+
+    @Override
+    public List<OutBox> findByStatus(OutBox.OutBoxStatus status) {
+
+        List<OutBoxEntity> outBoxEntityList = this.jpaRepository.findByStatus(status.name());
+
+        return outBoxEntityList.stream().map(OutBoxEntity::toDomain).toList();
     }
 }

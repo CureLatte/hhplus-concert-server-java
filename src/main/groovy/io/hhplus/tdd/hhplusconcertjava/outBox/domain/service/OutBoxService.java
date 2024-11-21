@@ -12,4 +12,6 @@ public interface OutBoxService {
     public OutBox receive(OutBox outBox);
 
     public OutBox success(OutBox outBox);
+
+    public void rePublish();
 }

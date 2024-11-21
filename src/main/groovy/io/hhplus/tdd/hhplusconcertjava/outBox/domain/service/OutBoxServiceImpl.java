@@ -2,19 +2,25 @@ package io.hhplus.tdd.hhplusconcertjava.outBox.domain.service;
 
 import io.hhplus.tdd.hhplusconcertjava.common.error.BusinessError;
 import io.hhplus.tdd.hhplusconcertjava.common.error.ErrorCode;
+import io.hhplus.tdd.hhplusconcertjava.common.filter.LogFilter;
 import io.hhplus.tdd.hhplusconcertjava.outBox.domain.domain.OutBox;
 import io.hhplus.tdd.hhplusconcertjava.outBox.domain.repository.OutBoxRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-
+@Slf4j
 public class OutBoxServiceImpl implements OutBoxService{
+    private final LogFilter logFilter;
     OutBoxRepository outBoxRepository;
-
+    KafkaTemplate<String, String> kafkaTemplate;
 
     @Override
     public OutBox findById(Long id) {
@@ -62,5 +68,22 @@ public class OutBoxServiceImpl implements OutBoxService{
         outBox.success();
 
         return this.outBoxRepository.save(outBox);
+    }
+
+    @Override
+    public void rePublish() {
+        //
+        List<OutBox> getOutBoxList = this.outBoxRepository.findByStatus(OutBox.OutBoxStatus.INIT);
+        if(getOutBoxList.size() == 0){
+            return;
+        }
+        log.info("getOutBoxList: {}", getOutBoxList.size());
+
+        for(OutBox outBox : getOutBoxList){
+            log.info("outBox: {}", outBox);
+            kafkaTemplate.send(outBox.getTopic(), outBox.eventKey, outBox.payload);
+        }
+
+
     }
 }

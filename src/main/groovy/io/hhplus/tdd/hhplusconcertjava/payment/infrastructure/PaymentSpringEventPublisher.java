@@ -5,10 +5,12 @@ import io.hhplus.tdd.hhplusconcertjava.payment.domain.event.PaymentEventPublishe
 import io.hhplus.tdd.hhplusconcertjava.payment.domain.event.SendOrderInfoEvent;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.event.DeleteActivateTokenEvent;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PaymentSpringEventPublisher implements PaymentEventPublisher {
@@ -24,6 +26,8 @@ public class PaymentSpringEventPublisher implements PaymentEventPublisher {
 
     @Override
     public void sendOrderInfo(OutBox outBox) {
+        log.info("sendOrderInfo event publish!: {}", outBox);
+
         // spring event
         this.publisher.publishEvent(SendOrderInfoEvent.builder().outBox(outBox).build());
     }
