@@ -24,8 +24,10 @@ public class OutBox {
     }
 
 
+
+
     public void receive(){
-        if(this.status == OutBoxStatus.RECEIVE){
+        if(this.status != OutBoxStatus.INIT){
             throw new BusinessError(ErrorCode.ALREADY_RECEIVE_OUT_BOX_ERROR.getStatus(), ErrorCode.ALREADY_RECEIVE_OUT_BOX_ERROR.getMessage());
         }
 
