@@ -25,9 +25,11 @@ public enum ErrorCode {
 
     // payment
     WRONG_PAY_AMOUNT_ERROR(400, "payment_001", "결제금액이 맞지 않습니다."),
-    ALREADY_PAY_ERROR(400, "payment_002", "이미 결제 완료된 예약 입니다.")
+    ALREADY_PAY_ERROR(400, "payment_002", "이미 결제 완료된 예약 입니다."),
 
-
+    // outbox
+    NOT_FOUND_OUT_BOX_ERROR(400, "OUT_BOX_001", "event 를 찾을 수 없습니다."),
+    ALREADY_RECEIVE_OUT_BOX_ERROR(400, "OUT_BOX_002", "이미 수신된 event 입니다.")
     ;
     private final int status;
     private final String code;
