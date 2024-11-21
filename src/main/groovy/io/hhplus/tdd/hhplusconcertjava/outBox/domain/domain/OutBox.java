@@ -20,7 +20,7 @@ public class OutBox {
     public LocalDateTime deletedAt;
 
     public enum OutBoxStatus{
-        INIT, RECEIVE, SUCCESS
+        INIT, RESEND, RECEIVE, SUCCESS, FAILURE
     }
 
     public void init(){
@@ -29,7 +29,7 @@ public class OutBox {
 
 
     public void receive(){
-        if(this.status != OutBoxStatus.INIT){
+        if(this.status == OutBoxStatus.RECEIVE){
             throw new BusinessError(ErrorCode.ALREADY_RECEIVE_OUT_BOX_ERROR.getStatus(), ErrorCode.ALREADY_RECEIVE_OUT_BOX_ERROR.getMessage());
         }
 
@@ -40,4 +40,11 @@ public class OutBox {
         this.status = OutBoxStatus.SUCCESS;
     }
 
+    public void failure(){
+        this.status = OutBoxStatus.FAILURE;
+    }
+
+    public void resend(){
+        this.status = OutBoxStatus.RESEND;
+    }
 }

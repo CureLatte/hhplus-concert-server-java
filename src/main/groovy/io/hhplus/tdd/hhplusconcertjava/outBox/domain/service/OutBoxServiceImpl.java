@@ -80,8 +80,17 @@ public class OutBoxServiceImpl implements OutBoxService{
         log.info("getOutBoxList: {}", getOutBoxList.size());
 
         for(OutBox outBox : getOutBoxList){
-            log.info("outBox: {}", outBox);
-            kafkaTemplate.send(outBox.getTopic(), outBox.eventKey, outBox.payload);
+            try {
+                log.info("outBox: {}", outBox);
+                kafkaTemplate.send(outBox.getTopic(), outBox.eventKey, outBox.payload);
+                outBox.resend();
+                this.outBoxRepository.save(outBox);
+            } catch (Exception e){
+                outBox.failure();
+                this.outBoxRepository.save(outBox);
+                log.error(e.getMessage());
+            }
+
         }
 
 

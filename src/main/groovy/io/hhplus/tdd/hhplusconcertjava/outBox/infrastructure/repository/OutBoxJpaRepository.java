@@ -34,13 +34,13 @@ public class OutBoxJpaRepository implements OutBoxRepository {
     public OutBox findByOutBox(OutBox outBox) {
         log.info("outBOx: {}", outBox.toString());
 
-        OutBoxEntity outBoxEntity = jpaRepository.findByTopicKeyPayload(outBox.topic, outBox.eventKey, outBox.payload);
+        List<OutBoxEntity> outBoxEntityList = jpaRepository.findByTopicKeyPayload(outBox.topic, outBox.eventKey, outBox.payload);
 
-        if(outBoxEntity == null){
+        if(outBoxEntityList.size() == 0 ){
             return null;
         }
 
-        return outBoxEntity.toDomain();
+        return outBoxEntityList.get(0).toDomain();
     }
 
     @Override

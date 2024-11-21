@@ -19,12 +19,12 @@ public interface IOutBoxJpaRepository extends JpaRepository<OutBoxEntity, Long> 
         and O.payload = :payload
         
 """)
-    public OutBoxEntity findByTopicKeyPayload(@Param("topic") String topic, @Param("eventKey") String eventKey, @Param("payload") String payload);
+    public List<OutBoxEntity> findByTopicKeyPayload(@Param("topic") String topic, @Param("eventKey") String eventKey, @Param("payload") String payload);
 
     @Query(value ="""
-        select * from OutBoxEntity O 
+        select * from out_box as O 
         where O.status = :status
-        and TIMESTAMPDIFF('minutes', O.created_at, now()) >= 5
+        and TIMESTAMPDIFF(minute, O.created_at, now()) >= 5
     """, nativeQuery = true)
     public List<OutBoxEntity> findByStatus(@Param("status") String status);
 }
