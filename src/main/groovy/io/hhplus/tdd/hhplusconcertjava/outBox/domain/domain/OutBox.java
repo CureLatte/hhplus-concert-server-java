@@ -14,7 +14,7 @@ public class OutBox {
     public String topic;
     public String payload;
     public OutBoxStatus status;
-    public String key;
+    public String eventKey;
     public LocalDateTime createdAt;
     public LocalDateTime updatedAt;
     public LocalDateTime deletedAt;

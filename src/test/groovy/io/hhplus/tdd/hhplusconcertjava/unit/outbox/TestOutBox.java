@@ -30,7 +30,7 @@ public class TestOutBox {
                 .id(1L)
                 .topic("topic")
                 .status(OutBox.OutBoxStatus.RECEIVE)
-                .key("key")
+                .eventKey("key")
                 .payload("payload")
                 .deletedAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())

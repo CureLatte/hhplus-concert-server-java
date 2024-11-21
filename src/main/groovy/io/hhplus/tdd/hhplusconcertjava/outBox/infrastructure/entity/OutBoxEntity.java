@@ -6,15 +6,17 @@ import io.hhplus.tdd.hhplusconcertjava.outBox.domain.domain.OutBox;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Entity
-@Table(name="outBox")
+@Table(name="out_box")
 public class OutBoxEntity extends BaseEntity {
     @Column(name="paylaod")
     private String payload;
 
-    @Column(name="key")
-    private String key;
+    @Column(name="event_key")
+    private String eventKey;
 
     @Column(name="status")
     private String status;
@@ -26,7 +28,7 @@ public class OutBoxEntity extends BaseEntity {
     public OutBox toDomain(){
         return OutBox.builder()
                 .id(this.getId())
-                .key(this.key)
+                .eventKey(this.eventKey)
                 .payload(this.payload)
                 .status(OutBox.OutBoxStatus.valueOf(this.status))
                 .topic(this.topic)
@@ -44,11 +46,11 @@ public class OutBoxEntity extends BaseEntity {
         entity.setUpdatedAt(outBox.getUpdatedAt());
         entity.setDeletedAt(outBox.getDeletedAt());
 
-        entity.key = outBox.getKey();
+        entity.eventKey = outBox.getEventKey();
         entity.payload = outBox.getPayload();
         entity.status = outBox.getStatus().name();
         entity.topic = outBox.getTopic();
-
+        log.info("entity: {}", entity);
         return entity;
     }
 
