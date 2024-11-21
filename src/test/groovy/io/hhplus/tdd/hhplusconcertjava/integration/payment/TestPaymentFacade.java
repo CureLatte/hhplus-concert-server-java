@@ -15,7 +15,7 @@ import io.hhplus.tdd.hhplusconcertjava.point.domain.repository.PointHistoryRepos
 import io.hhplus.tdd.hhplusconcertjava.point.domain.repository.PointRepository;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.entity.User;
 import io.hhplus.tdd.hhplusconcertjava.user.domain.repository.UserRepository;
-import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.DeleteActivateTokenEvent;
+import io.hhplus.tdd.hhplusconcertjava.wait.domain.event.DeleteActivateTokenEvent;
 import io.hhplus.tdd.hhplusconcertjava.wait.interfaces.WaitSpringEventListener;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -39,7 +39,7 @@ import static org.mockito.Mockito.*;
 
 public class TestPaymentFacade {
 
-    @Transactional
+    // @Transactional
     @Nested
     @ExtendWith(MockitoExtension.class)
     class TestPayReservation extends TestBaseIntegration {
@@ -81,6 +81,8 @@ public class TestPaymentFacade {
             this.concertTimeRepository.deleteAll();
             this.concertSeatRepository.deleteAll();
 
+            this.pointRepository.deleteAll();
+            this.pointHistoryRepository.deleteAll();
         }
 
         @Test

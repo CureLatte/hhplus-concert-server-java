@@ -6,8 +6,11 @@ import io.hhplus.tdd.hhplusconcertjava.concert.infrastructure.entity.ConcertEnti
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
+@Transactional
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class ConcertJpaRepository implements ConcertRepository {
     IConcertJpaRepository jpaRepository;

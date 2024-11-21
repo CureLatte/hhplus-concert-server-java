@@ -7,9 +7,11 @@ import io.hhplus.tdd.hhplusconcertjava.outBox.domain.repository.OutBoxRepository
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
+
 public class OutBoxServiceImpl implements OutBoxService{
     OutBoxRepository outBoxRepository;
 
@@ -26,11 +28,26 @@ public class OutBoxServiceImpl implements OutBoxService{
     }
 
     @Override
+    public OutBox findByOutBox(OutBox outBox) {
+        OutBox outBox1 = outBoxRepository.findByOutBox(outBox);
+
+        if(outBox1 == null){
+            throw new BusinessError(ErrorCode.NOT_FOUND_OUT_BOX_ERROR.getStatus(), ErrorCode.NOT_FOUND_OUT_BOX_ERROR.getMessage());
+        }
+
+
+        return outBox1;
+    }
+
+    @Override
+    @Transactional
     public OutBox init(OutBox outBox) {
+        outBox.init();
         return this.outBoxRepository.save(outBox);
     }
 
     @Override
+    @Transactional
     public OutBox receive(OutBox outBox) {
 
         outBox.receive();
@@ -39,6 +56,7 @@ public class OutBoxServiceImpl implements OutBoxService{
     }
 
     @Override
+    @Transactional
     public OutBox success(OutBox outBox) {
 
         outBox.success();

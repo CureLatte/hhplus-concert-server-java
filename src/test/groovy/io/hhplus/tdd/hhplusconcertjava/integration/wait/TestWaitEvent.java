@@ -1,7 +1,8 @@
 package io.hhplus.tdd.hhplusconcertjava.integration.wait;
 
 import io.hhplus.tdd.hhplusconcertjava.integration.TestBaseIntegration;
-import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.DeleteActivateTokenEvent;
+import io.hhplus.tdd.hhplusconcertjava.outBox.domain.domain.OutBox;
+import io.hhplus.tdd.hhplusconcertjava.wait.domain.event.DeleteActivateTokenEvent;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.entity.ActivateToken;
 import io.hhplus.tdd.hhplusconcertjava.wait.domain.repository.ActivateTokenRepository;
 import org.junit.jupiter.api.Nested;
@@ -39,7 +40,9 @@ public class TestWaitEvent {
 
             // WHEN
 
-            this.applicationEventPublisher.publishEvent(DeleteActivateTokenEvent.builder().uuid(uuid).build());
+            this.applicationEventPublisher.publishEvent(DeleteActivateTokenEvent.builder().outBox(OutBox.builder()
+                            .payload(uuid)
+                    .build()).build());
 
 
             // THEN

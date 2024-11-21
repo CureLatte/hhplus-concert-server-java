@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 @Entity
 @Table(name="out_box")
 public class OutBoxEntity extends BaseEntity {
-    @Column(name="paylaod")
+    @Column(name="payload")
     private String payload;
 
     @Column(name="event_key")

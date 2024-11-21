@@ -23,7 +23,9 @@ public class OutBox {
         INIT, RECEIVE, SUCCESS
     }
 
-
+    public void init(){
+        this.status = OutBoxStatus.INIT;
+    }
 
 
     public void receive(){
