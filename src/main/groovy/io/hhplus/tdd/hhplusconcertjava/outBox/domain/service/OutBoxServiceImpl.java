@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -72,8 +74,13 @@ public class OutBoxServiceImpl implements OutBoxService{
 
     @Override
     public void rePublish() {
-        //
-        List<OutBox> getOutBoxList = this.outBoxRepository.findByStatus(OutBox.OutBoxStatus.INIT);
+        // init 내용 감지 + resend
+        List<OutBox> getInitOutBoxList = this.outBoxRepository.findByStatus(OutBox.OutBoxStatus.INIT);
+
+        List<OutBox> getReSendBoxList = this.outBoxRepository.findByStatus(OutBox.OutBoxStatus.RESEND);
+
+        List<OutBox> getOutBoxList = Stream.concat(getInitOutBoxList.stream(), getReSendBoxList.stream()).collect(Collectors.toList());
+
         if(getOutBoxList.size() == 0){
             return;
         }
