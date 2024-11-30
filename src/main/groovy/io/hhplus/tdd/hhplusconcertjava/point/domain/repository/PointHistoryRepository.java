@@ -10,4 +10,5 @@ public interface PointHistoryRepository {
     public PointHistory save(PointHistory pointHistory);
 
     public void delete(PointHistory pointHistory);
+    public void deleteAll();
 }

@@ -6,10 +6,12 @@ import io.hhplus.tdd.hhplusconcertjava.point.infrastructure.entity.PointHistoryE
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Component
+@Transactional
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PointHistoryJpaRepository implements PointHistoryRepository {
     IPointHistoryJpaRepository jpaRepository;
@@ -33,5 +35,10 @@ public class PointHistoryJpaRepository implements PointHistoryRepository {
     @Override
     public void delete(PointHistory pointHistory) {
         this.jpaRepository.delete(PointHistoryEntity.fromDomain(pointHistory));
+    }
+
+    @Override
+    public void deleteAll() {
+        this.jpaRepository.deleteAll();
     }
 }

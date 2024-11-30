@@ -3,12 +3,14 @@ package io.hhplus.tdd.hhplusconcertjava.point.infrastructure.entity;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.entity.Point;
 import io.hhplus.tdd.hhplusconcertjava.point.domain.entity.PointHistory;
 import jakarta.persistence.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
+@Slf4j
 @Entity
 @Table(name="point_history")
 @EntityListeners(AuditingEntityListener.class)
@@ -35,6 +37,7 @@ public class PointHistoryEntity {
     private LocalDateTime updatedAt;
 
     public PointHistory toDomain(){
+        log.info("Point: ", this.point.toString());
         return PointHistory.builder()
                 .id(this.id)
                 .status(PointHistory.PointStatus.valueOf(this.status))

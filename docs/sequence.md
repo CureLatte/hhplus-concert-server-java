@@ -612,3 +612,82 @@ sequenceDiagram
 
 
 ```
+
+
+
+## 결제 API EVENT 처리
+```mermaid
+sequenceDiagram
+
+    title 결제 서비스
+    
+    actor client 
+    participant facade
+    participant otherService
+    participant outBoxService
+    participant db
+    participant springEventListener
+    participant producer
+    participant kafka
+    participant consumer
+    
+    
+    
+    facade ->> db: transaction ON
+    
+    
+    activate db;
+    
+    
+    facade ->> otherService: update
+    activate otherService
+
+    otherService ->> db: update
+    
+    db ->> otherService: return 
+    
+    otherService ->> facade: return
+
+    deactivate otherService
+
+
+    facade ->> outBoxService: create
+    activate outBoxService
+    
+    outBoxService ->> db: create
+    
+    db ->> outBoxService: return 
+    
+    outBoxService ->> facade: return 
+    
+    
+
+    facade ->> db: commit;
+    
+    deactivate db;
+    
+    alt rollback? 
+        facade -> client: done
+    end
+    
+    
+    facade ->> springEventListener: deactivate publish
+    
+    springEventListener ->> producer: publish    
+    
+    producer ->> kafka: publish
+    
+    consumer ->> kafka: getEvent
+
+    kafka ->> consumer: event
+    
+    consumer ->> db: 조회 
+    db ->> consumer: return 
+    consumer ->> db: update status 
+    db ->> consumer: return 
+    
+        
+    
+    facade ->> springEventListener: paymentUpdate
+
+```
