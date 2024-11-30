@@ -29,10 +29,10 @@ public class PaymentServiceImpl implements PaymentService {
 
         payment.payReservation();
 
-        this.paymentRepository.save(payment);
+        payment = this.paymentRepository.save(payment);
         this.reservationRepository.save(reservation);
 
-        return Payment.builder().build();
+        return payment;
 
     }
 

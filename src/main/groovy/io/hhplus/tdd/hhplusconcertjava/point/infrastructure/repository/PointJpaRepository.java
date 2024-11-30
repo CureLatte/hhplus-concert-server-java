@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
+@Transactional
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PointJpaRepository implements PointRepository {
     IPointJpaRepository jpaRepository;

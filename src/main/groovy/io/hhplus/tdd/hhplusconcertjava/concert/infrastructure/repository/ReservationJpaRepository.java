@@ -15,6 +15,7 @@ import java.util.List;
 
 @Slf4j
 @Component
+@Transactional
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class ReservationJpaRepository implements ReservationRepository {
 

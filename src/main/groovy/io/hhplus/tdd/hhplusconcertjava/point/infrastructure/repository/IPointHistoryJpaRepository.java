@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,5 +18,8 @@ public interface IPointHistoryJpaRepository extends JpaRepository<PointHistoryEn
     @Query(value = """
         select PE from PointHistoryEntity PE where PE.status = :statusName
     """)
+    @Transactional
     public List<PointHistoryEntity> findByStatus(@Param("statusName") String name);
+
+
 }
